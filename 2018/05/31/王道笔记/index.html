@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ZRainy" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="1、C++内置类型包括基本类型和复合类型。基本类型包括整数和浮点数。复合类型包括数组、字符串、指针、引用、结构体和共用体等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="王道程序员面试宝典笔记">
+<meta property="og:url" content="http://yoursite.com/2018/05/31/王道笔记/index.html">
+<meta property="og:site_name" content="ZRainy">
+<meta property="og:description" content="1、C++内置类型包括基本类型和复合类型。基本类型包括整数和浮点数。复合类型包括数组、字符串、指针、引用、结构体和共用体等。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-09T16:00:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="王道程序员面试宝典笔记">
+<meta name="twitter:description" content="1、C++内置类型包括基本类型和复合类型。基本类型包括整数和浮点数。复合类型包括数组、字符串、指针、引用、结构体和共用体等。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/31/王道笔记/">
+
+
+
+
+
+  <title>王道程序员面试宝典笔记 | ZRainy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRainy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/31/王道笔记/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZRainy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRainy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">王道程序员面试宝典笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-31T00:08:31+08:00">
+                2018-05-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/职业学习/" itemprop="url" rel="index">
+                    <span itemprop="name">职业学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1、C-内置类型"><a href="#1、C-内置类型" class="headerlink" title="1、C++内置类型"></a>1、C++内置类型</h1><p>包括基本类型和复合类型。<br>基本类型包括整数和浮点数。<br>复合类型包括数组、字符串、指针、引用、结构体和共用体等。<br><a id="more"></a></p>
+<h1 id="2、内存分区（5个）"><a href="#2、内存分区（5个）" class="headerlink" title="2、内存分区（5个）"></a>2、内存分区（5个）</h1><p>1）堆：动态内存区，由程序员手动分配和释放，不同于数据结构的堆，分配方式类似链表。由malloc或new分配，由free或delete释放，最好手动释放，如果程序员不释放且运行期间不出错，则程序结束后由系统释放。<br>2）栈：编译器自动分配和释放，存放函数的参数值、局部变量等，操作方式类似数据结构的栈。<br>3）全局静态存储区：存放全局变量和静态变量，包括DATA段和BSS段，初始化过的放在DATA中，否则放在BSS中。<br>4）文字常量区：存放常量字符串。<br>5）程序代码区：存放函数体的二进制代码。<br>详见P2</p>
+<h1 id="一、数组"><a href="#一、数组" class="headerlink" title="一、数组"></a>一、数组</h1><p>1、没有引用数组，因为引用不能赋值。<br>2、C风格字符串包括两种，字符串常量（末尾自动添加空字符’\0’）和以’\0’结尾的字符数组。<br>3、C++规定，在声明和初始化一个二维数组时，如果对所有元素赋值，则可省略行数。<br>4、顺序表插入、删除和查找算法的平均时间是O（n）。<br>5、数组指针和指针数组。<br>习题14 15 16 17 18</p>
+<h1 id="二、字符串"><a href="#二、字符串" class="headerlink" title="二、字符串"></a>二、字符串</h1><p>1、strcpy和memcpy的区别，前者参数是char<em>，后者是void</em>，表示后者可用于任何类型，范围比strcpy广。<br>a、复制的内容不同。strcpy只能复制字符串，而memcpy可以复制任意内容。strcpy只用于字符串复制，并且它不仅复制字符串内容，还会复制字符串的结束符。memcpy对于需要复制的内容没有限制，因此用途更广。<br>b、复制的方法不同。strcpy不需要指定长度，它遇到被复制字符的串结束符‘\0’才结束，容易溢出。memcpy根据第三个参数决定复制的长度。<br>c、用途不同，strcpy复制字符串，其他类型一般用memcpy。<br>2、长度为M的字符串中查找长度为N的子串，最少时间复杂度O（M+N）。（利用KMP算法）<br>3、循环移位包串，第一种方法取模，第二种就是把m变成mm，再找n子串。<br>4、判断某字符串是不是包含什么字符之类的问题，可转为素数相乘。<br>5、字符串查找类题目可以联想到素数和桶排序，有时会解决问题。<br>6、memset将s中第三个参数表示的前n个字节用ch替换，作用是在一段内存块中填充某个给定的值，它是对较大结构体或数组清零的最快方法。</p>
+<h1 id="三、结构体"><a href="#三、结构体" class="headerlink" title="三、结构体"></a>三、结构体</h1><p>1、sizeof是运算符不是函数，它的计算发生在编译时刻，所以可以被当做常量表达式使用，且会忽略括号中的各种运算，如sizeof（a++），“++”并不会执行。若对一个函数调用使用，则求到的是函数返回类型的值，不可以对函数使用，而且函数并不会被调用。<br>2、不可以用sizeof的：函数、返回void的函数调用、位域成员。<br>3、strlen不包括‘\0’，sizeof包括。<br>4、大小端对位域影响，自己的理解：<br>首先2个字节8位是一个划分单元。<br>大端下：对每个八位，按照位域成员声明顺序从左往右填入bit，不够的留到下一个八位中继续按照从左往右填。<br>小端下：对每个八位，按照位域成员声明顺序从右往左填入成员bit，以此类推。<br>（不知道对不对，总之根据题目上这么理解似乎正确。）<br>5、结构体占内存空间大小：P51.<br>6、结构体内函数和类型重定义不占字节。</p>
+<h1 id="四、运算符及其优先级"><a href="#四、运算符及其优先级" class="headerlink" title="四、运算符及其优先级"></a>四、运算符及其优先级</h1><p>1、亦或运算可以用来找成对数组中不成对的那个数。<br>2、~运算符的优先级&gt;移位运算符优先级&gt;与或异或运算符的优先级<br>运算符优先级记忆规则：<br>a、括号、下标，-&gt;和.运算级别最高。<br>b、单目比双目高，算术双目的比其他双目的高<br>c、移位运算符高于关系运算符，关系运算符高于按位运算，按位运算高于逻辑运算。<br>d、三目的只有一个条件运算，低于逻辑运算<br>e、赋值运算符仅比逗号运算符高，且所有赋值运算符优先级相同，结合访问位从右到左。</p>
+<h1 id="五、C预处理器、作用域、static、const以及内存管理"><a href="#五、C预处理器、作用域、static、const以及内存管理" class="headerlink" title="五、C预处理器、作用域、static、const以及内存管理"></a>五、C预处理器、作用域、static、const以及内存管理</h1><p>预处理主要有三个方面的内容：<br>a、宏定义与宏替换<br>b、文件包含<br>c、条件编译</p>
+<p>1、宏定义和宏替换：<br>宏名一般大写，宏名和参数括号间不能有空格，末尾不加分号<br>宏替换只做替换，不做语法检查，不做计算，不做表达式求解；<br>宏替换在编译前进行，不分配内存，函数调用在编译后程序运行时进行，并且分配；<br>函数只有一个返回值，利用宏则可以设法得到多个值<br>宏替换使源程序变长，函数调用不会<br>宏替换不占运行时间，只占编译时间，函数调用占运行时间。<br>尽量少用宏，用const、enum和inline替换。</p>
+<p>2、static的作用（不考虑类）：a隐藏，b把变量默认初始化为0，c保持局部变量内容的持久。<br>类中的作用：属于一个类但不属于此类中任何特定对象的变量和函数。<br>static数据成员必须在类定义体的外部定义。<br>static成员函数不能被声明为const、虚函数、volatile。</p>
+<p>3、const<br>const和#define相比的好处：<br>1）const常量有数据类型，而宏常量没有数据类型，所以前者可以有类型安全检查。<br>2）使用const会产生更小的目标代码；<br>3）const还会进行常量折叠。<br>常量数据成员必须在构造函数的成员初始化列表中初始化。</p>
+<p>c中的const意思是一个不能被改变的普通变量，纵使占用存储，不能把const视为一个编译期间的常量。</p>
+<p>const的使用场景：<br>a常量<br>b指针和const修饰符<br>c修饰函数参数和返回值<br>d类中。const成员函数、const数据成员。</p>
+<p>static、const以及static const成员变量初始化的不同。<br>static必须在类内声明，类外定义，定义时不能标为static。<br>const数据成员的初始化只能在类的构造函数初始值列表中进行，const数据成员只在某个对象生存期内是常量，对整个类而言却是可变的。<br>static const类内声明，类外定义，定义时加const不加static。</p>
+<p>4、malloc/free和new/delete的异同（p104）<br>相同点：两组都是用来动态分配/释放内存的。<br>1）操作对象不同点：malloc和free是库函数，而new和delete是运算符，后者两个可以执行构造函数和析构函数。<br>operator new的执行流程：先分配足够大的原始空间，然后调用该类型的一个构造函数，最后返回指针。<br>operator delete的执行流程：先调用析构函数，再回收空间。<br>2）用法不同<br>malloc原型返回void*，所以要进行显式转换，它只关心分配的字节数，不关心类型。<br>malloc手工计算字节数，new自动分配。<br>new类型安全，而malloc不是。<br>malloc和free需要包含库文件，而new和delete不需要。</p>
+<h1 id="六、函数"><a href="#六、函数" class="headerlink" title="六、函数"></a>六、函数</h1><p>1、使用无参数构造函数的时候不要加()，不然会被看做是某个函数的声明，如：<br>Foo b();<br>本意是构造Foo的一个对象b，但却被看做是一个函数声明，应改为 Foo b;</p>
+<p>2、c++中调用被c编译过的函数，为什么要加extern “c”<br>c++是一种面向对象的编程语言，为了支持重载，编译器会对函数名字进行一些处理。而在c中编译就只是简单函数名而已，两者处理函数名的方式是不一样的。加了extern “c”就说明函数是用c编译器编译的，请用c的方式链接它们，否则链接会错。</p>
+<h1 id="七、指针和引用"><a href="#七、指针和引用" class="headerlink" title="七、指针和引用"></a>七、指针和引用</h1><p>1、函数返回void<em>时表示返回一个特殊的指针，并不是没有返回值。<br>void</em>指针的操作：<br>和另一个指针进行比较。<br>向函数传递void<em>指针或从函数函数void</em>指针。<br>给另一个void*指针赋值。</p>
+<p>2、具有函数类型的形参所对应的的实参将被自动转化为指向响应函数类型的指针，然而当返回类型是函数时，却不会转换成对应的指针。</p>
+<p>3、引用和指针的区别<br>虽然引用和指针都可以间接访问另一个变量，但它们之间存在重要区别。<br>1）引用不能为空，当引用被创建时，必须被初始化，指针则可以为空。<br>2）一旦一个引用被初始化为指向某一对象，它就不能改变指向其他对象。指针可以。<br>3）没有NULL引用。<br>4）sizeof运算符对引用是求它所指对象大小，而对指针就是求指针本身大小。<br>5）给引用赋值就是修改它指向的那个对象的值，并不是改变引用所指的对象。<br>6）引用没有解引用，而指针需要解引用。<br>7）动态分配的对象或内存必须使用指针。<br>8）&amp;操作符对引用是取它所指对象的地址，而对指针就是求指针的地址。</p>
+<p>4、引用类型类数据成员的初始化必须在初始化列表中，而且必须手动写构造函数。</p>
+<p>5、野指针。<br>野指针是指向不可用内存的指针。<br>下列三种情况会产生野指针：<br>a当一个指针被初始化时不会自动成为NULl指针，而是一个野指针，默认值是随机的。<br>b当指针被free或delete后未把指针置为NULL，此时是野指针。<br>c指针操作超越变量作用范围时也是野指针。</p>
+<h1 id="八、类"><a href="#八、类" class="headerlink" title="八、类"></a>八、类</h1><p>1、在c++中，成员变量的初始化顺序与变量在类中声明的顺序相同，与初始化时的顺序无关。<br>2、没有默认构造函数的类类型成员、const成员和引用成员必须在初始值列表里初始化。</p>
+<p>3、深复制和浅复制。<br>浅复制：被复制的对象的所有变量都和原来对象的值相同，而所有的对其他对象的引用仍然指向原来的对象。浅复制仅复制对象，而不复制所引用的对象。<br>深复制：相反，深复制把所有对象以及引用的对象都复制了一遍。<br>浅复制可能导致运行时错误。</p>
+<p>4、虚基类的构造函数最先调用。</p>
+<p>5、复制构造函数只在对象实例化的时候才调用，没有返回值。<br>赋值运算符则在一个现存对象被赋值时调用，有返回值。</p>
+<p>6、new operator和operator new不同。<br>可以重载的是operator new而不是new operator。<br>即不能重定义new和delete表达式的行为，可以重载的是全局函数operator new和operator delete。<br>new表达式行为中调用operator new分配空间，然后调用合适的构造函数。<br>delete表达式先析构，在调用合适的operator delete释放空间。</p>
+<h1 id="九、面向对象编程。"><a href="#九、面向对象编程。" class="headerlink" title="九、面向对象编程。"></a>九、面向对象编程。</h1><p>1、公有继承下，派生类的对象、对象指针、对象引用可以赋值给基类的对象、对象指针、对象引用，这是隐式转化，保护继承和私有继承没有。<br>公有继承下，基类的对象指针、对象引用不可以隐式转换成派生类的指针和引用，但是可以显式转换（强制转换）过去。p157</p>
+<p>2、类型转换函数的作用是将一个类的对象转换为另一个类型的数据。<br>转换函数必须是成员函数不能是友元，不能指定返回类型，但在函数体内必须用return以传值的方式返回一个目标类型的变量；转换函数不能有参数。<br>operator 类型(){return 类型的值；}</p>
+<p>转换构造函数：可以用单个实参来调用的构造函数定义从形参类型到该类类型的一个隐式转换。</p>
+<p>静态动态性包括函数重载和运算符重载，动态多态性包括虚函数。</p>
+<p>3、非C++内建类型A和B，三种情况下B能隐式转换成A。<br>B公有继承自A<br>B中有类型转换函数转换成A<br>A实现了非explicit的参数为B的构造函数。</p>
+<p>4、不能做虚函数的有哪些。<br>非成员函数、静态成员函数、构造函数、友元函数。<br>而内联成员函数和赋值操作符函数声明为虚函数也无意义。</p>
+<p>5、C++对象模型p167，重要。<br>简单来说，static成员数据和函数都在全局静态区，非static数据成员才在对象内部，不是虚的成员函数也在对象外部。<br>虚函数在对象内部留一个pvtr指针，指向一个虚函数表，虚函数表里存放虚函数和type_info.</p>
+<p>6、抽象类不可以定义对象，但可以作为指针或引用类型使用。</p>
+<p>7、仅当类型之间存在隐式转换的时候（类间下行转换除外），static_cast才合法。<br>reinterpret_cast代替圆括号的显式转换，强制转换。<br>dynami_cast将基类指针或引用安全转换为派生类指针或引用，做两件事，检查是否可以转换，若有效才真正转换。</p>
+<h1 id="十、分治法、动态规划与贪心算法"><a href="#十、分治法、动态规划与贪心算法" class="headerlink" title="十、分治法、动态规划与贪心算法"></a>十、分治法、动态规划与贪心算法</h1><p>p196，开学后看下算法导论对应例题。</p>
+<h1 id="十一、"><a href="#十一、" class="headerlink" title="十一、"></a>十一、</h1><p>1、Catalan数p211<br>h(n)=h(0)<em>h(n-1)+h(1)</em>h(n-2)+…+h(n-1)*h(0)    h(0)=1</p>
+<p>2、求二叉树中节点之间的最大距离。</p>
+<p>3、树中路径上所有节点之和等于给定值。p223</p>
+<p>4、红黑树是一种特殊的二叉搜索树，满足以下条件：<br>节点不是红就是黑。<br>根节点是黑。<br>如果节点是红，其子节点必须是黑。<br>任一节点至null的任何路径，所含之黑节点数必须相同。</p>
+<p>5、判断树是不是平衡树p227</p>
+<p>6、并查集p231</p>
+<h1 id="第十四章、图"><a href="#第十四章、图" class="headerlink" title="第十四章、图"></a>第十四章、图</h1><h1 id="第十五章、排序"><a href="#第十五章、排序" class="headerlink" title="第十五章、排序"></a>第十五章、排序</h1><p>1、插入排序包括直接插入排序和希尔排序。<br>直接插入排序时间复杂度n2，空间复杂度1，最好情况下表中元素已经有序，此时每插入一个元素都只需要比较一次而不用移动，因为时间复杂度是n，是稳定的。<br>希尔排序的时间复杂度不确定，空间复杂度是1，不稳定。<br>2、交换排序<br>冒泡排序，时间复杂n2，空间复制1，稳定，最好情况下时间复杂n。<br>快速排序是所有内部排序中平均性能最好的算法，空间复杂度最坏n，平均logn，时间复杂度最坏n2但很少见，最好nlogn，不稳定。<br>快速排序两种划分方法p253</p>
+<p>3、选择排序时间复杂度始终n2.<br>元素间的比较次数和原始序列无关，都是n(n-1)/2.</p>
+<p>4、建堆的时间复杂度为n。<br>空间复杂度1，时间复杂度nlogn。</p>
+<p>5、二路归并排序（递归分支，merge）<br>空间n，时间nlogn。</p>
+<h1 id="第十六章：查找"><a href="#第十六章：查找" class="headerlink" title="第十六章：查找"></a>第十六章：查找</h1><p>1、后缀数组<br>2、键树又称数字查找树，用树的孩子-兄弟链表来表示键树。<br>用多重链表表示键树，则树的每个节点中包含d个指针域，此时又称Trie树<br>3、分布式存储方式<br>普通集群：把固定的key映射到固定的节点上，节点只存放各自key的数据。查找时需要遍历，查找速度慢。<br>hash集群：更迭慢，需要重新扫描计算一次所有节点。<br>一致性hash</p>
+<p>4、处理海量数据大文件<br>分治——hash映射到不同块中，对每个块再分别处理。</p>
+<p>最小k个数p261</p>
+<p>布隆过滤器：<br>大小为m，样本数量为n，失误率为p<br>m=-(n<em>lnp)/(ln2)2<br>k=ln2</em>(m/n)<br>p=(1-e(-nk/m))k</p>
+<h1 id="计网"><a href="#计网" class="headerlink" title="计网"></a>计网</h1><p>1、ping使用ICMP协议。<br>网络层协议：IP 、IPX 、ICMP、IGMP、ARP、RARP、OSPF<br>传输层协议：TCP、UDP、SCTP<br>应用层协议：RIP、TELNET、TFP、HTTP、SNMP</p>
+<p>TCP<br>a、TCP是一种面向连接的协议，提供客户与服务器的连接<br>b、tcp提供可靠性，当使用tcp向另一端发送数据时，它要求对端返回一个确认。如果没有收到确认，tcp自动重传数据并等待更长时间。在数次重传失败后，tcp才放弃。<br>c、tcp通过给发送数据的每一个字节关联一个序列号进行排序。udp提供不可靠的数据报传送，不提供确认、序列号、超时重传等机制。<br>d、tcp提供流量控制，而udp不提供。<br>e、tcp的连接是全双工的，udp的也可以是全双工的。</p>
+<p>和udp的主要区别在于udp不一定提供可靠的数据传输，但是udp对系统资源要求少、实时性好、网络开销小。</p>
+<p>2、终止tcp连接通常调用close，但是close有两个弊端，可用shutdown来避免。<br>close函数把套接字的引用计数减1，仅在计数变为0时才关闭，而使用shutdown不管计数如何会直接激发正常终止序列。<br>close同时关闭读写，但有时候需要关闭写但仍然可以读，这个时候就可以用shutdown。</p>
+<p>3、tcp七个定时器：连接建立定时器，重传定时器，延迟定时器，持续定时器，保活定时器，FIN_WAIT2定时器，TIME_WAIT定时器</p>
+<p>为了提高ip数据报成功交付机会，在网络层使用icmp来使得主机可以报告差错或异常情况。</p>
+<p>4、输入url后按下回车发生什么？<br>向dns服务器查询url对应的IP地址。<br>dns返回ip地址。<br>浏览器打开tcp连接，并向web服务器发送http请求。<br>若页面发生跳转，服务器以重定向响应，然后转到5，否则直接转6.<br>浏览器跟随重定向，再次发送http请求。<br>服务器处理请求，并返回html响应。<br>浏览器接受请求的页面源码。<br>浏览器开始渲染html。<br>浏览器发送嵌入到html中的对象请求。<br>浏览器进一步发送异步请求。<br>浏览器关闭tcp连接。</p>
+<p>ping用来检查网络是否通畅<br>tracert路由跟踪<br>telnet网络测试，如测试80端口的web服务器是否正常<br>netstat监控tcp/ip的工具</p>
+<h1 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h1><p>1、四个特征：并发、异步、共享、虚拟。<br>2、进程与线程的区别。p325<br>3、调度算法例题，p328例二。<br>4、死锁产生的必要条件：互斥、不剥夺、请求和保持、循环等待。<br>预防死锁：破坏四个条件之一<br>避免：银行家算法<br>检测及解除：剥夺资源、撤销进程、进程回退。</p>
+<p>线程独有的：线程id、寄存器组的值、堆栈、错误返回码、信号屏蔽码、线程优先级</p>
+<p>进程和线程的区别：<br>a、调度：引入线程后，线程是独立调度的基本单位，进程是拥有资源的基本单位拟。在同一进程中，线程的切换不会引起进程切换，不同进程中的线程切换会引起进程切换。<br>b、拥有资源：进程是拥有资源的基本单位，但是线程可以共享其隶属进程的系统资源。<br>c、并发，进程可以并发，线程也可以并发，而且线程并发性更高，提高系统吞吐量。<br>d、系统开销：创建和撤销进程时，系统都要为之分配或回收资源，因为付出的开销远远大于创建或撤销线程的开销。进程切换的开销也比线程大。另外，同一进程后的多个线程共享进程的地址空间，因此及这些线程间的同步通信比较容易实现，无需操作系统干预。<br>e、进程的地址空间相互独立，统一进程的各线程间共享进程的资源，某进程内的线程对其他进程不可见。<br>f、通信方面，进程间通信需要借助操作系统，而线程可以直接读写（全局变量）进行通信。</p>
+<p>5、临界区是统一进程下的线程间通信机制。<br>6、默认下，Linux一个进程最多能打开1024个文件。</p>
+<p>进程间通信：管道、共享内存、消息队列、信号量、socket。<br>线程间通信：临界区（只可以用于线程间）、互斥量、信号量、事件。</p>
+<p>Linux常用命令：<br>1、cd变换工作目录<br>2、pwd显示目前所在目录<br>3、mkdir建立新目录 rmdir删目录<br>4、ls<br>5、cp复制文件或目录<br>6、rm删除，加参数-r表示删除目录<br>7、cat由第一行开始查看文件<br>8、tac从最后一行开始显示文件<br>9、head -n number file 只显示一开始的几行<br>10、touch常用来新建空文件<br>11、grep分析一行信息，若其中有我们所需要的信息就将该行显示出来，常用在管道中。<br>12、df列出文件系统的整体磁盘使用量<br>13、ps将某个时间点的程序运行情况显示出来<br>14、top可以持续侦测程序运作的状态，比如看内存使用率</p>
+<h1 id="数据库："><a href="#数据库：" class="headerlink" title="数据库："></a>数据库：</h1><p>1、数据库的核心和基础是数据模型。<br>2、数据模型一般由数据结构、数据操作和完整性约束条件三部分组成。<br>3、事务的四个特征：原子性a，一致性c，隔离性i，持续性d。<br>4、设置索引是要付出代价的，一是增加了存储空间，二是插入和修改数据要花费较多的时间。<br>5、mysql为学生表学号增加降序唯一索引<br>create unique index Stusno on Student（Sno desc）<br>删除该索引<br>alter table Student drop index Stusno<br>6、索引的优缺点以及该不该建索引。p345<br>创建索引可以大大提高系统的性能。<br>第一、通过创建唯一性索引，可以保证数据库表中每一行数据的唯一性。<br>第二、可以加快数据检索速度，这也是加索引的最主要原因。<br>第三：可以加速表与表之间的连接，特别是在实现数据的参照完整性方面特别有意义。<br>第四、再使用分组和排序子句进行数据检索时，同样可以显著减少查询中分组和排序的时间。<br>第五、通过使用索引，可以在查询中使用优化隐藏器，提高系统的性能。<br>缺点：<br>第一、创建索引和维护索引要耗费时间，而且这种时间随着数据量的增加而增加。<br>第二、索引需要占物理空间。<br>第三、当表中数据增加、删除、修改的时候，索引也要动态维护，降低了数据维护性能。</p>
+<p>索引是建在某些列上的。<br>适合建索引的：<br>1）、在经常需要搜索的列上建索引，强制该列的唯一性和组织表中数据的排列结构。<br>2、在作为主键的列上创建索引，加快连接的速度。<br>3、在经常用到连接的列上建索引。<br>4、在经常需要根据范围进行搜索的列上创建索引。<br>5、在经常需要排序的列上创建索引。<br>6、在经常使用where子句的列上创建索引，加快条件判断。</p>
+<p>不适合建索引的：<br>1）、在查询中很少使用到的列<br>2）、只有很少数据值的列<br>3）、定义为text和bit等数据类型的列，因为这些列的数据量要么大要么取值很少，不利于使用索引<br>4）当修改操作远远大于检索操作时，不该建索引。修改性能和检索性能是相互对立矛盾的。</p>
+<p>7、存储过程（Stored Procedure）是在大型数据库系统中，一组为了完成特定功能的SQL 语句集，存储在数据库中，经过第一次编译后再次调用不需要再次编译，用户通过指定存储过程的名字并给出参数（如果该存储过程带有参数）来执行它。<br>8、%表示任意长度的通配符，_表示一个长度的通配符<br>9、LIMIT两种参数使用，limit n等同于limit 0 n。输出从0开始，到n之前的n行数据。</p>
+<h1 id="设计模式："><a href="#设计模式：" class="headerlink" title="设计模式："></a>设计模式：</h1><p>1、面向对象最基本的五个设计原则：单一职责原则，开放封闭原则，依赖倒置原则，接口隔离原则和Liskov替换原则。</p>
+<h1 id="数学："><a href="#数学：" class="headerlink" title="数学："></a>数学：</h1><p>1、N条直线有M个交点，则平面被划分成N+M+1个区域。</p>
+<h1 id="其他："><a href="#其他：" class="headerlink" title="其他："></a>其他：</h1><p>1、简述Java和C++的不同。<br>java运行在虚拟机上<br>c++支持无符号运算和指针，java不支持。<br>java中参数传递总是值传递（参数是对象时传递的是对象的引用），在c++中，参数传递有值传递、引用传递、指针传递。<br>java有垃圾回收，c++没有。<br>c++允许运算符重载，java不允许。<br>c++允许多继承，java只允许单继承。</p>
+<p>2、常见的度量软件可靠性的指标。<br>MTTF平均失效前时间<br>MTBF平均无故障时间。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/28/剑指offer+常见算法/" rel="next" title="剑指Offer+常用手写算法(C++)">
+                <i class="fa fa-chevron-left"></i> 剑指Offer+常用手写算法(C++)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/31/春招面试准备/" rel="prev" title="春招面试准备">
+                春招面试准备 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjgzMy8xMzM2OQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ZRainy</p>
+              <p class="site-description motion-element" itemprop="description">故事没结束，别急着去哭</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1、C-内置类型"><span class="nav-number">1.</span> <span class="nav-text">1、C++内置类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、内存分区（5个）"><span class="nav-number">2.</span> <span class="nav-text">2、内存分区（5个）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一、数组"><span class="nav-number">3.</span> <span class="nav-text">一、数组</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、字符串"><span class="nav-number">4.</span> <span class="nav-text">二、字符串</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、结构体"><span class="nav-number">5.</span> <span class="nav-text">三、结构体</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、运算符及其优先级"><span class="nav-number">6.</span> <span class="nav-text">四、运算符及其优先级</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、C预处理器、作用域、static、const以及内存管理"><span class="nav-number">7.</span> <span class="nav-text">五、C预处理器、作用域、static、const以及内存管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、函数"><span class="nav-number">8.</span> <span class="nav-text">六、函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七、指针和引用"><span class="nav-number">9.</span> <span class="nav-text">七、指针和引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#八、类"><span class="nav-number">10.</span> <span class="nav-text">八、类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#九、面向对象编程。"><span class="nav-number">11.</span> <span class="nav-text">九、面向对象编程。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十、分治法、动态规划与贪心算法"><span class="nav-number">12.</span> <span class="nav-text">十、分治法、动态规划与贪心算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十一、"><span class="nav-number">13.</span> <span class="nav-text">十一、</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十四章、图"><span class="nav-number">14.</span> <span class="nav-text">第十四章、图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十五章、排序"><span class="nav-number">15.</span> <span class="nav-text">第十五章、排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第十六章：查找"><span class="nav-number">16.</span> <span class="nav-text">第十六章：查找</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#计网"><span class="nav-number">17.</span> <span class="nav-text">计网</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#操作系统"><span class="nav-number">18.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库："><span class="nav-number">19.</span> <span class="nav-text">数据库：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设计模式："><span class="nav-number">20.</span> <span class="nav-text">设计模式：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数学："><span class="nav-number">21.</span> <span class="nav-text">数学：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他："><span class="nav-number">22.</span> <span class="nav-text">其他：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZRainy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
