@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-10-22T16:35:52.088Z</updated>
+  <updated>2018-10-22T16:21:23.967Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,20 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>a</title>
-    <link href="http://yoursite.com/2018/10/23/a/"/>
-    <id>http://yoursite.com/2018/10/23/a/</id>
-    <published>2018-10-22T16:35:52.000Z</published>
-    <updated>2018-10-22T16:35:52.088Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>《弗雷的小说写作坊-秘境游走》笔记</title>
