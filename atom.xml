@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-10-25T14:44:04.053Z</updated>
+  <updated>2018-10-29T15:35:11.747Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>《弗雷的小说写作坊-飞起来》笔记</title>
+    <link href="http://yoursite.com/2018/10/29/%E3%80%8A%E5%BC%97%E9%9B%B7%E7%9A%84%E5%B0%8F%E8%AF%B4%E5%86%99%E4%BD%9C%E5%9D%8A-%E9%A3%9E%E8%B5%B7%E6%9D%A5%E3%80%8B%E7%AC%94%E8%AE%B0/"/>
+    <id>http://yoursite.com/2018/10/29/《弗雷的小说写作坊-飞起来》笔记/</id>
+    <published>2018-10-29T14:58:23.000Z</published>
+    <updated>2018-10-29T15:35:11.747Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="一、唤醒虚构梦境"><a href="#一、唤醒虚构梦境" class="headerlink" title="一、唤醒虚构梦境"></a>一、唤醒虚构梦境</h1><p>1、要展示，不要叙述。小说家试图去“展示”，通过感官细节上的暗示将读者拖入虚幻的梦境。    </p><p>2、同情是一种“认可”。要让观众产生同情，得先让他们对角色产生同情感，这是很关键的一点。<br><a id="more"></a><br>3、同情是深入故事的途径，有了同情，读者就能从内心真正感受到故事的情感，没有产生同情则说明读者在读故事时没有参与到故事的情感中来。获得了读者的同情之后，写作者应该进一步深入虚构梦境的创作，让读者认可你创造的角色。</p><p>4、只有当读者不仅同情角色的困境，还支持他的目标和勇气，并强烈希望这个角色能实现他的目标时，他们才能说这个角色得到了读者的认同。</p><p>5、移情是一种比同情心更强烈的情感。个人感觉移情就是靠细节描写。激发情感的感官细节，能够通过暗示的力量激发读者的情感，抚慰读者的同理心。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;一、唤醒虚构梦境&quot;&gt;&lt;a href=&quot;#一、唤醒虚构梦境&quot; class=&quot;headerlink&quot; title=&quot;一、唤醒虚构梦境&quot;&gt;&lt;/a&gt;一、唤醒虚构梦境&lt;/h1&gt;&lt;p&gt;1、要展示，不要叙述。小说家试图去“展示”，通过感官细节上的暗示将读者拖入虚幻的梦境。    &lt;/p&gt;
+&lt;p&gt;2、同情是一种“认可”。要让观众产生同情，得先让他们对角色产生同情感，这是很关键的一点。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="读书笔记" scheme="http://yoursite.com/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>《C++并发编程实战》笔记</title>
