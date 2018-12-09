@@ -80,17 +80,17 @@
 
 
 
-<meta name="description" content="第二章 简单动态字符串在Redis中，C字符串只会作用字符串字面量用在一些无需对字符串值进行修改的地方，当需要修改的时候，Redis会使用自己构建的一种名为简单动态字符串的抽象类型SDS来表示。SDS还会用在AOF模块和客户端状态中的缓冲区里。p8 SDS的定义123456789//sds.hstruct sdshdr&amp;#123;    //记录buf数组中已使用字节的数量，等于SDS所保存字符串">
+<meta name="description" content="第二章 简单动态字符串在Redis中，C字符串只会作用字符串字面量用在一些无需对字符串值进行修改的地方，当需要修改的时候，Redis会使用自己构建的一种名为简单动态字符串的抽象类型SDS来表示。SDS还会用在AOF模块和客户端状态中的缓冲区里。p8">
 <meta property="og:type" content="article">
 <meta property="og:title" content="《Redis设计与实现》笔记">
 <meta property="og:url" content="http://yoursite.com/2018/12/09/《Redis设计与实现》笔记/index.html">
 <meta property="og:site_name" content="ZRainy">
-<meta property="og:description" content="第二章 简单动态字符串在Redis中，C字符串只会作用字符串字面量用在一些无需对字符串值进行修改的地方，当需要修改的时候，Redis会使用自己构建的一种名为简单动态字符串的抽象类型SDS来表示。SDS还会用在AOF模块和客户端状态中的缓冲区里。p8 SDS的定义123456789//sds.hstruct sdshdr&amp;#123;    //记录buf数组中已使用字节的数量，等于SDS所保存字符串">
+<meta property="og:description" content="第二章 简单动态字符串在Redis中，C字符串只会作用字符串字面量用在一些无需对字符串值进行修改的地方，当需要修改的时候，Redis会使用自己构建的一种名为简单动态字符串的抽象类型SDS来表示。SDS还会用在AOF模块和客户端状态中的缓冲区里。p8">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-09T10:07:37.833Z">
+<meta property="og:updated_time" content="2018-12-09T13:34:18.934Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《Redis设计与实现》笔记">
-<meta name="twitter:description" content="第二章 简单动态字符串在Redis中，C字符串只会作用字符串字面量用在一些无需对字符串值进行修改的地方，当需要修改的时候，Redis会使用自己构建的一种名为简单动态字符串的抽象类型SDS来表示。SDS还会用在AOF模块和客户端状态中的缓冲区里。p8 SDS的定义123456789//sds.hstruct sdshdr&amp;#123;    //记录buf数组中已使用字节的数量，等于SDS所保存字符串">
+<meta name="twitter:description" content="第二章 简单动态字符串在Redis中，C字符串只会作用字符串字面量用在一些无需对字符串值进行修改的地方，当需要修改的时候，Redis会使用自己构建的一种名为简单动态字符串的抽象类型SDS来表示。SDS还会用在AOF模块和客户端状态中的缓冲区里。p8">
 
 
 
@@ -294,7 +294,7 @@
           
             <span class="post-updated">
               &nbsp; | &nbsp; 更新于
-              <time itemprop="dateUpdated" datetime="2018-12-09T18:07:37+08:00" content="2018-12-09">
+              <time itemprop="dateUpdated" datetime="2018-12-09T21:34:18+08:00" content="2018-12-09">
               2018-12-09
               </time>
             </span>
@@ -350,6 +350,7 @@
 
       
         <h1 id="第二章-简单动态字符串"><a href="#第二章-简单动态字符串" class="headerlink" title="第二章 简单动态字符串"></a>第二章 简单动态字符串</h1><p>在Redis中，C字符串只会作用字符串字面量用在一些无需对字符串值进行修改的地方，当需要修改的时候，Redis会使用自己构建的一种名为简单动态字符串的抽象类型SDS来表示。SDS还会用在AOF模块和客户端状态中的缓冲区里。p8</p>
+<a id="more"></a>
 <h2 id="SDS的定义"><a href="#SDS的定义" class="headerlink" title="SDS的定义"></a>SDS的定义</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//sds.h</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sdshdr</span>&#123;</span></span><br><span class="line">    <span class="comment">//记录buf数组中已使用字节的数量，等于SDS所保存字符串的长度</span></span><br><span class="line">    <span class="keyword">int</span> len;</span><br><span class="line">    <span class="comment">//记录buf数组中未使用字节的数量</span></span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">free</span>;</span><br><span class="line">    <span class="comment">//字节数组，保存字符串</span></span><br><span class="line">    <span class="keyword">char</span> buf[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>使用该结构比直接使用C字符串有以下好处：</p>
 <ol>
