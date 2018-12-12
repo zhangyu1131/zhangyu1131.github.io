@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="ZRainy">
 <meta property="og:description" content="第二章 简单动态字符串在Redis中，C字符串只会作用字符串字面量用在一些无需对字符串值进行修改的地方，当需要修改的时候，Redis会使用自己构建的一种名为简单动态字符串的抽象类型SDS来表示。SDS还会用在AOF模块和客户端状态中的缓冲区里。p8">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-11T15:15:43.870Z">
+<meta property="og:updated_time" content="2018-12-12T14:56:49.371Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《Redis设计与实现》笔记">
 <meta name="twitter:description" content="第二章 简单动态字符串在Redis中，C字符串只会作用字符串字面量用在一些无需对字符串值进行修改的地方，当需要修改的时候，Redis会使用自己构建的一种名为简单动态字符串的抽象类型SDS来表示。SDS还会用在AOF模块和客户端状态中的缓冲区里。p8">
@@ -294,8 +294,8 @@
           
             <span class="post-updated">
               &nbsp; | &nbsp; 更新于
-              <time itemprop="dateUpdated" datetime="2018-12-11T23:15:43+08:00" content="2018-12-11">
-              2018-12-11
+              <time itemprop="dateUpdated" datetime="2018-12-12T22:56:49+08:00" content="2018-12-12">
+              2018-12-12
               </time>
             </span>
           
@@ -475,6 +475,32 @@
 </tr>
 </tbody>
 </table>
+<p>每个压缩列表节点可以保存一个字节数组或者一个整数值，其中字节数组可以是以下三种长度中的一种：</p>
+<ol>
+<li>长度小于（2^6-1）</li>
+<li>长度小于2^14-1</li>
+<li>长度小于2^32-1</li>
+</ol>
+<p>而整数值可以是六种长度中的一种：</p>
+<ol>
+<li>4位长，介于0至12之间的无符号整数；</li>
+<li>1字节长有符号整数</li>
+<li>3字节长有符号整数</li>
+<li>int16_t</li>
+<li>int32_t</li>
+<li>int64_t</li>
+</ol>
+<p>每个压缩列表节点都由previous_entry_length、encoding、content三个部分组成。</p>
+<p>previous_entry_length可以是1字节或5字节长，如果前一节点的长度小于254字节，则previous_entry_length是1字节，保存前一个节点的长度，如果前一节点的长度大于等于254字节，则previous_entry_length长度是五字节，其中第一字节被置为0xFE，而后四个字节用来保存前一节点的长度。这个属性可以用来逆序遍历节点。</p>
+<p>encoding属性记录节点的conten属性所存数据的类型和长度，具体可以看p56，简单来说以11开头表示整数编码，content存的是整数，而以00/01/10开头则表示content存的是字节数组，后面几位存的是长度。</p>
+<h2 id="连锁更新"><a href="#连锁更新" class="headerlink" title="连锁更新"></a>连锁更新</h2><p>添加和删除节点都可能导致连锁更新的现象，所谓连锁更新，简单来说就是原来e1…eN存的都是250~253字节的数据，那么它们的previous_entry_length只需要1字节，但如果这时在e1之前插入一个大于等于254长度的数据，那么e1的previous_entry_length就不够了，就要从1字节扩充成5字节，但这就导致e1长度超过253字节，导致后续所有节点都要重新分配内存，这就是连锁更新，最坏时间复杂度将达到O（n^2）。</p>
+<p>但要注意的是，连锁更新真正造成性能问题的几率是很低的，因为O（n^2）的时间复杂度是在很极端的情况下达到的，所以平均复杂度只是线性的。</p>
+<p>具体API见p59</p>
+<h1 id="第八章-对象"><a href="#第八章-对象" class="headerlink" title="第八章 对象"></a>第八章 对象</h1><p>前面介绍了Redis用到的主要数据结构，但Redis并没有直接使用这些数据结构，而是基于这些数据结构创建了一个对象系统。</p>
+<p>Redis对象系统实现了基于引用计数的内存回收机制，还通过引用计数实现了对象共享机制，最后对象带有访问时间记录信息。</p>
+<h2 id="对象的类型和编码"><a href="#对象的类型和编码" class="headerlink" title="对象的类型和编码"></a>对象的类型和编码</h2><p>每当在Redis数据中新创建一个键值对时，都至少会创建两个对象，每个对象都由一个redisObject表示。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">redisObject</span>&#123;</span></span><br><span class="line">    <span class="comment">//类型</span></span><br><span class="line">    <span class="keyword">unsigned</span> type:<span class="number">4</span>;</span><br><span class="line">    <span class="comment">//编码</span></span><br><span class="line">    <span class="keyword">unsigned</span> encoding:<span class="number">4</span>;</span><br><span class="line">    <span class="comment">//指向底层实现数据结构的指针</span></span><br><span class="line">    <span class="keyword">void</span> *ptr;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;redisObject;</span><br></pre></td></tr></table></figure>
+<h3 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h3><p>对象的type属性记录了对象的类型，type属性对应REDIS_STRING/REDIS_LIST/REDIS_HASH/REDIS_SET/REDIS_ZSET五中类型中的一种。</p>
 
       
     </div>
@@ -642,7 +668,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第二章-简单动态字符串"><span class="nav-number">1.</span> <span class="nav-text">第二章 简单动态字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SDS的定义"><span class="nav-number">1.1.</span> <span class="nav-text">SDS的定义</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三章-链表"><span class="nav-number">2.</span> <span class="nav-text">第三章 链表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#链表和链表节点的实现"><span class="nav-number">2.1.</span> <span class="nav-text">链表和链表节点的实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第四章-字典"><span class="nav-number">3.</span> <span class="nav-text">第四章 字典</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#字典的实现"><span class="nav-number">3.1.</span> <span class="nav-text">字典的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希表"><span class="nav-number">3.1.1.</span> <span class="nav-text">哈希表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希表节点"><span class="nav-number">3.1.2.</span> <span class="nav-text">哈希表节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典"><span class="nav-number">3.1.3.</span> <span class="nav-text">字典</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hash算法"><span class="nav-number">3.2.</span> <span class="nav-text">hash算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rehash"><span class="nav-number">3.3.</span> <span class="nav-text">rehash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渐进式rehash"><span class="nav-number">3.4.</span> <span class="nav-text">渐进式rehash</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第五章-跳跃表"><span class="nav-number">4.</span> <span class="nav-text">第五章 跳跃表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#跳跃表实现"><span class="nav-number">4.1.</span> <span class="nav-text">跳跃表实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第六章-整数集合"><span class="nav-number">5.</span> <span class="nav-text">第六章 整数集合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#整数集合的实现"><span class="nav-number">5.1.</span> <span class="nav-text">整数集合的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#升级"><span class="nav-number">5.2.</span> <span class="nav-text">升级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#降级"><span class="nav-number">5.3.</span> <span class="nav-text">降级</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第七章-压缩列表"><span class="nav-number">6.</span> <span class="nav-text">第七章 压缩列表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#压缩列表构成"><span class="nav-number">6.1.</span> <span class="nav-text">压缩列表构成</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第二章-简单动态字符串"><span class="nav-number">1.</span> <span class="nav-text">第二章 简单动态字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SDS的定义"><span class="nav-number">1.1.</span> <span class="nav-text">SDS的定义</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三章-链表"><span class="nav-number">2.</span> <span class="nav-text">第三章 链表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#链表和链表节点的实现"><span class="nav-number">2.1.</span> <span class="nav-text">链表和链表节点的实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第四章-字典"><span class="nav-number">3.</span> <span class="nav-text">第四章 字典</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#字典的实现"><span class="nav-number">3.1.</span> <span class="nav-text">字典的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希表"><span class="nav-number">3.1.1.</span> <span class="nav-text">哈希表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希表节点"><span class="nav-number">3.1.2.</span> <span class="nav-text">哈希表节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典"><span class="nav-number">3.1.3.</span> <span class="nav-text">字典</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hash算法"><span class="nav-number">3.2.</span> <span class="nav-text">hash算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rehash"><span class="nav-number">3.3.</span> <span class="nav-text">rehash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渐进式rehash"><span class="nav-number">3.4.</span> <span class="nav-text">渐进式rehash</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第五章-跳跃表"><span class="nav-number">4.</span> <span class="nav-text">第五章 跳跃表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#跳跃表实现"><span class="nav-number">4.1.</span> <span class="nav-text">跳跃表实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第六章-整数集合"><span class="nav-number">5.</span> <span class="nav-text">第六章 整数集合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#整数集合的实现"><span class="nav-number">5.1.</span> <span class="nav-text">整数集合的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#升级"><span class="nav-number">5.2.</span> <span class="nav-text">升级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#降级"><span class="nav-number">5.3.</span> <span class="nav-text">降级</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第七章-压缩列表"><span class="nav-number">6.</span> <span class="nav-text">第七章 压缩列表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#压缩列表构成"><span class="nav-number">6.1.</span> <span class="nav-text">压缩列表构成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连锁更新"><span class="nav-number">6.2.</span> <span class="nav-text">连锁更新</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第八章-对象"><span class="nav-number">7.</span> <span class="nav-text">第八章 对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象的类型和编码"><span class="nav-number">7.1.</span> <span class="nav-text">对象的类型和编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">7.1.1.</span> <span class="nav-text">类型</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
