@@ -80,17 +80,17 @@
 
 
 
-<meta name="description" content="原文链接： https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/ 头文件Self-contained 头文件头文件应该能够自给自足（self-contained,也就是可以作为第一个头文件被引入），以 .h 结尾。至于用来插入文本的文件，说到底它们并不是头文件，所以应以 .inc">
+<meta name="description" content="原文链接： https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++编程规范笔记">
 <meta property="og:url" content="http://yoursite.com/2018/12/27/C-编程规范笔记/index.html">
 <meta property="og:site_name" content="ZRainy">
-<meta property="og:description" content="原文链接： https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/ 头文件Self-contained 头文件头文件应该能够自给自足（self-contained,也就是可以作为第一个头文件被引入），以 .h 结尾。至于用来插入文本的文件，说到底它们并不是头文件，所以应以 .inc">
+<meta property="og:description" content="原文链接： https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-27T15:20:14.648Z">
+<meta property="og:updated_time" content="2018-12-27T15:24:50.736Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++编程规范笔记">
-<meta name="twitter:description" content="原文链接： https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/ 头文件Self-contained 头文件头文件应该能够自给自足（self-contained,也就是可以作为第一个头文件被引入），以 .h 结尾。至于用来插入文本的文件，说到底它们并不是头文件，所以应以 .inc">
+<meta name="twitter:description" content="原文链接： https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/">
 
 
 
@@ -294,7 +294,7 @@
           
             <span class="post-updated">
               &nbsp; | &nbsp; 更新于
-              <time itemprop="dateUpdated" datetime="2018-12-27T23:20:14+08:00" content="2018-12-27">
+              <time itemprop="dateUpdated" datetime="2018-12-27T23:24:50+08:00" content="2018-12-27">
               2018-12-27
               </time>
             </span>
@@ -351,6 +351,7 @@
       
         <p>原文链接：</p>
 <p><a href="https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/" target="_blank" rel="noopener">https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/</a></p>
+<a id="more"></a>
 <h1 id="头文件"><a href="#头文件" class="headerlink" title="头文件"></a>头文件</h1><h2 id="Self-contained-头文件"><a href="#Self-contained-头文件" class="headerlink" title="Self-contained 头文件"></a>Self-contained 头文件</h2><p>头文件应该能够自给自足（self-contained,也就是可以作为第一个头文件被引入），以 <code>.h</code> 结尾。至于用来插入文本的文件，说到底它们并不是头文件，所以应以 <code>.inc</code> 结尾。不允许分离出 <code>-inl.h</code> 头文件的做法.</p>
 <h2 id="define保护"><a href="#define保护" class="headerlink" title="#define保护"></a>#define保护</h2><p>所有头文件都应该使用 <code>#define</code> 来防止头文件被多重包含, 命名格式当是: <code>&lt;PROJECT&gt;_&lt;PATH&gt;_&lt;FILE&gt;_H_</code> ，如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#ifndef FOO_BAR_BAZ_H_</span><br><span class="line">#define FOO_BAR_BAZ_H_</span><br><span class="line">...</span><br><span class="line">#endif // FOO_BAR_BAZ_H_</span><br></pre></td></tr></table></figure>
