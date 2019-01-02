@@ -91,8 +91,8 @@
 <meta property="og:image" content="http://yoursite.com/2018/12/09/《Redis设计与实现》笔记/持久化检查.png">
 <meta property="og:image" content="http://yoursite.com/2018/12/09/《Redis设计与实现》笔记/psync实现.png">
 <meta property="og:image" content="http://yoursite.com/2018/12/09/《Redis设计与实现》笔记/clustermeet.png">
-<meta property="og:image" content="http://yoursite.com/2018/12/09/《Redis设计与实现》笔记/ask.png">
-<meta property="og:updated_time" content="2019-01-02T13:19:22.673Z">
+<meta property="og:image" content="http://yoursite.com/2018/12/09/《Redis设计与实现》笔记/ask错误.png">
+<meta property="og:updated_time" content="2019-01-02T13:23:18.356Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《Redis设计与实现》笔记">
 <meta name="twitter:description" content="第二章 简单动态字符串在Redis中，C字符串只会作用字符串字面量用在一些无需对字符串值进行修改的地方，当需要修改的时候，Redis会使用自己构建的一种名为简单动态字符串的抽象类型SDS来表示。SDS还会用在AOF模块和客户端状态中的缓冲区里。p8">
@@ -300,7 +300,7 @@
           
             <span class="post-updated">
               &nbsp; | &nbsp; 更新于
-              <time itemprop="dateUpdated" datetime="2019-01-02T21:19:22+08:00" content="2019-01-02">
+              <time itemprop="dateUpdated" datetime="2019-01-02T21:23:18+08:00" content="2019-01-02">
               2019-01-02
               </time>
             </span>
@@ -926,7 +926,7 @@
 <li>重复3和4直到所有节点都完成迁移</li>
 <li>redis-trib向集群中的任意一个节点发送<code>CLUSTER SETSLOT &lt;slot&gt; NODE &lt;target_id&gt;</code>命令，将槽slot指派给目标节点，这一指派信息会通过消息发送至整个集群，最终集群中的所有节点都会知道槽slot已经指派给了目标节点。</li>
 </ol>
-<h2 id="ASK错误"><a href="#ASK错误" class="headerlink" title="ASK错误"></a>ASK错误</h2><img src="/2018/12/09/《Redis设计与实现》笔记/ask.png" title="判断是否发送ASK错误的过程">
+<h2 id="ASK错误"><a href="#ASK错误" class="headerlink" title="ASK错误"></a>ASK错误</h2><img src="/2018/12/09/《Redis设计与实现》笔记/ask错误.png" title="判断是否发送ASK错误的过程">
 <h3 id="CLUSTER-SETSLOT-IMPORTING命令的实现"><a href="#CLUSTER-SETSLOT-IMPORTING命令的实现" class="headerlink" title="CLUSTER SETSLOT IMPORTING命令的实现"></a>CLUSTER SETSLOT IMPORTING命令的实现</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">clusterState</span>&#123;</span></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    clusterNode* importing_slots_from[<span class="number">16384</span>];</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;clusterState;</span><br></pre></td></tr></table></figure>
 <p>如果importing_slots_from[i]的值不是NULL，而是指向一个clusterNode节点，那么表示当前节点正在从clusterNode所代表的节点导入槽i。</p>
 
