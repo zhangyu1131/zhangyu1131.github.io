@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="ZRainy">
 <meta property="og:description" content="以前没系统学过linux下C++的一些基本开发方法，所以抽空在网易云课堂上听了个课程简单学习一下基础，本文记录一下听课中的笔记。 课程前几章介绍开发环境、linux基础操作、配置SAMBA共享目录啥的就不进行记录了，毕竟听这个课是为了补一下linux下如何进行C++编程的基础知识。 最简单的两个命令记录一下： g++ -c main.cpp -o main.o：表示将main.cpp编译成main">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-26T07:45:40.664Z">
+<meta property="og:updated_time" content="2019-01-28T14:53:39.888Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux下C++基础篇">
 <meta name="twitter:description" content="以前没系统学过linux下C++的一些基本开发方法，所以抽空在网易云课堂上听了个课程简单学习一下基础，本文记录一下听课中的笔记。 课程前几章介绍开发环境、linux基础操作、配置SAMBA共享目录啥的就不进行记录了，毕竟听这个课是为了补一下linux下如何进行C++编程的基础知识。 最简单的两个命令记录一下： g++ -c main.cpp -o main.o：表示将main.cpp编译成main">
@@ -294,8 +294,8 @@
           
             <span class="post-updated">
               &nbsp; | &nbsp; 更新于
-              <time itemprop="dateUpdated" datetime="2019-01-26T15:45:40+08:00" content="2019-01-26">
-              2019-01-26
+              <time itemprop="dateUpdated" datetime="2019-01-28T22:53:39+08:00" content="2019-01-28">
+              2019-01-28
               </time>
             </span>
           
@@ -416,6 +416,34 @@
 <li>大型程序</li>
 <li>多线程</li>
 </ul>
+<h1 id="动态库和静态库"><a href="#动态库和静态库" class="headerlink" title="动态库和静态库"></a>动态库和静态库</h1><h2 id="生成动态库"><a href="#生成动态库" class="headerlink" title="生成动态库"></a>生成动态库</h2><p>编译：<code>g++ -c -fPIC example.cpp -o example.o</code></p>
+<p>链接：<code>g++ -shared example.o -o libexample.so</code></p>
+<p>PIC：position independent code位置无关代码</p>
+<p>动态库命名规范：libxxx.so</p>
+<p>可以使用nm命令查看库中的符号。</p>
+<h2 id="使用动态库"><a href="#使用动态库" class="headerlink" title="使用动态库"></a>使用动态库</h2><p>包含头文件，调用里面的函数即可。</p>
+<p>编译：<code>g++ -c main.cpp -o main.o</code></p>
+<p>链接：<code>g++ main.o -o helloworld -L. -leample</code></p>
+<p>-L.：指定库文件的位置</p>
+<p>-leample：使用libexample.so这个动态库。</p>
+<p>操作系统默认从标准位置寻找相应的库：/lib /usr/lib /usr/local/lib</p>
+<p>如果没有就会去LD_LIBRARY_PATH环境变量里找。</p>
+<p>所以要想使用自己的库，得做好上述设置。</p>
+<h3 id="查看依赖的库"><a href="#查看依赖的库" class="headerlink" title="查看依赖的库"></a>查看依赖的库</h3><p><code>readelf -d helloworld</code></p>
+<p>通常目录结构是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">libxxx/</span><br><span class="line">	-lib/</span><br><span class="line">	-include/</span><br></pre></td></tr></table></figure>
+<p>常用CXXFLAGS表示C++编译选项，LDFLAGS表示链接选项。</p>
+<h2 id="静态库"><a href="#静态库" class="headerlink" title="静态库"></a>静态库</h2><p>命名标准：libxxx.a</p>
+<p>第一步，编译得到.o文件</p>
+<p>第二步，打包<code>ar -rcs libxxx.a file1.o file2.o...</code></p>
+<p>静态库本质就是将.o文件打个包而已，因此可以像.o文件一样使用。</p>
+<p>当静态库和动态库同时存在的时候，会优先选择动态库进行链接，若要使用静调库，泽科使用全路径方式指定静态库。</p>
+<h2 id="c-兼容c的库"><a href="#c-兼容c的库" class="headerlink" title="c++兼容c的库"></a>c++兼容c的库</h2><p>以前就学过，用external “C”即可，但比较好的做法是在.h文件中就写好兼容C和C++的版本。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span>&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">...</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus  </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="动态库的手工加载"><a href="#动态库的手工加载" class="headerlink" title="动态库的手工加载"></a>动态库的手工加载</h2><p>使用dl库中的函数</p>
+<p>#include&lt;unistd.h&gt;</p>
+<p>#include&lt;dlfcn.h&gt;</p>
+<p>具体再看教程吧，感觉用的不多，主要用dlopen、dlsym和dlclose方法。</p>
 
       
     </div>
@@ -583,7 +611,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第五章-makefile"><span class="nav-number">1.</span> <span class="nav-text">第五章 makefile</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#增量编译"><span class="nav-number">1.1.</span> <span class="nav-text">增量编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化makefile"><span class="nav-number">1.2.</span> <span class="nav-text">优化makefile</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GDB"><span class="nav-number">2.</span> <span class="nav-text">GDB</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#段错误"><span class="nav-number">2.1.</span> <span class="nav-text">段错误</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#适用场合"><span class="nav-number">2.1.1.</span> <span class="nav-text">适用场合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不适用场合"><span class="nav-number">2.1.2.</span> <span class="nav-text">不适用场合</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第五章-makefile"><span class="nav-number">1.</span> <span class="nav-text">第五章 makefile</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#增量编译"><span class="nav-number">1.1.</span> <span class="nav-text">增量编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化makefile"><span class="nav-number">1.2.</span> <span class="nav-text">优化makefile</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GDB"><span class="nav-number">2.</span> <span class="nav-text">GDB</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#段错误"><span class="nav-number">2.1.</span> <span class="nav-text">段错误</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#适用场合"><span class="nav-number">2.1.1.</span> <span class="nav-text">适用场合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不适用场合"><span class="nav-number">2.1.2.</span> <span class="nav-text">不适用场合</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动态库和静态库"><span class="nav-number">3.</span> <span class="nav-text">动态库和静态库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#生成动态库"><span class="nav-number">3.1.</span> <span class="nav-text">生成动态库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用动态库"><span class="nav-number">3.2.</span> <span class="nav-text">使用动态库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看依赖的库"><span class="nav-number">3.2.1.</span> <span class="nav-text">查看依赖的库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态库"><span class="nav-number">3.3.</span> <span class="nav-text">静态库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-兼容c的库"><span class="nav-number">3.4.</span> <span class="nav-text">c++兼容c的库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态库的手工加载"><span class="nav-number">3.5.</span> <span class="nav-text">动态库的手工加载</span></a></li></ol></li></ol></div>
             
 
           </div>
