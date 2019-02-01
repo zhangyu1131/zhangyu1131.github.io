@@ -296,8 +296,8 @@
           
             <span class="post-updated">
               &nbsp; | &nbsp; 更新于
-              <time itemprop="dateUpdated" datetime="2019-01-28T22:53:39+08:00" content="2019-01-28">
-              2019-01-28
+              <time itemprop="dateUpdated" datetime="2019-02-01T15:17:36+08:00" content="2019-02-01">
+              2019-02-01
               </time>
             </span>
           
@@ -448,6 +448,52 @@
 <p>#include&lt;unistd.h&gt;</p>
 <p>#include&lt;dlfcn.h&gt;</p>
 <p>具体再看教程吧，感觉用的不多，主要用dlopen、dlsym和dlclose方法。</p>
+<h1 id="Linux文件读写"><a href="#Linux文件读写" class="headerlink" title="Linux文件读写"></a>Linux文件读写</h1><p>简单来说有两种方式：</p>
+<ol>
+<li>ANSI C，使用stdio.h里的函数fopen、fclose、fwrite、fread。</li>
+<li>Linux API，open、close、write、read</li>
+</ol>
+<p>推荐使用第一种吧，能被各平台支持。</p>
+<p>使用第一种的时候，文件路径使用/，换行符Linux和windows下不同，linux是\n，windows是\n\r。</p>
+<p>普通情况下均推荐使用ANSIC来操作文件。</p>
+<p>仅当该文件表示一个外部设备时，才用LinuxAPI来操作。</p>
+<h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><p>在Linux下，使用pthread库来创建和操作线程，pthread是Linux系统自带的一个库。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pthread_create(&amp;handle,<span class="comment">//指代一个线程对象，pthreat_t类型的实例</span></span><br><span class="line">				<span class="literal">NULL</span>,</span><br><span class="line">               function,<span class="comment">//线程入口函数，用函数指针</span></span><br><span class="line">               context<span class="comment">//线程参数</span></span><br><span class="line">              )</span><br></pre></td></tr></table></figure>
+<p>线程主函数退出时，线程自然终止。</p>
+<p>pthread_join（handle，NULL）：等待B线程自然退出，在B线程退出后回收B线程的系统资源。</p>
+<p>pthread_cancel：用于终止取消一个正在运行的线程，不推荐使用。</p>
+<h2 id="互斥体"><a href="#互斥体" class="headerlink" title="互斥体"></a>互斥体</h2><p>pthread_mutex_t hMutex；</p>
+<p>pthread_mutex_init（&amp;hMutext，NULL）；</p>
+<p>pthread_mutext_destroy（&amp;hMutext）；</p>
+<p>pthread_mutext_lock(&amp;hMutex);//不能获取锁的时候会阻塞，但trylock不能获取锁的时候就会直接返回。</p>
+<p>pthread_mutext_unlock(&amp;hMutex);</p>
+<h2 id="信号量Semaphore"><a href="#信号量Semaphore" class="headerlink" title="信号量Semaphore"></a>信号量Semaphore</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">sem_t</span> hSem;</span><br><span class="line">sem_init(&amp;hSem,<span class="number">1</span>,initial_value);</span><br><span class="line">sem_destroy(&amp;hSem);</span><br><span class="line">sem_wait(&amp;hSem);</span><br><span class="line">sem_post(&amp;hSem);</span><br></pre></td></tr></table></figure>
+<h1 id="进程相关"><a href="#进程相关" class="headerlink" title="进程相关"></a>进程相关</h1><p>何为进程？</p>
+<p>当helloworld文件被运行后，在操作系统内部创建一个进程对象。</p>
+<p>查看进程：ps。</p>
+<p>top：实时查看进程。</p>
+<p>kill强制杀死进程。</p>
+<h2 id="前台进程和后台进程"><a href="#前台进程和后台进程" class="headerlink" title="前台进程和后台进程"></a>前台进程和后台进程</h2><p>关闭终端时会关闭前台进程。</p>
+<p>以后台进程运行，在命令行后面加一个&amp;符号。</p>
+<p>前后台进程切换：ctrl+z暂停任务，bg将任务送到后台继续任务，fg将任务拿到前台运行。</p>
+<h1 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h1><p>IPC：inter-process communicating。</p>
+<p>四种方式：管道、消息队列、共享内存、网络套接字。</p>
+<p>管道：pipe，是Linux操作系统提供的一个消息传递机制。</p>
+<ol>
+<li>系统中创建一个文件，其文件类型为管道<code>mkfifo message</code></li>
+<li>进程A打开该文件写入数据</li>
+<li>进程B打开该文件读取数据</li>
+</ol>
+<p>open是阻塞的，read也是阻塞的，管道是单向的，和普通文件有区别。</p>
+<h1 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h1><p>查看可用的系统调用<code>man syscalls</code></p>
+<p>如果找不到对应的系统调用，可以在代码里直接调用命令行，用system().</p>
+<p><code>int ret = system(&quot;rm -rf *.txt&quot;);</code></p>
+<p>该函数会阻塞。</p>
+<p>也可以用popen（）：调用某个命令行，并获取其标准输出。</p>
+<p>该函数是linux特有的，windows下对应的叫_popen/_pclose</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FILE* fp = popen(<span class="string">"ifconfig"</span>,<span class="string">"r"</span>);</span><br><span class="line"><span class="keyword">int</span> n = fread(buf,<span class="number">1</span>,<span class="number">512</span>,fp);</span><br><span class="line">fclose(fp);</span><br></pre></td></tr></table></figure>
+<h1 id="跨平台"><a href="#跨平台" class="headerlink" title="跨平台"></a>跨平台</h1><p>尽量使用标准函数/类型/语法</p>
+<p>可以用条件编译。</p>
 
           
         
