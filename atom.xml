@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-02-04T11:17:25.936Z</updated>
+  <updated>2019-03-18T14:00:26.160Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Effeciteve Modern C++笔记</title>
+    <link href="http://yoursite.com/2019/03/18/Effeciteve-Modern-C-%E7%AC%94%E8%AE%B0/"/>
+    <id>http://yoursite.com/2019/03/18/Effeciteve-Modern-C-笔记/</id>
+    <published>2019-03-18T13:03:08.000Z</published>
+    <updated>2019-03-18T14:00:26.160Z</updated>
+    
+    <content type="html"><![CDATA[<p>简单记录下阅读《Effective Modern C++》的一些笔记，列出本书的一些提纲，但不给出解释，希望后续复习时直接看提纲就能回忆起相关内容。</p><h1 id="条款1：理解模板型别推导"><a href="#条款1：理解模板型别推导" class="headerlink" title="条款1：理解模板型别推导"></a>条款1：理解模板型别推导</h1><p>针对以下代码，分为三种情况讨论。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(ParamType param)</span></span>;</span><br><span class="line"></span><br><span class="line">f(expr);</span><br></pre></td></tr></table></figure><ol><li>ParamType是个指针或引用，但不是个万能引用；</li><li>ParamType是个万能引用，又分为实参是左值还是右值；</li><li>ParamType不是指针也不是引用，又会分为实参具有引用或者指针特性或者什么都没有；</li></ol><p>除此之外还有一些参数会退化成指针的情况出现，比如数组实参、函数实参。</p><a id="more"></a><h1 id="条款2：理解auto型别推导"><a href="#条款2：理解auto型别推导" class="headerlink" title="条款2：理解auto型别推导"></a>条款2：理解auto型别推导</h1><p>对于条款1中的代码，auto=T，变量的型别修饰则是ParamType，其余规则除了一种特殊情况外则和条款1一致。</p><p>特殊情况：当用于auto声明变量的初始化表达式是用大括号括起来的时候，推导的型别就属于<code>std::initializer_list</code>。</p><p>根本原因在于，auto会假定用大括号括起来的初始化表达式代表一个<code>std::initializer_list</code>，但模板型别推导却不会。</p><p>注意：在C++14中auto可能用于函数返回值或lambda表达式的形参声明中，在这两种情况下auto进行的模板型别推导而不是正常的auto型别推导。</p><h1 id="条款3：理解decltype"><a href="#条款3：理解decltype" class="headerlink" title="条款3：理解decltype"></a>条款3：理解decltype</h1><p>C++11中，decltype的主要作用大概就在于声明那些返回值型别依赖于形参型别的函数模板。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;简单记录下阅读《Effective Modern C++》的一些笔记，列出本书的一些提纲，但不给出解释，希望后续复习时直接看提纲就能回忆起相关内容。&lt;/p&gt;
+&lt;h1 id=&quot;条款1：理解模板型别推导&quot;&gt;&lt;a href=&quot;#条款1：理解模板型别推导&quot; class=&quot;headerlink&quot; title=&quot;条款1：理解模板型别推导&quot;&gt;&lt;/a&gt;条款1：理解模板型别推导&lt;/h1&gt;&lt;p&gt;针对以下代码，分为三种情况讨论。&lt;/p&gt;
+&lt;figure class=&quot;highlight c++&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;template&lt;/span&gt;&amp;lt;&lt;span class=&quot;keyword&quot;&gt;typename&lt;/span&gt; T&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(ParamType param)&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;f(expr);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ol&gt;
+&lt;li&gt;ParamType是个指针或引用，但不是个万能引用；&lt;/li&gt;
+&lt;li&gt;ParamType是个万能引用，又分为实参是左值还是右值；&lt;/li&gt;
+&lt;li&gt;ParamType不是指针也不是引用，又会分为实参具有引用或者指针特性或者什么都没有；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;除此之外还有一些参数会退化成指针的情况出现，比如数组实参、函数实参。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="职业学习" scheme="http://yoursite.com/categories/%E8%81%8C%E4%B8%9A%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>未完待续-叁</title>
