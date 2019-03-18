@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="ZRainy">
 <meta property="og:description" content="以前没系统学过linux下C++的一些基本开发方法，所以抽空在网易云课堂上听了个课程简单学习一下基础，本文记录一下听课中的笔记。 课程前几章介绍开发环境、linux基础操作、配置SAMBA共享目录啥的就不进行记录了，毕竟听这个课是为了补一下linux下如何进行C++编程的基础知识。 最简单的两个命令记录一下： g++ -c main.cpp -o main.o：表示将main.cpp编译成main">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-01T07:17:36.730Z">
+<meta property="og:updated_time" content="2019-03-18T12:41:10.876Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux下C++基础篇">
 <meta name="twitter:description" content="以前没系统学过linux下C++的一些基本开发方法，所以抽空在网易云课堂上听了个课程简单学习一下基础，本文记录一下听课中的笔记。 课程前几章介绍开发环境、linux基础操作、配置SAMBA共享目录啥的就不进行记录了，毕竟听这个课是为了补一下linux下如何进行C++编程的基础知识。 最简单的两个命令记录一下： g++ -c main.cpp -o main.o：表示将main.cpp编译成main">
@@ -294,8 +294,8 @@
           
             <span class="post-updated">
               &nbsp; | &nbsp; 更新于
-              <time itemprop="dateUpdated" datetime="2019-02-01T15:17:36+08:00" content="2019-02-01">
-              2019-02-01
+              <time itemprop="dateUpdated" datetime="2019-03-18T20:41:10+08:00" content="2019-03-18">
+              2019-03-18
               </time>
             </span>
           
@@ -356,6 +356,7 @@
 <p><code>g++ main.o -o helloworld</code>：表示将main.o链接成可执行文件helloworld。</p>
 <p>也可直接：</p>
 <p><code>g++ main.cpp -o helloworld</code></p>
+<a id="more"></a>
 <h1 id="第五章-makefile"><a href="#第五章-makefile" class="headerlink" title="第五章 makefile"></a>第五章 makefile</h1><p>makefile的基本规则在另一篇笔记里记录了，这里只记录几个新的点。</p>
 <h2 id="增量编译"><a href="#增量编译" class="headerlink" title="增量编译"></a>增量编译</h2><p>增量编译其实在记录makefile的那篇笔记里也提过，就是当某个文件改变时，只增量编译受影响的文件，而不是把整个项目重新编译。</p>
 <p>增量编译是靠文件时间来判断的，查看文件时间可以用：<code>ls -ls --full-time</code></p>
