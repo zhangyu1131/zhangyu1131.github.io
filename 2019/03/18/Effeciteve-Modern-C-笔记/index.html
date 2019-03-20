@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="ZRainy">
 <meta property="og:description" content="简单记录下阅读《Effective Modern C++》的一些笔记，列出本书的一些提纲，但不给出解释，希望后续复习时直接看提纲就能回忆起相关内容。 条款1：理解模板型别推导针对以下代码，分为三种情况讨论。 1234template&amp;lt;typename T&amp;gt;void f(ParamType param);f(expr);  ParamType是个指针或引用，但不是个万能引用； Param">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-19T12:11:57.677Z">
+<meta property="og:updated_time" content="2019-03-20T09:10:42.717Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Effeciteve Modern C++笔记">
 <meta name="twitter:description" content="简单记录下阅读《Effective Modern C++》的一些笔记，列出本书的一些提纲，但不给出解释，希望后续复习时直接看提纲就能回忆起相关内容。 条款1：理解模板型别推导针对以下代码，分为三种情况讨论。 1234template&amp;lt;typename T&amp;gt;void f(ParamType param);f(expr);  ParamType是个指针或引用，但不是个万能引用； Param">
@@ -294,8 +294,8 @@
           
             <span class="post-updated">
               &nbsp; | &nbsp; 更新于
-              <time itemprop="dateUpdated" datetime="2019-03-19T20:11:57+08:00" content="2019-03-19">
-              2019-03-19
+              <time itemprop="dateUpdated" datetime="2019-03-20T17:10:42+08:00" content="2019-03-20">
+              2019-03-20
               </time>
             </span>
           
@@ -372,7 +372,12 @@
 <p>还有一个好处是有时这样做可以强调程序员意在创建一个型别有异于初始化表达式型别的变量的场合。</p>
 <h1 id="条款7：在创建对象时注意区分-和"><a href="#条款7：在创建对象时注意区分-和" class="headerlink" title="条款7：在创建对象时注意区分{}和()"></a>条款7：在创建对象时注意区分{}和()</h1><p>大括号初始化可以应用的语境最为宽泛，可以阻止隐式窄化型别转换，还对最令人苦恼之解析与法免疫。</p>
 <p>在构造函数重载决议期间，只要有任何可能，大括号初始化物就会与带有std::initializer_list型别的形参相匹配，即使其他重载版本更合适。</p>
-
+<h1 id="条款8：优先选用nullptr，而非0或NULL"><a href="#条款8：优先选用nullptr，而非0或NULL" class="headerlink" title="条款8：优先选用nullptr，而非0或NULL"></a>条款8：优先选用nullptr，而非0或NULL</h1><p>可以避免在整型和指针型别之间重载。</p>
+<h1 id="条款9：优先选用别名声明，而非typedef"><a href="#条款9：优先选用别名声明，而非typedef" class="headerlink" title="条款9：优先选用别名声明，而非typedef"></a>条款9：优先选用别名声明，而非typedef</h1><p>typedef不支持模板化，但别名声明支持。</p>
+<p>别名模板可以让人免写“::type”后缀，并且在模板内，对于内嵌typedef的引用经常要加typename前缀。</p>
+<h1 id="条款10：优先选用限定作用域的枚举型别，而非不限作用域的枚举型别"><a href="#条款10：优先选用限定作用域的枚举型别，而非不限作用域的枚举型别" class="headerlink" title="条款10：优先选用限定作用域的枚举型别，而非不限作用域的枚举型别"></a>条款10：优先选用限定作用域的枚举型别，而非不限作用域的枚举型别</h1><p>用<code>enum class</code>来定义枚举类，即使限定作用域的枚举型别。</p>
+<h1 id="条款11：优先选用删除函数，而非private未定义函数"><a href="#条款11：优先选用删除函数，而非private未定义函数" class="headerlink" title="条款11：优先选用删除函数，而非private未定义函数"></a>条款11：优先选用删除函数，而非private未定义函数</h1><p>任何函数都可以删除，包括非成员函数和模板具现。</p>
+<h1 id="条款12：为意在改写的函数添加override声明"><a href="#条款12：为意在改写的函数添加override声明" class="headerlink" title="条款12：为意在改写的函数添加override声明"></a>条款12：为意在改写的函数添加override声明</h1><h1 id="条款13：优先选用const-iterator，而非iterator"><a href="#条款13：优先选用const-iterator，而非iterator" class="headerlink" title="条款13：优先选用const_iterator，而非iterator"></a>条款13：优先选用const_iterator，而非iterator</h1><h1 id="条款14：只要函数不会发射异常，就为其加上noexcept声明"><a href="#条款14：只要函数不会发射异常，就为其加上noexcept声明" class="headerlink" title="条款14：只要函数不会发射异常，就为其加上noexcept声明"></a>条款14：只要函数不会发射异常，就为其加上noexcept声明</h1>
       
     </div>
     
@@ -539,7 +544,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#条款1：理解模板型别推导"><span class="nav-number">1.</span> <span class="nav-text">条款1：理解模板型别推导</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款2：理解auto型别推导"><span class="nav-number">2.</span> <span class="nav-text">条款2：理解auto型别推导</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款3：理解decltype"><span class="nav-number">3.</span> <span class="nav-text">条款3：理解decltype</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款4：掌握查看型别推导结果的方法"><span class="nav-number">4.</span> <span class="nav-text">条款4：掌握查看型别推导结果的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款5：优先选用auto，而非显式型别声明"><span class="nav-number">5.</span> <span class="nav-text">条款5：优先选用auto，而非显式型别声明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款6：当auto推导的型别不符合要求时，使用带显式型别的初始化物习惯用法"><span class="nav-number">6.</span> <span class="nav-text">条款6：当auto推导的型别不符合要求时，使用带显式型别的初始化物习惯用法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款7：在创建对象时注意区分-和"><span class="nav-number">7.</span> <span class="nav-text">条款7：在创建对象时注意区分{}和()</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#条款1：理解模板型别推导"><span class="nav-number">1.</span> <span class="nav-text">条款1：理解模板型别推导</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款2：理解auto型别推导"><span class="nav-number">2.</span> <span class="nav-text">条款2：理解auto型别推导</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款3：理解decltype"><span class="nav-number">3.</span> <span class="nav-text">条款3：理解decltype</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款4：掌握查看型别推导结果的方法"><span class="nav-number">4.</span> <span class="nav-text">条款4：掌握查看型别推导结果的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款5：优先选用auto，而非显式型别声明"><span class="nav-number">5.</span> <span class="nav-text">条款5：优先选用auto，而非显式型别声明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款6：当auto推导的型别不符合要求时，使用带显式型别的初始化物习惯用法"><span class="nav-number">6.</span> <span class="nav-text">条款6：当auto推导的型别不符合要求时，使用带显式型别的初始化物习惯用法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款7：在创建对象时注意区分-和"><span class="nav-number">7.</span> <span class="nav-text">条款7：在创建对象时注意区分{}和()</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款8：优先选用nullptr，而非0或NULL"><span class="nav-number">8.</span> <span class="nav-text">条款8：优先选用nullptr，而非0或NULL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款9：优先选用别名声明，而非typedef"><span class="nav-number">9.</span> <span class="nav-text">条款9：优先选用别名声明，而非typedef</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款10：优先选用限定作用域的枚举型别，而非不限作用域的枚举型别"><span class="nav-number">10.</span> <span class="nav-text">条款10：优先选用限定作用域的枚举型别，而非不限作用域的枚举型别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款11：优先选用删除函数，而非private未定义函数"><span class="nav-number">11.</span> <span class="nav-text">条款11：优先选用删除函数，而非private未定义函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款12：为意在改写的函数添加override声明"><span class="nav-number">12.</span> <span class="nav-text">条款12：为意在改写的函数添加override声明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款13：优先选用const-iterator，而非iterator"><span class="nav-number">13.</span> <span class="nav-text">条款13：优先选用const_iterator，而非iterator</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条款14：只要函数不会发射异常，就为其加上noexcept声明"><span class="nav-number">14.</span> <span class="nav-text">条款14：只要函数不会发射异常，就为其加上noexcept声明</span></a></li></ol></div>
             
 
           </div>
