@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-06-26T07:26:43.682Z</updated>
+  <updated>2019-06-29T09:22:43.134Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Vim学习记录</title>
+    <link href="http://yoursite.com/2019/06/29/Vim%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"/>
+    <id>http://yoursite.com/2019/06/29/Vim学习记录/</id>
+    <published>2019-06-29T08:20:07.000Z</published>
+    <updated>2019-06-29T09:22:43.134Z</updated>
+    
+    <content type="html"><![CDATA[<p>因为工作中需要用到Vim，所以本文简单记录下学习Vim编辑器的一些笔记和技巧。</p><h1 id="Vimtutor"><a href="#Vimtutor" class="headerlink" title="Vimtutor"></a>Vimtutor</h1><p>Vimtutor是Vim的一个简易教程，前前后后做了两遍，记录一下一些实用的快捷键吧。</p><a id="more"></a><table><thead><tr><th style="text-align:center">快捷键</th><th style="text-align:center">功能</th></tr></thead><tbody><tr><td style="text-align:center">h/j/k/l</td><td style="text-align:center">左下上右</td></tr><tr><td style="text-align:center">x</td><td style="text-align:center">删除光标处的字母</td></tr><tr><td style="text-align:center">i</td><td style="text-align:center">切换至输入模式，在光标前输入</td></tr><tr><td style="text-align:center">A</td><td style="text-align:center">切换至输入模式，在行尾输入</td></tr><tr><td style="text-align:center">dw</td><td style="text-align:center">从光标处删除字符直到下个字开始</td></tr><tr><td style="text-align:center">de</td><td style="text-align:center">从光标处删除字符直到该字尾</td></tr><tr><td style="text-align:center">u</td><td style="text-align:center">撤销</td></tr><tr><td style="text-align:center">U</td><td style="text-align:center">撤销一整行的操作，使该行恢复到最初</td></tr><tr><td style="text-align:center">d&amp;</td><td style="text-align:center">从光标处删除字符直到行尾</td></tr><tr><td style="text-align:center">dd</td><td style="text-align:center">删除该行，其实也可以理解成剪切一行</td></tr><tr><td style="text-align:center">y</td><td style="text-align:center">个人感觉类似复制</td></tr><tr><td style="text-align:center">p</td><td style="text-align:center">个人感觉类似于粘贴</td></tr><tr><td style="text-align:center">r+字符</td><td style="text-align:center">用新的字符替换光标所在位置的字符</td></tr><tr><td style="text-align:center">R</td><td style="text-align:center">替换多个字符</td></tr><tr><td style="text-align:center">ce</td><td style="text-align:center">将一个字从光标处开始直到字尾的字符进行替换</td></tr><tr><td style="text-align:center">ctrl+g</td><td style="text-align:center">显示当前位置在整个文档的位置占比</td></tr><tr><td style="text-align:center">gg</td><td style="text-align:center">跳转到文档开头</td></tr><tr><td style="text-align:center">G</td><td style="text-align:center">跳转到文档结尾，number+G就跳转到第number行</td></tr><tr><td style="text-align:center">/+字符串</td><td style="text-align:center">往下搜索某字符串，搜到后n是下一个，N是上一个，Ctrl+o回到原处</td></tr><tr><td style="text-align:center">?+字符串</td><td style="text-align:center">往上搜索某字符串，搜到后n是下一个，N是上一个，Ctrl+o回到原处</td></tr><tr><td style="text-align:center">%</td><td style="text-align:center">寻找匹配的括号</td></tr><tr><td style="text-align:center">%s/old/new/g</td><td style="text-align:center">全文替换，用new替换old</td></tr><tr><td style="text-align:center">!+外部命令</td><td style="text-align:center">!后可以输入外部shell命令，如ls</td></tr><tr><td style="text-align:center">o</td><td style="text-align:center">在光标下方新增一行并进入插入模式，如果是大写的O则是在光标上方新增一行</td></tr><tr><td style="text-align:center">help+command</td><td style="text-align:center">打开help文档查看command命令的说明</td></tr></tbody></table><p>很多命令的格式都是<code>operation [number] motion</code>，比如<code>d2w</code>就是删除两个字。</p><p>在Vim里使用了<code>:</code>后，可以按<code>ctrl+d</code>来查看可以使用的命令。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;因为工作中需要用到Vim，所以本文简单记录下学习Vim编辑器的一些笔记和技巧。&lt;/p&gt;
+&lt;h1 id=&quot;Vimtutor&quot;&gt;&lt;a href=&quot;#Vimtutor&quot; class=&quot;headerlink&quot; title=&quot;Vimtutor&quot;&gt;&lt;/a&gt;Vimtutor&lt;/h1&gt;&lt;p&gt;Vimtutor是Vim的一个简易教程，前前后后做了两遍，记录一下一些实用的快捷键吧。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="职业学习" scheme="http://yoursite.com/categories/%E8%81%8C%E4%B8%9A%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>LeetCode刷题记录</title>
