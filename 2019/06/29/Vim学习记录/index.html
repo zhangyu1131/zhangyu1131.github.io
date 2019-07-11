@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="ZRainy">
 <meta property="og:description" content="因为工作中需要用到Vim，所以本文简单记录下学习Vim编辑器的一些笔记和技巧。 VimtutorVimtutor是Vim的一个简易教程，前前后后做了两遍，记录一下一些实用的快捷键吧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-03T16:21:58.494Z">
+<meta property="og:updated_time" content="2019-07-11T16:49:46.935Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vim学习记录">
 <meta name="twitter:description" content="因为工作中需要用到Vim，所以本文简单记录下学习Vim编辑器的一些笔记和技巧。 VimtutorVimtutor是Vim的一个简易教程，前前后后做了两遍，记录一下一些实用的快捷键吧。">
@@ -294,8 +294,8 @@
           
             <span class="post-updated">
               &nbsp; | &nbsp; 更新于
-              <time itemprop="dateUpdated" datetime="2019-07-04T00:21:58+08:00" content="2019-07-04">
-              2019-07-04
+              <time itemprop="dateUpdated" datetime="2019-07-12T00:49:46+08:00" content="2019-07-12">
+              2019-07-12
               </time>
             </span>
           
@@ -544,6 +544,161 @@
 <h2 id="技巧24-用面向列块的可视模式编辑表格数据"><a href="#技巧24-用面向列块的可视模式编辑表格数据" class="headerlink" title="技巧24 用面向列块的可视模式编辑表格数据"></a>技巧24 用面向列块的可视模式编辑表格数据</h2><ul>
 <li>这个就是要多练了，熟悉命令就行。</li>
 </ul>
+<h2 id="技巧25-修改列文本"><a href="#技巧25-修改列文本" class="headerlink" title="技巧25 修改列文本"></a>技巧25 修改列文本</h2><h2 id="技巧26-在长短不一的高亮块后添加文本"><a href="#技巧26-在长短不一的高亮块后添加文本" class="headerlink" title="技巧26 在长短不一的高亮块后添加文本"></a>技巧26 在长短不一的高亮块后添加文本</h2><ul>
+<li>从普通模式切换到插入模式时<code>i</code>和<code>a</code>分别表示把光标置于当前字符之前或之后，但是在可视模式或操作符待决模式中，这两个命令被当做一个文本对象的组成部分，想要进入插入模式需要按<code>I</code>或<code>A</code>。</li>
+</ul>
+<h1 id="五、命令行模式"><a href="#五、命令行模式" class="headerlink" title="五、命令行模式"></a>五、命令行模式</h1><p>初时，先有ed，ed为ex之父，ex为vi之父，vi为vim之父。</p>
+<h2 id="技巧27-结识Vim的命令行模式"><a href="#技巧27-结识Vim的命令行模式" class="headerlink" title="技巧27 结识Vim的命令行模式"></a>技巧27 结识Vim的命令行模式</h2><ul>
+<li>命令行模式会提示我们输入一条Ex命令、一个查找模式或一个表达式。</li>
+<li>Ex命令影响相比普通模式下的命令范围更广而且距离更远。</li>
+</ul>
+<h2 id="技巧28-在一行或多个连续行上执行命令"><a href="#技巧28-在一行或多个连续行上执行命令" class="headerlink" title="技巧28 在一行或多个连续行上执行命令"></a>技巧28 在一行或多个连续行上执行命令</h2><ul>
+<li>很多Ex命令可以用[rang]指定要操作的范围，可以用行号、位置标记或是查找模式来指定范围的开始位置及结束位置。</li>
+<li>在Ex命令里，<code>.</code>代表当前行的地址，<code>%</code>代表当前文件的所有行。<code>&#39;&lt;</code>表示选区首行，<code>&#39;&gt;</code>表示选区末行。</li>
+<li>可以用模式指定范围，也可以用偏移（如+1、-1）对地址进行修正。</li>
+<li>总而言之，定义范围的语法很灵活。</li>
+</ul>
+<h2 id="技巧29-使用-t和-m命令复制和移动行"><a href="#技巧29-使用-t和-m命令复制和移动行" class="headerlink" title="技巧29 使用:t和:m命令复制和移动行"></a>技巧29 使用<code>:t</code>和<code>:m</code>命令复制和移动行</h2><ul>
+<li>重复上次的Ex命令非常简单，只需使用<code>@:</code>命令即可。</li>
+</ul>
+<h2 id="技巧30-在指定范围上执行普通模式命令"><a href="#技巧30-在指定范围上执行普通模式命令" class="headerlink" title="技巧30 在指定范围上执行普通模式命令"></a>技巧30 在指定范围上执行普通模式命令</h2><ul>
+<li>如果想在一系列连续行上执行一条普通模式命令，则可以使用<code>:normal</code>。</li>
+<li>在执行普通模式命令之前，Vim会把光标移到行首，因此在执行命令时不需要担心光标的位置。</li>
+</ul>
+<h2 id="技巧31-重复上次的Ex命令"><a href="#技巧31-重复上次的Ex命令" class="headerlink" title="技巧31 重复上次的Ex命令"></a>技巧31 重复上次的Ex命令</h2><ul>
+<li>重复上次的Ex命令非常简单，只需使用<code>@:</code>命令即可。</li>
+<li><code>bnext</code>可以在缓冲区列表项中正向移动，而<code>bprevious</code>则是反向移动。</li>
+</ul>
+<h2 id="技巧32-自动补全Ex命令"><a href="#技巧32-自动补全Ex命令" class="headerlink" title="技巧32 自动补全Ex命令"></a>技巧32 自动补全Ex命令</h2><ul>
+<li>如同在shell中一样，在命令行上也可以用<tab>键自动补全命令。</tab></li>
+<li><code>&lt;ctrl+d&gt;</code>可以显示Vim可用的命令补全列表。</li>
+</ul>
+<h2 id="技巧33-把当前单词插入到命令行"><a href="#技巧33-把当前单词插入到命令行" class="headerlink" title="技巧33 把当前单词插入到命令行"></a>技巧33 把当前单词插入到命令行</h2><ul>
+<li>在Vim的命令行下，<code>&lt;ctrl+r&gt;&lt;ctrl+w&gt;</code>会复制光标下的单词并把它插入到命令行中。</li>
+</ul>
+<h2 id="技巧34-回溯历史命令"><a href="#技巧34-回溯历史命令" class="headerlink" title="技巧34 回溯历史命令"></a>技巧34 回溯历史命令</h2><ul>
+<li>历史命令不仅仅是为当前编辑会话记录的，这些记录即使在退出Vim再重启之后仍然存在。</li>
+<li>输入<code>q:</code>可以打开命令行窗口。在命令行窗口里可以用任何习以为常的动作命令进行移动，也可以在高亮选区上操作，或是切换到插入模式中。可以按<code>:q</code>或者回车来关闭命令行窗口。具体要多练。</li>
+<li>当我们在命令行窗口按回车时，该命令在活动窗口的上下文中执行。所谓活动窗口，指的是打开命令行窗口之前处于活动的那个窗口，要注意。</li>
+</ul>
+<h2 id="技巧35-运行Shell命令"><a href="#技巧35-运行Shell命令" class="headerlink" title="技巧35 运行Shell命令"></a>技巧35 运行Shell命令</h2><ul>
+<li>不用离开Vim就可以方便地调用外部程序，还可以把缓冲区的内容当做标准输入发送给一个外部命令，或是把外部命令的标准输出导入到缓冲区中。</li>
+<li>给命令加一个前缀<code>!</code>号就可以调用外部命令一次。</li>
+<li>如果想要执行多次外部命令，则可以用<code>:shell</code>命令打开一个交互的shell，用<code>exit</code>退出。</li>
+<li>当然也可以用<code>&lt;ctrl+z&gt;</code>把Vim进程挂起，运行完shell命令之后再用<code>jobs</code>和<code>fg</code>命令切换回来。</li>
+<li>可以用<code>:read !{cmd}</code>把外部命令的输出读入到当前缓冲区中。而<code>:write !{cmd}</code>做相反的事，把缓冲区的内容作为外部命令的输入。但要注意的是在write中感叹号位置不同表示的含义有所不同，<code>:write! sh</code>会把缓冲区内容写入到一个名为sh的文件中，叹号表示无论如何都覆盖。</li>
+<li><code>:[range]!{filter}</code>可以实现某个范围内的过滤，意思是把该范围内的内容作为标准输入，处理之后再把结果输出到该范围之内。</li>
+</ul>
+<h1 id="六、管理多个文件"><a href="#六、管理多个文件" class="headerlink" title="六、管理多个文件"></a>六、管理多个文件</h1><h2 id="技巧36-用缓冲区列表管理打开的文件"><a href="#技巧36-用缓冲区列表管理打开的文件" class="headerlink" title="技巧36 用缓冲区列表管理打开的文件"></a>技巧36 用缓冲区列表管理打开的文件</h2><ul>
+<li>在一次的编辑会话中，可以打开多个文件，用Vim的缓冲区列表可以对这些文件进行管理。</li>
+<li>Vim允许同时在多个缓冲区上工作，打开多个文件后可以用<code>:ls</code>命令查看所有被载入到内存中的缓冲区的列表，然后用<code>:bnext</code>命令切换到列表中的下一个缓冲区，<code>:bprev</code>切换到前一个，此外还有<code>:bfirst</code>和<code>:blast</code>两个命令也可以切换。</li>
+<li>使用<code>:ls</code>命令时，#符号表示轮换文件，可以用<code>&lt;ctrl+^&gt;</code>来切换到#所指文件。</li>
+</ul>
+<h2 id="技巧37-用参数列表将缓冲区分组"><a href="#技巧37-用参数列表将缓冲区分组" class="headerlink" title="技巧37 用参数列表将缓冲区分组"></a>技巧37 用参数列表将缓冲区分组</h2><ul>
+<li>参数列表易于管理，适用于对一批文件进行分组，使其更容易访问。用<code>:argdo</code>命令可以在参数列表中的每个文件上执行一条Ex命令。</li>
+<li>可以用<code>:args {argList}</code>来填充参数列表，argList也可以使用模式来指定，还可以使用反引号。比如args  `cat .chapters` 就会先在shell中执行<code>cat .chapters</code>命令，然后将该命令的输出作为args的参数。</li>
+</ul>
+<h2 id="技巧38-管理隐藏缓冲区"><a href="#技巧38-管理隐藏缓冲区" class="headerlink" title="技巧38 管理隐藏缓冲区"></a>技巧38 管理隐藏缓冲区</h2><ul>
+<li>打开多个缓冲区后，如果修改了某个缓冲区，再使用<code>:bnext</code>时会提醒当前缓冲区中有未保存的改动，可以加上<code>!</code>来强制切换，也可以保存后再切换。如果选择了强制切换，那么在退出时需要再次处理每个缓冲区，可以用<code>qa!</code>摒弃所有改动，也可以用<code>:wa!</code>把所有改动写入磁盘。</li>
+<li>大多数情况下Vim提醒缓冲区改动未保存是一个好事，但是当涉及到<code>:argdo</code>或者<code>:bufdo</code>等命令时则很不方便，所以在使用这些命令前可以启动<code>hidden</code>选项，最后退出时再处理。</li>
+</ul>
+<h2 id="技巧39-将工作区切分成窗口"><a href="#技巧39-将工作区切分成窗口" class="headerlink" title="技巧39 将工作区切分成窗口"></a>技巧39 将工作区切分成窗口</h2><ul>
+<li>Vim允许我们将工作区切分成多个若干窗口，在窗口里并排显示多个缓冲区。</li>
+<li><code>&lt;ctrl+w&gt;s</code>水平切割窗口，<code>&lt;ctrl+w&gt;v</code>垂直切割窗口。</li>
+<li><code>close</code>命令可以关闭活动窗口，<code>only</code>命令可以只保留活动窗口而关闭其他窗口。</li>
+</ul>
+<h2 id="技巧40-用标签页将窗口分组"><a href="#技巧40-用标签页将窗口分组" class="headerlink" title="技巧40 用标签页将窗口分组"></a>技巧40 用标签页将窗口分组</h2><ul>
+<li>标签页的这部分看的不是特别明白，书中也没有给出好的例子。以后再说吧。</li>
+</ul>
+<h1 id="七、打开及保存文件"><a href="#七、打开及保存文件" class="headerlink" title="七、打开及保存文件"></a>七、打开及保存文件</h1><h2 id="技巧41-用-edit命令打开文件"><a href="#技巧41-用-edit命令打开文件" class="headerlink" title="技巧41 用:edit命令打开文件"></a>技巧41 用<code>:edit</code>命令打开文件</h2><ul>
+<li>在Vim中，可以用<code>:edit</code>命令通过文件的绝对或相对路径来打开文件。</li>
+<li><code>%</code>符号代表活动缓冲区的完整文件路径，按<code>Tab</code>键可以将其展开。<code>%:h</code>则可以显示去掉文件名的活动缓冲区完整文件路径。</li>
+</ul>
+<h2 id="技巧42-使用-find打开文件"><a href="#技巧42-使用-find打开文件" class="headerlink" title="技巧42 使用:find打开文件"></a>技巧42 使用<code>:find</code>打开文件</h2><ul>
+<li>这个技巧里讲的主要是配置path，然后就可以用<code>find</code>命令来打开文件了。</li>
+</ul>
+<h2 id="技巧43-使用netrw管理文件系统"><a href="#技巧43-使用netrw管理文件系统" class="headerlink" title="技巧43 使用netrw管理文件系统"></a>技巧43 使用netrw管理文件系统</h2><ul>
+<li>Vim还可以查看目录，netrw就是它自带的文件管理器插件。</li>
+<li>可以用<code>:edit {path}</code>打开文件管理器窗口。此外，<code>:Explore</code>命令也可以打开文件管理器窗口，并显示活动缓冲区所在的目录。</li>
+<li>可以与分割窗口协同工作</li>
+</ul>
+<h2 id="技巧44-把文件保存到不存在的目录中"><a href="#技巧44-把文件保存到不存在的目录中" class="headerlink" title="技巧44 把文件保存到不存在的目录中"></a>技巧44 把文件保存到不存在的目录中</h2><ul>
+<li>当用<code>:edit {file}</code>命令打开未存在的目录中的未存在文件时，不能直接保存，需要先创建该目录，可以用<code>:!mkdir %:h</code>命令。</li>
+</ul>
+<h2 id="技巧45-以超级用户权限保存文件"><a href="#技巧45-以超级用户权限保存文件" class="headerlink" title="技巧45 以超级用户权限保存文件"></a>技巧45 以超级用户权限保存文件</h2><ul>
+<li>这个就不管了，感觉不太会用到，记一下书中用到的命令好了<code>:w !sudo tee % &gt; /dev/null</code>。</li>
+</ul>
+<h1 id="八、用动作命令在文档中移动"><a href="#八、用动作命令在文档中移动" class="headerlink" title="八、用动作命令在文档中移动"></a>八、用动作命令在文档中移动</h1><ul>
+<li>可以通过<code>:h motion.txt</code>获得完整的动作命令列表</li>
+</ul>
+<h2 id="技巧46-让手指保持在本位行上"><a href="#技巧46-让手指保持在本位行上" class="headerlink" title="技巧46 让手指保持在本位行上"></a>技巧46 让手指保持在本位行上</h2><ul>
+<li>用<code>hjkl</code>移动，戒掉使用光标键的习惯，可以在vimrc里添加对应的辅助设置，p102</li>
+</ul>
+<h2 id="技巧47-区分实际行与屏幕行"><a href="#技巧47-区分实际行与屏幕行" class="headerlink" title="技巧47 区分实际行与屏幕行"></a>技巧47 区分实际行与屏幕行</h2><ul>
+<li>所谓实际行说的是真正的行，屏幕行则是因为屏幕宽度限制而出现的行</li>
+<li><code>hjkl0$</code>命令都是针对实际行的，前缀加<code>g</code>就能对应命令改为针对屏幕行的。</li>
+</ul>
+<h2 id="技巧48-基于单词移动"><a href="#技巧48-基于单词移动" class="headerlink" title="技巧48 基于单词移动"></a>技巧48 基于单词移动</h2><ul>
+<li><code>wbe</code>是基于单词的移动动作，对应的<code>WBE</code>则是针对子串的移动动作。</li>
+</ul>
+<h2 id="技巧49-对字符进行查找"><a href="#技巧49-对字符进行查找" class="headerlink" title="技巧49 对字符进行查找"></a>技巧49 对字符进行查找</h2><ul>
+<li><code>f{char}</code>是在Vim里移动最快的方式之一，它会在光标与行尾之间搜寻指定的字符，找到了就移过去。</li>
+<li><code>;</code>可以重复上一次的<code>f{char}</code>命令，<code>,</code>可以反向跳。</li>
+<li><code>t{char}</code>正向移动到下一个{char}所在之处的前一个字符上，<code>T{char</code>反向移动到char的后一个字符上。</li>
+<li>使用这些命令的时候，要学会找到频率少的单词，这样才能提高移动效率。</li>
+</ul>
+<h2 id="技巧50-通过查找进行移动"><a href="#技巧50-通过查找进行移动" class="headerlink" title="技巧50 通过查找进行移动"></a>技巧50 通过查找进行移动</h2><ul>
+<li>用<code>/</code>来进行查找并移动光标</li>
+<li>还可以将操作文本的动作和查找结合在一起。</li>
+</ul>
+<h2 id="技巧51-用精确的文本对象选择选区"><a href="#技巧51-用精确的文本对象选择选区" class="headerlink" title="技巧51 用精确的文本对象选择选区"></a>技巧51 用精确的文本对象选择选区</h2><ul>
+<li>文本对象允许操作括号、被引用的文本、XML标签以及其他文本中的常见结构。</li>
+<li>Vim的文本对象由两个字符组成，第一个字符永远是<code>i</code>或者<code>a</code>。以<code>i</code>开头的文本对象会选择分隔符内部的文本，而以<code>a</code>开头的文本对象则会选择包括分隔符在内的整个文本。具体可以用到的时候再说吧。</li>
+</ul>
+<h2 id="技巧52-删除周边，修改内部"><a href="#技巧52-删除周边，修改内部" class="headerlink" title="技巧52 删除周边，修改内部"></a>技巧52 删除周边，修改内部</h2><ul>
+<li>除了被括号或引号括起来的分隔符文本对象，还有另外一种范围文本对象，可以操作一个单词、一个子串、一个句子、一个段落。具体命令可以看书p117</li>
+</ul>
+<h2 id="技巧53-设置位置标记，以便快速跳回"><a href="#技巧53-设置位置标记，以便快速跳回" class="headerlink" title="技巧53 设置位置标记，以便快速跳回"></a>技巧53 设置位置标记，以便快速跳回</h2><ul>
+<li>可以用<code>m{a-zA-Z}</code>标记当前光标所在位置，然后用`{a-zA-Z}命令跳回来。</li>
+</ul>
+<h2 id="技巧54-在匹配括号间跳转"><a href="#技巧54-在匹配括号间跳转" class="headerlink" title="技巧54 在匹配括号间跳转"></a>技巧54 在匹配括号间跳转</h2><ul>
+<li><code>%</code>命令可以在成对的括号间跳转</li>
+<li>Vim在发布时携带一个名为matchit的插件，可以用来在配对的关键字之间跳转，还有个Surround.vim的插件，可以很容易地给选中的文本加分隔符。</li>
+</ul>
+<h1 id="九-在文件间跳转"><a href="#九-在文件间跳转" class="headerlink" title="九 在文件间跳转"></a>九 在文件间跳转</h1><h2 id="技巧55-遍历跳转列表"><a href="#技巧55-遍历跳转列表" class="headerlink" title="技巧55 遍历跳转列表"></a>技巧55 遍历跳转列表</h2><ul>
+<li>可以用<code>jumps</code>查看跳转列表的内容</li>
+<li>大于等于句子级别的动作命令会被当做跳转，小范围的动作命令则只是移动。</li>
+</ul>
+<h2 id="技巧56-遍历改变列表"><a href="#技巧56-遍历改变列表" class="headerlink" title="技巧56 遍历改变列表"></a>技巧56 遍历改变列表</h2><ul>
+<li>每当对文档做出修改后，Vim都会记录当时光标所在的位置。</li>
+<li><code>changes</code>命令可以查看改变列表的内容。可以用<code>g;</code>和<code>g,</code>命令来反向或正向遍历改变列表。</li>
+<li>`.总会跳到指向上次修改的地方。</li>
+<li>`^标记指向上次插入的地方。</li>
+</ul>
+<h2 id="技巧57-跳转到光标下的文件"><a href="#技巧57-跳转到光标下的文件" class="headerlink" title="技巧57 跳转到光标下的文件"></a>技巧57 跳转到光标下的文件</h2><ul>
+<li>Vim会把文档中的文件名当成一个超链接，在进行了正确的配置之后，就可以用<code>gf</code>命令跳转到光标下的文件了。</li>
+<li>跳转列表和改变列表允许我们原路返回，而<code>gf</code>和<code>&lt;ctrl+]&gt;</code>则像虫洞，可以把我们从代码的一个地方传送到另一个文件地方。</li>
+</ul>
+<h2 id="技巧58-用全局位置标记在文件间快速跳转"><a href="#技巧58-用全局位置标记在文件间快速跳转" class="headerlink" title="技巧58 用全局位置标记在文件间快速跳转"></a>技巧58 用全局位置标记在文件间快速跳转</h2><ul>
+<li><code>m{A-Z}</code>可以设置一个全局标签，这对使用vimgrep等命令跳转到其他地方后想要再跳回来很有帮助，要养成在跳转前考虑是否需要全局标签的习惯。</li>
+</ul>
+<h1 id="十、复制与粘贴"><a href="#十、复制与粘贴" class="headerlink" title="十、复制与粘贴"></a>十、复制与粘贴</h1><ul>
+<li>Vim的寄存器是一组用于保存文本的简单容器。它们既可以像剪贴板那样，剪切、复制和粘贴文本；也可以记录一系列按键操作，把它们录制成宏。</li>
+</ul>
+<h2 id="技巧59-用无名寄存器实现删除、复制与粘贴操作"><a href="#技巧59-用无名寄存器实现删除、复制与粘贴操作" class="headerlink" title="技巧59 用无名寄存器实现删除、复制与粘贴操作"></a>技巧59 用无名寄存器实现删除、复制与粘贴操作</h2><ul>
+<li>在Vim的术语里，当提到剪切、复制与粘贴时，指的不是剪贴板而是寄存器。比如<code>xp</code>命令，先删除光标下的字符，然后粘贴到下一个字符之后，连起来的作用就是将光标下的字符和下一个字符交换位置。同理，<code>ddp</code>命令可以用来交换两行的顺序。</li>
+</ul>
+<h2 id="技巧60-深入理解Vim寄存器"><a href="#技巧60-深入理解Vim寄存器" class="headerlink" title="技巧60 深入理解Vim寄存器"></a>技巧60 深入理解Vim寄存器</h2><ul>
+<li>Vim不使用单一的剪贴板进行剪切、复制和粘贴，而是为这些操作提供了多组寄存器。</li>
+<li>Vim的删除、复制和粘贴命令都会用到众多寄存器中的一个，可以通过给命令加<code>&quot;{register}</code>前缀的方式指定要用的寄存器，若不指定则默认使用无名寄存器。</li>
+<li>显式调用无名寄存器时要用<code>&quot;&quot;</code></li>
+<li>复制专用寄存器<code>&quot;0</code>，要复制的文本不仅会被拷贝到无名寄存器中，而且也会被拷贝到复制专用寄存器中，仅当使用<code>y{motion}</code>命令时才会被赋值。使用<code>:reg &quot;0</code>则可以查看该寄存器的内容。</li>
+<li>有名寄存器(“a-“z)。用小写字母引用有名寄存器，会覆盖该寄存器的原有内容，而换用大写字母时，则会将新内容append到原内容后面。</li>
+<li>黑洞寄存器(_ )可以真正删除文本，命令如<code>&quot;_dd</code>可以删除整行而不复制到寄存器里去。黑洞寄存器是个有去无回的地方。</li>
+<li>系统剪贴板<code>&quot;+</code>，如果要从Vim复制文本到外部程序（反之亦然），则需要使用系统剪贴板。还有一个<code>&quot;*</code>表示X11主剪贴板，用鼠标中键操作（Win和MacOS没有）。</li>
+<li>表达式寄存器<code>&quot;=</code>，其他寄存器通常被认为是保存一段文本的容器，然后通过表达式寄存器是个例外。从表达式寄存器获取内容时，Vim将跳转到命令行模式，并显示提示符<code>=</code>，这时可以输入一段Vim脚本表达式执行，将会返回结果。</li>
+<li>还有几组可被隐式赋值的寄存器，只读。当前文件名<code>&quot;%</code>。轮换文件名<code>&quot;#</code>。上次插入的文本<code>&quot;.</code>。上次执行的Ex命令<code>&quot;:</code>。上次查找的模式<code>&quot;/</code>。技术上讲/寄存器并非只读，可以用<code>:let</code>命令赋值，但为方便仍归于此类。</li>
+</ul>
 
       
     </div>
@@ -711,7 +866,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vimtutor"><span class="nav-number">1.</span> <span class="nav-text">Vimtutor</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#《Vim实用技巧》"><span class="nav-number">2.</span> <span class="nav-text">《Vim实用技巧》</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一-Vim解决问题的方式"><span class="nav-number">3.</span> <span class="nav-text">一.Vim解决问题的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧1-结识-命令"><span class="nav-number">3.1.</span> <span class="nav-text">技巧1 结识.命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧2-不要自我重复"><span class="nav-number">3.2.</span> <span class="nav-text">技巧2 不要自我重复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧3-以退为进"><span class="nav-number">3.3.</span> <span class="nav-text">技巧3 以退为进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧4-执行、重复、回退"><span class="nav-number">3.4.</span> <span class="nav-text">技巧4 执行、重复、回退</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧5-查找并手动替换"><span class="nav-number">3.5.</span> <span class="nav-text">技巧5 查找并手动替换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧6-结识-范式"><span class="nav-number">3.6.</span> <span class="nav-text">技巧6 结识.范式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、普通模式"><span class="nav-number">4.</span> <span class="nav-text">二、普通模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧7-停顿时请移开画笔"><span class="nav-number">4.1.</span> <span class="nav-text">技巧7 停顿时请移开画笔</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧8-把撤销单元切成块"><span class="nav-number">4.2.</span> <span class="nav-text">技巧8 把撤销单元切成块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧9-构造可重复的修改"><span class="nav-number">4.3.</span> <span class="nav-text">技巧9 构造可重复的修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧10-用次数做简单的算数运算"><span class="nav-number">4.4.</span> <span class="nav-text">技巧10 用次数做简单的算数运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧11-能够重复，就别用次数"><span class="nav-number">4.5.</span> <span class="nav-text">技巧11 能够重复，就别用次数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧12-双剑合璧，天下无敌"><span class="nav-number">4.6.</span> <span class="nav-text">技巧12 双剑合璧，天下无敌</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、插入模式"><span class="nav-number">5.</span> <span class="nav-text">三、插入模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧13-在插入模式下可即时更正错误"><span class="nav-number">5.1.</span> <span class="nav-text">技巧13 在插入模式下可即时更正错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧14-返回普通模式"><span class="nav-number">5.2.</span> <span class="nav-text">技巧14 返回普通模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧15-不离开插入模式，粘贴寄存器中的文本"><span class="nav-number">5.3.</span> <span class="nav-text">技巧15 不离开插入模式，粘贴寄存器中的文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧16-随时随地做运算"><span class="nav-number">5.4.</span> <span class="nav-text">技巧16 随时随地做运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧17-用字符编码插入非常用字符"><span class="nav-number">5.5.</span> <span class="nav-text">技巧17 用字符编码插入非常用字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧18-用二合字母插入非常用字符"><span class="nav-number">5.6.</span> <span class="nav-text">技巧18 用二合字母插入非常用字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧19-用替换模式替换已有文本"><span class="nav-number">5.7.</span> <span class="nav-text">技巧19 用替换模式替换已有文本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、可视模式"><span class="nav-number">6.</span> <span class="nav-text">四、可视模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧20-深入理解可视模式"><span class="nav-number">6.1.</span> <span class="nav-text">技巧20 深入理解可视模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧21-选择高亮选区"><span class="nav-number">6.2.</span> <span class="nav-text">技巧21 选择高亮选区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧22-重复执行面向行的可视命令"><span class="nav-number">6.3.</span> <span class="nav-text">技巧22 重复执行面向行的可视命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧23-只要可能，最好用操作符命令而不是可视命令"><span class="nav-number">6.4.</span> <span class="nav-text">技巧23 只要可能，最好用操作符命令而不是可视命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧24-用面向列块的可视模式编辑表格数据"><span class="nav-number">6.5.</span> <span class="nav-text">技巧24 用面向列块的可视模式编辑表格数据</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vimtutor"><span class="nav-number">1.</span> <span class="nav-text">Vimtutor</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#《Vim实用技巧》"><span class="nav-number">2.</span> <span class="nav-text">《Vim实用技巧》</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一-Vim解决问题的方式"><span class="nav-number">3.</span> <span class="nav-text">一.Vim解决问题的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧1-结识-命令"><span class="nav-number">3.1.</span> <span class="nav-text">技巧1 结识.命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧2-不要自我重复"><span class="nav-number">3.2.</span> <span class="nav-text">技巧2 不要自我重复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧3-以退为进"><span class="nav-number">3.3.</span> <span class="nav-text">技巧3 以退为进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧4-执行、重复、回退"><span class="nav-number">3.4.</span> <span class="nav-text">技巧4 执行、重复、回退</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧5-查找并手动替换"><span class="nav-number">3.5.</span> <span class="nav-text">技巧5 查找并手动替换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧6-结识-范式"><span class="nav-number">3.6.</span> <span class="nav-text">技巧6 结识.范式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、普通模式"><span class="nav-number">4.</span> <span class="nav-text">二、普通模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧7-停顿时请移开画笔"><span class="nav-number">4.1.</span> <span class="nav-text">技巧7 停顿时请移开画笔</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧8-把撤销单元切成块"><span class="nav-number">4.2.</span> <span class="nav-text">技巧8 把撤销单元切成块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧9-构造可重复的修改"><span class="nav-number">4.3.</span> <span class="nav-text">技巧9 构造可重复的修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧10-用次数做简单的算数运算"><span class="nav-number">4.4.</span> <span class="nav-text">技巧10 用次数做简单的算数运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧11-能够重复，就别用次数"><span class="nav-number">4.5.</span> <span class="nav-text">技巧11 能够重复，就别用次数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧12-双剑合璧，天下无敌"><span class="nav-number">4.6.</span> <span class="nav-text">技巧12 双剑合璧，天下无敌</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、插入模式"><span class="nav-number">5.</span> <span class="nav-text">三、插入模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧13-在插入模式下可即时更正错误"><span class="nav-number">5.1.</span> <span class="nav-text">技巧13 在插入模式下可即时更正错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧14-返回普通模式"><span class="nav-number">5.2.</span> <span class="nav-text">技巧14 返回普通模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧15-不离开插入模式，粘贴寄存器中的文本"><span class="nav-number">5.3.</span> <span class="nav-text">技巧15 不离开插入模式，粘贴寄存器中的文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧16-随时随地做运算"><span class="nav-number">5.4.</span> <span class="nav-text">技巧16 随时随地做运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧17-用字符编码插入非常用字符"><span class="nav-number">5.5.</span> <span class="nav-text">技巧17 用字符编码插入非常用字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧18-用二合字母插入非常用字符"><span class="nav-number">5.6.</span> <span class="nav-text">技巧18 用二合字母插入非常用字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧19-用替换模式替换已有文本"><span class="nav-number">5.7.</span> <span class="nav-text">技巧19 用替换模式替换已有文本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、可视模式"><span class="nav-number">6.</span> <span class="nav-text">四、可视模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧20-深入理解可视模式"><span class="nav-number">6.1.</span> <span class="nav-text">技巧20 深入理解可视模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧21-选择高亮选区"><span class="nav-number">6.2.</span> <span class="nav-text">技巧21 选择高亮选区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧22-重复执行面向行的可视命令"><span class="nav-number">6.3.</span> <span class="nav-text">技巧22 重复执行面向行的可视命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧23-只要可能，最好用操作符命令而不是可视命令"><span class="nav-number">6.4.</span> <span class="nav-text">技巧23 只要可能，最好用操作符命令而不是可视命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧24-用面向列块的可视模式编辑表格数据"><span class="nav-number">6.5.</span> <span class="nav-text">技巧24 用面向列块的可视模式编辑表格数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧25-修改列文本"><span class="nav-number">6.6.</span> <span class="nav-text">技巧25 修改列文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧26-在长短不一的高亮块后添加文本"><span class="nav-number">6.7.</span> <span class="nav-text">技巧26 在长短不一的高亮块后添加文本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、命令行模式"><span class="nav-number">7.</span> <span class="nav-text">五、命令行模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧27-结识Vim的命令行模式"><span class="nav-number">7.1.</span> <span class="nav-text">技巧27 结识Vim的命令行模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧28-在一行或多个连续行上执行命令"><span class="nav-number">7.2.</span> <span class="nav-text">技巧28 在一行或多个连续行上执行命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧29-使用-t和-m命令复制和移动行"><span class="nav-number">7.3.</span> <span class="nav-text">技巧29 使用:t和:m命令复制和移动行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧30-在指定范围上执行普通模式命令"><span class="nav-number">7.4.</span> <span class="nav-text">技巧30 在指定范围上执行普通模式命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧31-重复上次的Ex命令"><span class="nav-number">7.5.</span> <span class="nav-text">技巧31 重复上次的Ex命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧32-自动补全Ex命令"><span class="nav-number">7.6.</span> <span class="nav-text">技巧32 自动补全Ex命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧33-把当前单词插入到命令行"><span class="nav-number">7.7.</span> <span class="nav-text">技巧33 把当前单词插入到命令行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧34-回溯历史命令"><span class="nav-number">7.8.</span> <span class="nav-text">技巧34 回溯历史命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧35-运行Shell命令"><span class="nav-number">7.9.</span> <span class="nav-text">技巧35 运行Shell命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、管理多个文件"><span class="nav-number">8.</span> <span class="nav-text">六、管理多个文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧36-用缓冲区列表管理打开的文件"><span class="nav-number">8.1.</span> <span class="nav-text">技巧36 用缓冲区列表管理打开的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧37-用参数列表将缓冲区分组"><span class="nav-number">8.2.</span> <span class="nav-text">技巧37 用参数列表将缓冲区分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧38-管理隐藏缓冲区"><span class="nav-number">8.3.</span> <span class="nav-text">技巧38 管理隐藏缓冲区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧39-将工作区切分成窗口"><span class="nav-number">8.4.</span> <span class="nav-text">技巧39 将工作区切分成窗口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧40-用标签页将窗口分组"><span class="nav-number">8.5.</span> <span class="nav-text">技巧40 用标签页将窗口分组</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七、打开及保存文件"><span class="nav-number">9.</span> <span class="nav-text">七、打开及保存文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧41-用-edit命令打开文件"><span class="nav-number">9.1.</span> <span class="nav-text">技巧41 用:edit命令打开文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧42-使用-find打开文件"><span class="nav-number">9.2.</span> <span class="nav-text">技巧42 使用:find打开文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧43-使用netrw管理文件系统"><span class="nav-number">9.3.</span> <span class="nav-text">技巧43 使用netrw管理文件系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧44-把文件保存到不存在的目录中"><span class="nav-number">9.4.</span> <span class="nav-text">技巧44 把文件保存到不存在的目录中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧45-以超级用户权限保存文件"><span class="nav-number">9.5.</span> <span class="nav-text">技巧45 以超级用户权限保存文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#八、用动作命令在文档中移动"><span class="nav-number">10.</span> <span class="nav-text">八、用动作命令在文档中移动</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧46-让手指保持在本位行上"><span class="nav-number">10.1.</span> <span class="nav-text">技巧46 让手指保持在本位行上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧47-区分实际行与屏幕行"><span class="nav-number">10.2.</span> <span class="nav-text">技巧47 区分实际行与屏幕行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧48-基于单词移动"><span class="nav-number">10.3.</span> <span class="nav-text">技巧48 基于单词移动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧49-对字符进行查找"><span class="nav-number">10.4.</span> <span class="nav-text">技巧49 对字符进行查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧50-通过查找进行移动"><span class="nav-number">10.5.</span> <span class="nav-text">技巧50 通过查找进行移动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧51-用精确的文本对象选择选区"><span class="nav-number">10.6.</span> <span class="nav-text">技巧51 用精确的文本对象选择选区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧52-删除周边，修改内部"><span class="nav-number">10.7.</span> <span class="nav-text">技巧52 删除周边，修改内部</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧53-设置位置标记，以便快速跳回"><span class="nav-number">10.8.</span> <span class="nav-text">技巧53 设置位置标记，以便快速跳回</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧54-在匹配括号间跳转"><span class="nav-number">10.9.</span> <span class="nav-text">技巧54 在匹配括号间跳转</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#九-在文件间跳转"><span class="nav-number">11.</span> <span class="nav-text">九 在文件间跳转</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧55-遍历跳转列表"><span class="nav-number">11.1.</span> <span class="nav-text">技巧55 遍历跳转列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧56-遍历改变列表"><span class="nav-number">11.2.</span> <span class="nav-text">技巧56 遍历改变列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧57-跳转到光标下的文件"><span class="nav-number">11.3.</span> <span class="nav-text">技巧57 跳转到光标下的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧58-用全局位置标记在文件间快速跳转"><span class="nav-number">11.4.</span> <span class="nav-text">技巧58 用全局位置标记在文件间快速跳转</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十、复制与粘贴"><span class="nav-number">12.</span> <span class="nav-text">十、复制与粘贴</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧59-用无名寄存器实现删除、复制与粘贴操作"><span class="nav-number">12.1.</span> <span class="nav-text">技巧59 用无名寄存器实现删除、复制与粘贴操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧60-深入理解Vim寄存器"><span class="nav-number">12.2.</span> <span class="nav-text">技巧60 深入理解Vim寄存器</span></a></li></ol></li></ol></div>
             
 
           </div>
