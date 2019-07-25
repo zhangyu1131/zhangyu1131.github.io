@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="ZRainy">
 <meta property="og:description" content="因为工作中需要用到Vim，所以本文简单记录下学习Vim编辑器的一些笔记和技巧。 VimtutorVimtutor是Vim的一个简易教程，前前后后做了两遍，记录一下一些实用的快捷键吧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-11T16:49:46.935Z">
+<meta property="og:updated_time" content="2019-07-25T15:08:07.132Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vim学习记录">
 <meta name="twitter:description" content="因为工作中需要用到Vim，所以本文简单记录下学习Vim编辑器的一些笔记和技巧。 VimtutorVimtutor是Vim的一个简易教程，前前后后做了两遍，记录一下一些实用的快捷键吧。">
@@ -294,8 +294,8 @@
           
             <span class="post-updated">
               &nbsp; | &nbsp; 更新于
-              <time itemprop="dateUpdated" datetime="2019-07-12T00:49:46+08:00" content="2019-07-12">
-              2019-07-12
+              <time itemprop="dateUpdated" datetime="2019-07-25T23:08:07+08:00" content="2019-07-25">
+              2019-07-25
               </time>
             </span>
           
@@ -699,6 +699,300 @@
 <li>表达式寄存器<code>&quot;=</code>，其他寄存器通常被认为是保存一段文本的容器，然后通过表达式寄存器是个例外。从表达式寄存器获取内容时，Vim将跳转到命令行模式，并显示提示符<code>=</code>，这时可以输入一段Vim脚本表达式执行，将会返回结果。</li>
 <li>还有几组可被隐式赋值的寄存器，只读。当前文件名<code>&quot;%</code>。轮换文件名<code>&quot;#</code>。上次插入的文本<code>&quot;.</code>。上次执行的Ex命令<code>&quot;:</code>。上次查找的模式<code>&quot;/</code>。技术上讲/寄存器并非只读，可以用<code>:let</code>命令赋值，但为方便仍归于此类。</li>
 </ul>
+<h2 id="技巧61-用寄存器的内容替换高亮选区的文本"><a href="#技巧61-用寄存器的内容替换高亮选区的文本" class="headerlink" title="技巧61 用寄存器的内容替换高亮选区的文本"></a>技巧61 用寄存器的内容替换高亮选区的文本</h2><ul>
+<li>Vim的粘贴命令在可视模式下使用时，会体现出一些不同寻常的特性。在可视模式下使用p，将用我们指定的寄存器来替换高亮选区的文本。</li>
+<li>使用p命令的时候，会先从寄存器里取出内容，然后把高亮选区的内容存入无名寄存器。</li>
+</ul>
+<h2 id="技巧62-把寄存器的内容粘贴出来"><a href="#技巧62-把寄存器的内容粘贴出来" class="headerlink" title="技巧62 把寄存器的内容粘贴出来"></a>技巧62 把寄存器的内容粘贴出来</h2><ul>
+<li>面向行的复制或删除操作将创建面向行的寄存器，而面向字符的复制或者删除操作则会创建面向字符的寄存器。</li>
+</ul>
+<h2 id="技巧63-与系统剪贴板进行交互"><a href="#技巧63-与系统剪贴板进行交互" class="headerlink" title="技巧63 与系统剪贴板进行交互"></a>技巧63 与系统剪贴板进行交互</h2><ul>
+<li>在Vim里使用系统粘贴版粘贴的时候往往缩进会出问题，为了解决这个问题，可以使用<code>:set paste</code>命令，然后切换到插入模式下进行粘贴，粘贴完再用<code>:set paste!</code>切换回来。</li>
+<li>可以用<code>:set pastetoggle=&lt;F5&gt;</code>来做个映射，以后按F5就可以切换paste。</li>
+</ul>
+<h1 id="十一、宏"><a href="#十一、宏" class="headerlink" title="十一、宏"></a>十一、宏</h1><ul>
+<li>可以用宏来把任意数目的按键操作录制到寄存器，用于之后的回放。<h2 id="技巧64-宏的读取与执行"><a href="#技巧64-宏的读取与执行" class="headerlink" title="技巧64 宏的读取与执行"></a>技巧64 宏的读取与执行</h2></li>
+<li><code>q</code>是录制宏的开始与结束。比如<code>qa</code>会把接下来的一组命令保存在有名寄存器a里面。</li>
+<li>可以使用<code>reg a</code>来查看寄存器a的内容。</li>
+<li>可以使用<code>@{register}</code>来调用对应寄存器里保存的宏，用<code>@@</code>来重复上次调用过的宏命令。</li>
+<li>在多次执行某个宏的时候有串行和并行两种方式，串行是一次一次执行，报错则停止，并行并不是真正的并行，只是说有一次执行出错的时候不会影响其他的宏。</li>
+</ul>
+<h2 id="技巧65-规范光标位置、直达目标以及中止宏"><a href="#技巧65-规范光标位置、直达目标以及中止宏" class="headerlink" title="技巧65 规范光标位置、直达目标以及中止宏"></a>技巧65 规范光标位置、直达目标以及中止宏</h2><ul>
+<li>黄金法则：在录制一个宏时，要确保每条命令都可被重复执行。</li>
+<li>一旦开始录制宏，就要问自己几个问题：我在哪？我从哪里来？我要去哪里？</li>
+<li>规范光标的位置</li>
+<li>用可重复的动作命令直达目标</li>
+<li>当动作命令失败时，宏将中止。这种实现的好处在于在执行宏时，可以不顾忌执行的次数。</li>
+</ul>
+<h2 id="技巧66-加次数回放宏"><a href="#技巧66-加次数回放宏" class="headerlink" title="技巧66 加次数回放宏"></a>技巧66 加次数回放宏</h2><ul>
+<li>对于次数不多的工作，可以用点范式，但它不能指定执行的次数。为了克服该限制，我们可以录制一个廉价的一次性的宏，然后再加次数进行回放。</li>
+<li>不是每个宏都能用估算次数的方法调用。</li>
+</ul>
+<h2 id="技巧67-在连续的文本上重复修改"><a href="#技巧67-在连续的文本上重复修改" class="headerlink" title="技巧67 在连续的文本上重复修改"></a>技巧67 在连续的文本上重复修改</h2><ul>
+<li>将下一个单词的首字母变为大写：<code>w~</code></li>
+<li>以串行方式执行宏，类似于数字方法：<code>3@a</code></li>
+<li>以并行方式执行宏，利用高亮选区，然后调用宏，在每一行上进行宏操作，这样就是并行方式，在书中的例子里，会比串行方式少一个j操作。p157</li>
+</ul>
+<h2 id="技巧68-给宏追加命令"><a href="#技巧68-给宏追加命令" class="headerlink" title="技巧68  给宏追加命令"></a>技巧68  给宏追加命令</h2><ul>
+<li><code>q</code>后面跟大写字母，Vim会把后续的的按键操作附加到对应小写寄存器的内容后面。可以用这种方式来修正录制的宏的错误（但一般只能弥补结尾漏命令的情况）。</li>
+</ul>
+<h2 id="技巧69-在一组文件中执行宏"><a href="#技巧69-在一组文件中执行宏" class="headerlink" title="技巧69 在一组文件中执行宏"></a>技巧69 在一组文件中执行宏</h2><ul>
+<li>利用<code>argdo</code>一系列命令，串行就是在宏里面录制一个next命令，使命令得以串行执行下去，而并行就是对选择的所有文件执行同一个命令，就是这个意思吧……具体命令还是以后再说吧。</li>
+</ul>
+<h2 id="技巧70-用迭代求值的方式给列表编号"><a href="#技巧70-用迭代求值的方式给列表编号" class="headerlink" title="技巧70 用迭代求值的方式给列表编号"></a>技巧70 用迭代求值的方式给列表编号</h2><ul>
+<li>技巧10里提到过<code>&lt;ctrl+a&gt;</code>和<code>&lt;ctrl+x&gt;</code>两个简单计算方式</li>
+<li>通过使用<code>:let i=0</code>命令，可以创建一个名为i的变量，并给其赋值0。</li>
+</ul>
+<h2 id="技巧71-编辑宏的内容"><a href="#技巧71-编辑宏的内容" class="headerlink" title="技巧71 编辑宏的内容"></a>技巧71 编辑宏的内容</h2><ul>
+<li>为了修改宏的内容，可以先跳到文档最后，使用类似<code>:put a</code>的命令把某个寄存器中的值复制到文本里，然后对该文本进行就该，最后再把文本考回寄存器中，使用<code>0</code>和<code>&quot;ay$</code>命令将该行命令整个重新复制到寄存器a中，之所以不用<code>&quot;add</code>是因为这会把该行最后的回车符也拷贝进寄存器，而这有时候会产生问题。</li>
+</ul>
+<h1 id="十一、按模式匹配及按原义匹配"><a href="#十一、按模式匹配及按原义匹配" class="headerlink" title="十一、按模式匹配及按原义匹配"></a>十一、按模式匹配及按原义匹配</h1><h2 id="技巧72-调整查找模式的大小写敏感性"><a href="#技巧72-调整查找模式的大小写敏感性" class="headerlink" title="技巧72 调整查找模式的大小写敏感性"></a>技巧72 调整查找模式的大小写敏感性</h2><ul>
+<li>既可以全局性地调整Vim查找功能的大小写敏感性，也可以在每次查找时进行局部调整。</li>
+<li>如果启用<code>ignorecase</code>，Vim将不会区分大小写。</li>
+<li>通过使用元字符\c或者\C则可以在本次查找中覆盖Vim的全局设置，\c忽略大小写，\C强制大小写。</li>
+<li>Vim还有一个更智能的大小写敏感性设置，就是<code>smartcase</code>，当该选项被启用时，只要在查找模式中输入了大写字母，<code>ignorecase</code>设置就不再生效。换句话说，如果查找模式全是小写的，则忽略大小写，但只要有一个大写字母，就会区分大小写。</li>
+</ul>
+<h2 id="技巧73-按正则表达式查找时，使用-v模式开关"><a href="#技巧73-按正则表达式查找时，使用-v模式开关" class="headerlink" title="技巧73 按正则表达式查找时，使用\v模式开关"></a>技巧73 按正则表达式查找时，使用\v模式开关</h2><ul>
+<li>正则表达式学得不咋地，以后再看。</li>
+</ul>
+<h2 id="技巧74-按照原义查找文本时，使用-V原义开关"><a href="#技巧74-按照原义查找文本时，使用-V原义开关" class="headerlink" title="技巧74 按照原义查找文本时，使用\V原义开关"></a>技巧74 按照原义查找文本时，使用\V原义开关</h2><ul>
+<li>比如<code>/ \Va.k.a.</code>查找命令只会匹配a.k.a，不会再利用.的特殊含义去匹配类似backward的词。</li>
+</ul>
+<h2 id="技巧75-使用圆括号捕获子匹配"><a href="#技巧75-使用圆括号捕获子匹配" class="headerlink" title="技巧75 使用圆括号捕获子匹配"></a>技巧75 使用圆括号捕获子匹配</h2><ul>
+<li><code>\_s</code>会匹配空白字符</li>
+</ul>
+<h2 id="技巧76-界定单词的边界"><a href="#技巧76-界定单词的边界" class="headerlink" title="技巧76 界定单词的边界"></a>技巧76 界定单词的边界</h2><ul>
+<li>在very magic搜索模式下，用&lt;和&gt;符号表示单词定界符。</li>
+<li>可以在圆括号前面加上%来匹配却不将其内容捕获保存给寄存器。</li>
+</ul>
+<h2 id="技巧77-界定匹配的边界"><a href="#技巧77-界定匹配的边界" class="headerlink" title="技巧77 界定匹配的边界"></a>技巧77 界定匹配的边界</h2><ul>
+<li>有时候我们想指定一个范围较广的模式，但只对匹配结果的一部分感兴趣。Vim中的元字符\zs和\ze可以帮助我们处理这种情况。</li>
+<li>比如查找模式为：<code>/Practical \zsVim\ze</code>，则只有跟在Practical后面的Vim会被高亮查到。</li>
+</ul>
+<h2 id="技巧78-转义问题字符"><a href="#技巧78-转义问题字符" class="headerlink" title="技巧78 转义问题字符"></a>技巧78 转义问题字符</h2><ul>
+<li>‘\?/‘等字符需要手动转义，也可以使用vim自带的函数escape和getcmdtype，并借助表达式寄存器来解决，知道就行了。</li>
+<li>在VIM脚本中，<code>.</code>操作符用来连接字符串。</li>
+</ul>
+<h1 id="十三、查找"><a href="#十三、查找" class="headerlink" title="十三、查找"></a>十三、查找</h1><h2 id="技巧79-结识查找命令"><a href="#技巧79-结识查找命令" class="headerlink" title="技巧79 结识查找命令"></a>技巧79 结识查找命令</h2><ul>
+<li>如果只想在当前光标位置至文档结尾的范围内查找，而不想循环绕回去的话，可以关闭<code>wrapscan</code>选项。</li>
+<li>如果不提供模式而直接查找，Vim将重用上一次查找的模式。</li>
+</ul>
+<h2 id="技巧80-高亮查找匹配"><a href="#技巧80-高亮查找匹配" class="headerlink" title="技巧80 高亮查找匹配"></a>技巧80 高亮查找匹配</h2><ul>
+<li>启用<code>hlsearch</code>选项可以高亮</li>
+</ul>
+<h2 id="技巧81-在执行查找前预览第一处匹配"><a href="#技巧81-在执行查找前预览第一处匹配" class="headerlink" title="技巧81 在执行查找前预览第一处匹配"></a>技巧81 在执行查找前预览第一处匹配</h2><ul>
+<li><code>incsearch</code>选项可以让Vim在真正执行查找命令前预览第一处匹配。</li>
+<li>该技巧也可以用来检查是否存在一处匹配。</li>
+<li>快捷键<code>&lt;ctrl+r&gt;&lt;ctrl+w&gt;</code>会根据当前预览的匹配结果对查找域进行自动补全。不过如果使用了元字符\v则该快捷键会有些瑕疵。</li>
+</ul>
+<h2 id="技巧82-统计当前模式的匹配个数"><a href="#技巧82-统计当前模式的匹配个数" class="headerlink" title="技巧82 统计当前模式的匹配个数"></a>技巧82 统计当前模式的匹配个数</h2><ul>
+<li><code>:%s///gn</code>可以统计次数，查找域用的是上次的查找模式，n会抑制正常的替换作用，改为简单的技术，所以替换域留空即可。</li>
+</ul>
+<h2 id="技巧83-将光标偏移到查找匹配的结尾"><a href="#技巧83-将光标偏移到查找匹配的结尾" class="headerlink" title="技巧83 将光标偏移到查找匹配的结尾"></a>技巧83 将光标偏移到查找匹配的结尾</h2><ul>
+<li>查找模式后面跟/e可以将光标偏移到匹配的结尾处。</li>
+</ul>
+<h2 id="技巧84-对完整的查找匹配进行操作"><a href="#技巧84-对完整的查找匹配进行操作" class="headerlink" title="技巧84 对完整的查找匹配进行操作"></a>技巧84 对完整的查找匹配进行操作</h2><ul>
+<li>感觉就是在查找模式中利用\e、f{char}之类的标志位或命令选中完整的匹配。</li>
+</ul>
+<h2 id="技巧85-利用查找历史，迭代完成复杂的模式"><a href="#技巧85-利用查找历史，迭代完成复杂的模式" class="headerlink" title="技巧85 利用查找历史，迭代完成复杂的模式"></a>技巧85 利用查找历史，迭代完成复杂的模式</h2><ul>
+<li><code>q/</code>可以唤出命令历史。</li>
+<li>需要捕获引号括起来的内容的时候就记得可以用\1这种寄存器。</li>
+</ul>
+<h2 id="技巧86-查找当前高亮选区中的文本"><a href="#技巧86-查找当前高亮选区中的文本" class="headerlink" title="技巧86 查找当前高亮选区中的文本"></a>技巧86 查找当前高亮选区中的文本</h2><ul>
+<li>这个目前可以忽略吧。</li>
+</ul>
+<h1 id="十四、替换"><a href="#十四、替换" class="headerlink" title="十四、替换"></a>十四、替换</h1><h2 id="技巧87-结识substitute命令"><a href="#技巧87-结识substitute命令" class="headerlink" title="技巧87 结识substitute命令"></a>技巧87 结识substitute命令</h2><ul>
+<li>基本的替换语法如下：<code>:[range]s[ubstitute]/{pattern}/{string}/[flags]</code></li>
+</ul>
+<h2 id="技巧88-在文件范围内查找并替换每一处匹配"><a href="#技巧88-在文件范围内查找并替换每一处匹配" class="headerlink" title="技巧88 在文件范围内查找并替换每一处匹配"></a>技巧88 在文件范围内查找并替换每一处匹配</h2><ul>
+<li>缺省情况下，substitute命令只会作用于当前行且只修改第一处匹配。</li>
+<li>/g标志位可以使替换命令修改一整行的所有匹配，range域填%即可使其作用于所有每一行，两者结合就是全局替换。</li>
+</ul>
+<h2 id="技巧89-手动控制每一次替换操作"><a href="#技巧89-手动控制每一次替换操作" class="headerlink" title="技巧89 手动控制每一次替换操作"></a>技巧89 手动控制每一次替换操作</h2><ul>
+<li>/c标志位让我们可以控制每一次匹配的地方是否需要进行替换。</li>
+</ul>
+<h2 id="技巧90-重用上次的查找模式"><a href="#技巧90-重用上次的查找模式" class="headerlink" title="技巧90 重用上次的查找模式"></a>技巧90 重用上次的查找模式</h2><ul>
+<li>将查找域留空，可以使Vim重用上次的查找模式。</li>
+<li>需要注意，把查找域留空，会在命令历史中留下一项不完整的记录。这在有些时候会带来不便，因为查找模式的命令和替换操作的命令所保存的地方不一样。</li>
+</ul>
+<h2 id="技巧91-用寄存器的内容替换"><a href="#技巧91-用寄存器的内容替换" class="headerlink" title="技巧91 用寄存器的内容替换"></a>技巧91 用寄存器的内容替换</h2><ul>
+<li>如果某段文本已经在当前文档中出现过，我们可以先把它复制到寄存器，再通过传值或引用的方式将寄存器的内容应用到替换域。</li>
+<li>假设我们已经复制了多行文本到寄存器0中，现在需要在替换域中使用这份内容，则可以使用<code>:%s//\=@0/g</code>。<code>\=</code>表示Vim将执行一段表达式脚本。</li>
+</ul>
+<h2 id="技巧92-重复上一次的substitute命令"><a href="#技巧92-重复上一次的substitute命令" class="headerlink" title="技巧92 重复上一次的substitute命令"></a>技巧92 重复上一次的substitute命令</h2><ul>
+<li>假如我们刚刚执行完一条替换命令，突然意识到了失误，应该加上%才对，这时可以使用<code>g&amp;</code>，这条命令等价于<code>:%s//~/&amp;</code>，即可在整个文件的范围内重复该条命令。</li>
+<li>总是可以指定一个新的范围，并使用<code>:&amp;&amp;</code>命令重新执行替换操作。</li>
+<li>&amp;命令是:s命令的同义词，用于重复上一次的替换操作。但遗憾的是，不论上次使用的是什么标志位，&amp;命令都将忽略他们。所以我们会用:&amp;&amp;，后一个&amp;命令会保留标志位。</li>
+</ul>
+<h2 id="技巧93-使用子匹配重排CSV文件的字段"><a href="#技巧93-使用子匹配重排CSV文件的字段" class="headerlink" title="技巧93 使用子匹配重排CSV文件的字段"></a>技巧93 使用子匹配重排CSV文件的字段</h2><ul>
+<li>可以在查找模式中利用()捕获子匹配，并在替换域中引用它们。</li>
+</ul>
+<h2 id="技巧94-在替换过程中执行算术运算"><a href="#技巧94-在替换过程中执行算术运算" class="headerlink" title="技巧94 在替换过程中执行算术运算"></a>技巧94 在替换过程中执行算术运算</h2><ul>
+<li>替换域中的内容不一定非得是简单的字符串，我们可以执行一段Vim脚本表达式，然后用其结果充当字符串使用。</li>
+<li>一般是先用正则表达式匹配我们要替换的区域，然后使用表达式寄存器，调用函数submatch(0)进行操作。</li>
+</ul>
+<h2 id="技巧95-交换两个或更多的单词"><a href="#技巧95-交换两个或更多的单词" class="headerlink" title="技巧95 交换两个或更多的单词"></a>技巧95 交换两个或更多的单词</h2><ul>
+<li>越来越复杂了，有点搞不定了。选择，替换。</li>
+</ul>
+<h2 id="技巧96-在多个文件中执行查找与替换"><a href="#技巧96-在多个文件中执行查找与替换" class="headerlink" title="技巧96 在多个文件中执行查找与替换"></a>技巧96 在多个文件中执行查找与替换</h2><ul>
+<li>Vim没有直接提供这样的功能，只能通过一些简单命令的组合，间接来实现这种功能。</li>
+<li>有一种方法可以用<code>:argdo</code>命令，先打开所有文件，然后用该命令去替换。</li>
+<li>但这会打开很多多余文件，还有一种方法，可以先选择匹配查找模式的文件，然后再在这些文件上执行命令。涉及到什么quickfix列表、copen命令，暂时不用管吧。</li>
+</ul>
+<h1 id="十五、global命令"><a href="#十五、global命令" class="headerlink" title="十五、global命令"></a>十五、global命令</h1><h2 id="技巧97-结识global命令"><a href="#技巧97-结识global命令" class="headerlink" title="技巧97 结识global命令"></a>技巧97 结识global命令</h2><ul>
+<li><code>:global</code>命令结合了Ex命令和Vim的模式匹配两种功能，允许我们在某个指定模式的所有匹配行上执行Ex命令，语法如下<code>:[range] global[!] /{pattern}/ [cmd]</code></li>
+<li>缺省情况下，global命令的作用范围是整个文件。</li>
+<li>global!或者vglobal命令表示反转，会在没有匹配到模式的行上执行cmd命令。</li>
+</ul>
+<h2 id="技巧98-删除所有包含模式的文本行"><a href="#技巧98-删除所有包含模式的文本行" class="headerlink" title="技巧98 删除所有包含模式的文本行"></a>技巧98 删除所有包含模式的文本行</h2><ul>
+<li>将<code>:global</code>和<code>:delete</code>命令一起组合使用，可快速剪裁文本。</li>
+<li>用<code>:g/re/d</code>可以删除匹配的所有行，相反<code>:v/re/d</code>可以删除不匹配的所有行。</li>
+<li>其实grep命令即是<code>:g/re/p</code>，这样就能记住了。</li>
+</ul>
+<h2 id="技巧99-将TODO项收集至寄存器"><a href="#技巧99-将TODO项收集至寄存器" class="headerlink" title="技巧99 将TODO项收集至寄存器"></a>技巧99 将TODO项收集至寄存器</h2><ul>
+<li>和上条相似，将<code>:global</code>和<code>:yank</code>一起组合使用，就可以把匹配项文本行收集到某个寄存器中。</li>
+<li><code>:t</code>命令见技巧29，主要是把一些内容显示到文本结尾，不想影响寄存器内容的时候可以用。</li>
+</ul>
+<h2 id="技巧100-将CSS文件中所有规则的属性按照字母排序"><a href="#技巧100-将CSS文件中所有规则的属性按照字母排序" class="headerlink" title="技巧100 将CSS文件中所有规则的属性按照字母排序"></a>技巧100 将CSS文件中所有规则的属性按照字母排序</h2><ul>
+<li><code>:global</code>的广义模式<code>:g/{start}/ .,{finish} [cmd]</code>，可以理解成从start开始，到finish结束的所有行进行指定的cmd操作。<code>.</code>在这里表示当前行。</li>
+</ul>
+<h1 id="十六、通过ctags建立索引，并引用其浏览源代码"><a href="#十六、通过ctags建立索引，并引用其浏览源代码" class="headerlink" title="十六、通过ctags建立索引，并引用其浏览源代码"></a>十六、通过ctags建立索引，并引用其浏览源代码</h1><h2 id="技巧101-结识ctags"><a href="#技巧101-结识ctags" class="headerlink" title="技巧101 结识ctags"></a>技巧101 结识ctags</h2><ul>
+<li>例如在Ubuntu上，可以通过<code>sudo apt-get install exuberant-ctags</code>的方式安装该程序</li>
+<li>标签文件的前几行由元数据组成，而后每一行文本均有关键字、文件名以及关键字在源代码中的位置这3项内容构成。关键字会按照字母顺序排列。</li>
+<li>用模式定位关键字，而不是用行号。</li>
+<li>用元数据标记关键字</li>
+</ul>
+<h2 id="技巧102-配置Vim使用ctags"><a href="#技巧102-配置Vim使用ctags" class="headerlink" title="技巧102 配置Vim使用ctags"></a>技巧102 配置Vim使用ctags</h2><ul>
+<li><code>:set tags?</code>可以查看ctags缺省配置</li>
+<li>通过<code>:!ctags -R</code>可以在Vim中直接调用生成tags文件。</li>
+<li>还可以使用映射项以及<code>:autocmd BufWritePost * call system(&quot;ctags -R&quot;)</code>命令实现在每次保存文件时自动调用ctags。</li>
+<li>还有一种策略可以实现在每次提交代码改动时自动更新代码库的索引，详见p239。</li>
+</ul>
+<h2 id="技巧103-使用Vim的标签跳转命令，浏览关键字的定义"><a href="#技巧103-使用Vim的标签跳转命令，浏览关键字的定义" class="headerlink" title="技巧103 使用Vim的标签跳转命令，浏览关键字的定义"></a>技巧103 使用Vim的标签跳转命令，浏览关键字的定义</h2><ul>
+<li><code>&lt;ctrl+]&gt;</code>可以跳转到关键字的定义处。此时<code>&lt;ctrl+t&gt;</code>会充当后退到原处的功能。</li>
+<li><code>g&lt;ctrl+]&gt;</code>可以在有多次匹配定义的时候让我们自行挑选需要跳转的地方。</li>
+<li>其实不必非得将光标移到关键字上才能进行标签跳转，也可以用Ex命令达到同样的目的，例如<code>:tag {keyward}</code>与<code>:tjump {keyward}</code>分别等同于上述两个命令。</li>
+</ul>
+<h1 id="十七、编译代码，并通过Quickfix列表浏览错误信息"><a href="#十七、编译代码，并通过Quickfix列表浏览错误信息" class="headerlink" title="十七、编译代码，并通过Quickfix列表浏览错误信息"></a>十七、编译代码，并通过Quickfix列表浏览错误信息</h1><h2 id="技巧104-不用离开Vim也能编译代码"><a href="#技巧104-不用离开Vim也能编译代码" class="headerlink" title="技巧104 不用离开Vim也能编译代码"></a>技巧104 不用离开Vim也能编译代码</h2><ul>
+<li>在Vim中可以直接使用<code>:make</code>编译代码，不止会显示make命令的结果以外，还会解析每一行内容，对于每一条错误信息都会在quickfix列表中为其创建一项纪录，运行后会跳转到quickfix列表的第一项纪录。</li>
+<li>如果不想跳转到第一项纪录，可以<code>:make!</code>。</li>
+</ul>
+<h2 id="技巧105-浏览Quickfix列表"><a href="#技巧105-浏览Quickfix列表" class="headerlink" title="技巧105 浏览Quickfix列表"></a>技巧105 浏览Quickfix列表</h2><ul>
+<li>quickfix列表会保存一组针对单个或多个文件内容的位置信息，这些信息来自于<code>:make</code>、<code>:grep</code>以及<code>:vimgrep</code>。</li>
+<li>对于每一条用于填充quickfix列表的命令，前面加个l都能操作对应的位置列表。位置列表可以理解成每个缓冲区的局部变量，而quickfix列表是全局变量。</li>
+<li><code>:cnext</code>和<code>:cprevios</code>两个命令用来操作最基本的quickfix列表前后移动。<code>:copen</code>可以打开包含quickfix列表内容的窗口。</li>
+</ul>
+<h2 id="技巧106-回溯以前的Quickfix列表"><a href="#技巧106-回溯以前的Quickfix列表" class="headerlink" title="技巧106 回溯以前的Quickfix列表"></a>技巧106 回溯以前的Quickfix列表</h2><ul>
+<li>更新quickfix列表时，Vim并不会覆盖之前的内容，而是将使用过的quickfix列表结果保存起来，方便回溯。</li>
+<li><code>:colder</code>命令可以回溯quickfix列表之前的某个版本（Vim保存最近10个）。为了从旧的回到新一版的，则可以运行<code>:cnewer</code>。</li>
+</ul>
+<h2 id="技巧107-定制外部编译器"><a href="#技巧107-定制外部编译器" class="headerlink" title="技巧107 定制外部编译器"></a>技巧107 定制外部编译器</h2><ul>
+<li>Vim的<code>:make</code>不仅限于调用外部的make程序，也可以调用任何安装在你机器上的编译器。</li>
+<li>这节主要写了个例子，讲述如何在vim里配置别的编译器，没有细看</li>
+<li>在Vim的术语中，编译器是指任何可以针对文档进行处理，并生成错误警告的外部程序。而<code>:make</code>命令指负责调用外部编译器，并对其输出进行解析，以此构建一个可供浏览的quickfix列表。</li>
+<li><code>vim -u NONE -N file</code></li>
+</ul>
+<h1 id="十八-通过grep、vimgrep以及其他工具对整个工程进行查找"><a href="#十八-通过grep、vimgrep以及其他工具对整个工程进行查找" class="headerlink" title="十八 通过grep、vimgrep以及其他工具对整个工程进行查找"></a>十八 通过grep、vimgrep以及其他工具对整个工程进行查找</h1><h2 id="技巧108-不必离开Vim也能调用grep"><a href="#技巧108-不必离开Vim也能调用grep" class="headerlink" title="技巧108 不必离开Vim也能调用grep"></a>技巧108 不必离开Vim也能调用grep</h2><ul>
+<li>-n选项会在grep的结果中加入行号信息</li>
+<li>Vim中外部grep命令进行了封装，可以直接调用。Vim会解析grep的输出并根据输出创建一个quickfix列表，然后我们可以通过quickfix列表进行跳转，内部的grep命令会自动封装-n选项。如果要忽略大小写，需要手动加-i选项。</li>
+</ul>
+<h2 id="技巧109-定制grep"><a href="#技巧109-定制grep" class="headerlink" title="技巧109 定制grep"></a>技巧109 定制grep</h2><ul>
+<li>Vim中的grep命令是外部grep程序的包装器，通过配置<code>grepprg</code>和<code>grepformat</code>两个选项来对Vim查找的行为进行定制。</li>
+<li>主要可以安装一个ack命令来用，暂时没有细看。</li>
+</ul>
+<h2 id="技巧110-使用Vim内部的grep"><a href="#技巧110-使用Vim内部的grep" class="headerlink" title="技巧110 使用Vim内部的grep"></a>技巧110 使用Vim内部的grep</h2><ul>
+<li><code>:vimgrep</code>命令允许我们使用Vim自带的正则表达式引擎，实现跨文件的查找功能。此命令可以缩写成<code>:vim</code>。格式如<code>:vim[grep][!] /{pattern}/[g][j] {file} ...</code></li>
+<li>通配符<code>*</code>会匹配某个目录下的任意文件，而通配符<code>**</code>会匹配指定目录以及所有子目录文件。<code>##</code>会被扩展成参数列表中的所有文件。</li>
+<li>如果模式域为空，则会匹配所有行。</li>
+<li>如果想使用最近一次的查找模式，必须通过<code>&lt;ctrl+r&gt;/</code>将其直接粘贴到查找域才行。</li>
+</ul>
+<h1 id="十九-自动补全"><a href="#十九-自动补全" class="headerlink" title="十九 自动补全"></a>十九 自动补全</h1><h2 id="技巧111-结识Vim的关键字自动补全"><a href="#技巧111-结识Vim的关键字自动补全" class="headerlink" title="技巧111 结识Vim的关键字自动补全"></a>技巧111 结识Vim的关键字自动补全</h2><ul>
+<li>Vim的自动补全功能可以在插入模式下被触发。</li>
+<li>通过<code>&lt;ctrl+p&gt;</code>和<code>&lt;ctrl+n&gt;</code>可以实现普通关键字自动补全，可以在插入模式下触发Vim的自动补全，还可以利用他们在补全列表里正向或反向寻找。</li>
+<li>除了最常用的<code>&lt;ctrl+p&gt;&lt;ctrl+n&gt;</code>两个命令外还有一些其他的补全命令，见表19-1，p263。</li>
+</ul>
+<h2 id="技巧112-与自动补全的弹出式菜单进行交互"><a href="#技巧112-与自动补全的弹出式菜单进行交互" class="headerlink" title="技巧112 与自动补全的弹出式菜单进行交互"></a>技巧112 与自动补全的弹出式菜单进行交互</h2><ul>
+<li>有几个重要的快捷键记忆一下。<code>&lt;ctrl+y&gt;</code>确认使用当前选中的匹配行，<code>&lt;ctrl+e&gt;</code>还原最早输入的文本，即退出自动补全。<code>&lt;ctrl+h&gt;</code>从当前匹配项中删除一个字符，<code>&lt;ctrl+l&gt;</code>从当前匹配项中增加一个字符。</li>
+<li>建议浏览补全列表的时候不要用上下键，因为还需要按回车才能选中，而且手指得从本位行上移开。</li>
+<li>连续输入<code>&lt;ctrl+p&gt;&lt;strl+n&gt;</code>可以实现实时过滤补全列表，很好用。</li>
+</ul>
+<h2 id="技巧113-掌握关键字的来龙去脉"><a href="#技巧113-掌握关键字的来龙去脉" class="headerlink" title="技巧113 掌握关键字的来龙去脉"></a>技巧113 掌握关键字的来龙去脉</h2><ul>
+<li>普通关键字自动补全会把来自多个来源的内容编入其补全列表，我们可以对生成补全列表项的来源加以限定。</li>
+<li><code>:!ls</code>可以用来查看缓冲区列表。</li>
+<li><code>&lt;ctrl+x&gt;&lt;ctrl+i&gt;</code>可以补全一些来自其他代码里的单词，就像include的一样。还有比如<code>&lt;ctrl+x&gt;&lt;ctrl+]&gt;</code>可以补全ctags生成的文件里的单词。总的来说，普通关键字补全是最全的，但如果嫌多想要特定来源的补全的话，就用<code>&lt;ctrl+x&gt;</code>加特定的快捷键来实现，见表19-1。</li>
+</ul>
+<h2 id="技巧114-使用字典中的单词进行自动补全"><a href="#技巧114-使用字典中的单词进行自动补全" class="headerlink" title="技巧114 使用字典中的单词进行自动补全"></a>技巧114 使用字典中的单词进行自动补全</h2><ul>
+<li><code>&lt;ctrl+x&gt;&lt;ctrl+k&gt;</code>可以实现自动补全某个字典单词功能。为了激活该功能，我们需要为Vim提供一份合适的单词列表，最简单的办法就是运行<code>:set spell</code>激活Vim的拼写检查功能。</li>
+</ul>
+<h2 id="技巧115-自动补全整行文本"><a href="#技巧115-自动补全整行文本" class="headerlink" title="技巧115 自动补全整行文本"></a>技巧115 自动补全整行文本</h2><ul>
+<li><code>&lt;ctrl+x&gt;&lt;ctrl+l&gt;</code>面向行自动补全。</li>
+</ul>
+<h2 id="技巧116-自动补全文件名"><a href="#技巧116-自动补全文件名" class="headerlink" title="技巧116 自动补全文件名"></a>技巧116 自动补全文件名</h2><ul>
+<li><code>&lt;ctrl+x&gt;&lt;ctrl+f&gt;</code>可以自动补全文件名。</li>
+<li>Vim的文件名自动补全功能只能相对于工作目录的路径进行扩展，而不是相对于当前编辑文件的路径。</li>
+<li><code>:cd -</code>可以在Vim中切换到之前的工作目录。</li>
+</ul>
+<h2 id="技巧117-根据上下文自动补全"><a href="#技巧117-根据上下文自动补全" class="headerlink" title="技巧117 根据上下文自动补全"></a>技巧117 根据上下文自动补全</h2><ul>
+<li><code>&lt;ctrl+x&gt;&lt;ctrl+o&gt;</code>实现该功能，全能补全。</li>
+<li><p>实际上，该功能由专用的文件类型插件实现，需要下载以下配置行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set nocompatible</span><br><span class="line">filetype plugin on</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>此外还需要安装一个为所用语言实现了全能补全功能的插件。</p>
+</li>
+</ul>
+<h1 id="二十-利用Vim的拼写检查器，查找并更正拼写错误"><a href="#二十-利用Vim的拼写检查器，查找并更正拼写错误" class="headerlink" title="二十 利用Vim的拼写检查器，查找并更正拼写错误"></a>二十 利用Vim的拼写检查器，查找并更正拼写错误</h1><h2 id="技巧118-对你的工作进行拼写检查"><a href="#技巧118-对你的工作进行拼写检查" class="headerlink" title="技巧118 对你的工作进行拼写检查"></a>技巧118 对你的工作进行拼写检查</h2><ul>
+<li>使用<code>:set spell</code>可以对所有未在拼写文件中出现过的单词进行高亮标记。</li>
+<li>可以使用<code>[s</code>和<code>]s</code>命令在拼写错误的单词间进行跳转。当光标位于某个拼错的单词上时，可以使用<code>z=</code>命令来获取Vim提供的更正建议列表。</li>
+</ul>
+<h2 id="技巧119-使用其他拼写字典"><a href="#技巧119-使用其他拼写字典" class="headerlink" title="技巧119 使用其他拼写字典"></a>技巧119 使用其他拼写字典</h2><ul>
+<li>修改配置<code>spelllang</code>选项可以更改缺省的拼写字典，要注意的是这不是全局性的，永远只在本地缓冲区生效。这意味着可以在编辑两个或多个文档时采用不同的拼写字典。</li>
+<li>可以使用spellfile.vim的插件安装其他所需的语言拼写字典，为了激活这个功能，需要在vimrc中添加两行，具体看p276吧。</li>
+</ul>
+<h2 id="技巧120-将单词添加到拼写文件中"><a href="#技巧120-将单词添加到拼写文件中" class="headerlink" title="技巧120 将单词添加到拼写文件中"></a>技巧120 将单词添加到拼写文件中</h2><ul>
+<li>我们可以自定义拼写文件里的词。</li>
+<li><code>zg</code>命令可以把光标下的单词添加到拼写文件中，<code>zw</code>则是相反功能，将单词从拼写文件中删除，<code>zug</code>则是撤销光标所在单词执行过的<code>zg</code>或者<code>zw</code>。</li>
+</ul>
+<h2 id="技巧121-在插入模式下更正拼写错误"><a href="#技巧121-在插入模式下更正拼写错误" class="headerlink" title="技巧121 在插入模式下更正拼写错误"></a>技巧121 在插入模式下更正拼写错误</h2><ul>
+<li>插入模式下使用<code>&lt;ctrl+x&gt;s</code>或者<code>&lt;ctrl+x&gt;&lt;ctrl+s&gt;</code>可以使用拼写自动补全功能。其中<code>&lt;ctrl+x&gt;s</code>会有点特殊，它会使Vim从光标所在位置开始方向扫描，直到发现一处拼写错误为止，然后再根据更正建议创建单词列表并显示在弹出菜单里，适合写完一行修正这一行的所有错误时使用。</li>
+</ul>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><ul>
+<li>动态改变Vim的设置项：以<code>ignorecase</code>为例，其可被缩写成<code>ic</code>。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>:set ignorecase</td>
+<td>开启ignorecase</td>
+</tr>
+<tr>
+<td>:set noignorecase</td>
+<td>关闭ignorecase</td>
+</tr>
+<tr>
+<td>:set ignorecase!</td>
+<td>反转</td>
+</tr>
+<tr>
+<td>:set ignorecase?</td>
+<td>获取当前设置的状态</td>
+</tr>
+<tr>
+<td>:set ignorecase&amp;</td>
+<td>恢复默认状态</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>在Vim里内使用<code>:edit $MYVIMRC</code>可以打开vimrc。</li>
+<li>可以为特定类型的文件应用个性化设置。</li>
+</ul>
+<p>【END】</p>
 
       
     </div>
@@ -866,7 +1160,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vimtutor"><span class="nav-number">1.</span> <span class="nav-text">Vimtutor</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#《Vim实用技巧》"><span class="nav-number">2.</span> <span class="nav-text">《Vim实用技巧》</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一-Vim解决问题的方式"><span class="nav-number">3.</span> <span class="nav-text">一.Vim解决问题的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧1-结识-命令"><span class="nav-number">3.1.</span> <span class="nav-text">技巧1 结识.命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧2-不要自我重复"><span class="nav-number">3.2.</span> <span class="nav-text">技巧2 不要自我重复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧3-以退为进"><span class="nav-number">3.3.</span> <span class="nav-text">技巧3 以退为进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧4-执行、重复、回退"><span class="nav-number">3.4.</span> <span class="nav-text">技巧4 执行、重复、回退</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧5-查找并手动替换"><span class="nav-number">3.5.</span> <span class="nav-text">技巧5 查找并手动替换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧6-结识-范式"><span class="nav-number">3.6.</span> <span class="nav-text">技巧6 结识.范式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、普通模式"><span class="nav-number">4.</span> <span class="nav-text">二、普通模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧7-停顿时请移开画笔"><span class="nav-number">4.1.</span> <span class="nav-text">技巧7 停顿时请移开画笔</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧8-把撤销单元切成块"><span class="nav-number">4.2.</span> <span class="nav-text">技巧8 把撤销单元切成块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧9-构造可重复的修改"><span class="nav-number">4.3.</span> <span class="nav-text">技巧9 构造可重复的修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧10-用次数做简单的算数运算"><span class="nav-number">4.4.</span> <span class="nav-text">技巧10 用次数做简单的算数运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧11-能够重复，就别用次数"><span class="nav-number">4.5.</span> <span class="nav-text">技巧11 能够重复，就别用次数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧12-双剑合璧，天下无敌"><span class="nav-number">4.6.</span> <span class="nav-text">技巧12 双剑合璧，天下无敌</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、插入模式"><span class="nav-number">5.</span> <span class="nav-text">三、插入模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧13-在插入模式下可即时更正错误"><span class="nav-number">5.1.</span> <span class="nav-text">技巧13 在插入模式下可即时更正错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧14-返回普通模式"><span class="nav-number">5.2.</span> <span class="nav-text">技巧14 返回普通模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧15-不离开插入模式，粘贴寄存器中的文本"><span class="nav-number">5.3.</span> <span class="nav-text">技巧15 不离开插入模式，粘贴寄存器中的文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧16-随时随地做运算"><span class="nav-number">5.4.</span> <span class="nav-text">技巧16 随时随地做运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧17-用字符编码插入非常用字符"><span class="nav-number">5.5.</span> <span class="nav-text">技巧17 用字符编码插入非常用字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧18-用二合字母插入非常用字符"><span class="nav-number">5.6.</span> <span class="nav-text">技巧18 用二合字母插入非常用字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧19-用替换模式替换已有文本"><span class="nav-number">5.7.</span> <span class="nav-text">技巧19 用替换模式替换已有文本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、可视模式"><span class="nav-number">6.</span> <span class="nav-text">四、可视模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧20-深入理解可视模式"><span class="nav-number">6.1.</span> <span class="nav-text">技巧20 深入理解可视模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧21-选择高亮选区"><span class="nav-number">6.2.</span> <span class="nav-text">技巧21 选择高亮选区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧22-重复执行面向行的可视命令"><span class="nav-number">6.3.</span> <span class="nav-text">技巧22 重复执行面向行的可视命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧23-只要可能，最好用操作符命令而不是可视命令"><span class="nav-number">6.4.</span> <span class="nav-text">技巧23 只要可能，最好用操作符命令而不是可视命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧24-用面向列块的可视模式编辑表格数据"><span class="nav-number">6.5.</span> <span class="nav-text">技巧24 用面向列块的可视模式编辑表格数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧25-修改列文本"><span class="nav-number">6.6.</span> <span class="nav-text">技巧25 修改列文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧26-在长短不一的高亮块后添加文本"><span class="nav-number">6.7.</span> <span class="nav-text">技巧26 在长短不一的高亮块后添加文本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、命令行模式"><span class="nav-number">7.</span> <span class="nav-text">五、命令行模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧27-结识Vim的命令行模式"><span class="nav-number">7.1.</span> <span class="nav-text">技巧27 结识Vim的命令行模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧28-在一行或多个连续行上执行命令"><span class="nav-number">7.2.</span> <span class="nav-text">技巧28 在一行或多个连续行上执行命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧29-使用-t和-m命令复制和移动行"><span class="nav-number">7.3.</span> <span class="nav-text">技巧29 使用:t和:m命令复制和移动行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧30-在指定范围上执行普通模式命令"><span class="nav-number">7.4.</span> <span class="nav-text">技巧30 在指定范围上执行普通模式命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧31-重复上次的Ex命令"><span class="nav-number">7.5.</span> <span class="nav-text">技巧31 重复上次的Ex命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧32-自动补全Ex命令"><span class="nav-number">7.6.</span> <span class="nav-text">技巧32 自动补全Ex命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧33-把当前单词插入到命令行"><span class="nav-number">7.7.</span> <span class="nav-text">技巧33 把当前单词插入到命令行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧34-回溯历史命令"><span class="nav-number">7.8.</span> <span class="nav-text">技巧34 回溯历史命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧35-运行Shell命令"><span class="nav-number">7.9.</span> <span class="nav-text">技巧35 运行Shell命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、管理多个文件"><span class="nav-number">8.</span> <span class="nav-text">六、管理多个文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧36-用缓冲区列表管理打开的文件"><span class="nav-number">8.1.</span> <span class="nav-text">技巧36 用缓冲区列表管理打开的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧37-用参数列表将缓冲区分组"><span class="nav-number">8.2.</span> <span class="nav-text">技巧37 用参数列表将缓冲区分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧38-管理隐藏缓冲区"><span class="nav-number">8.3.</span> <span class="nav-text">技巧38 管理隐藏缓冲区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧39-将工作区切分成窗口"><span class="nav-number">8.4.</span> <span class="nav-text">技巧39 将工作区切分成窗口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧40-用标签页将窗口分组"><span class="nav-number">8.5.</span> <span class="nav-text">技巧40 用标签页将窗口分组</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七、打开及保存文件"><span class="nav-number">9.</span> <span class="nav-text">七、打开及保存文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧41-用-edit命令打开文件"><span class="nav-number">9.1.</span> <span class="nav-text">技巧41 用:edit命令打开文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧42-使用-find打开文件"><span class="nav-number">9.2.</span> <span class="nav-text">技巧42 使用:find打开文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧43-使用netrw管理文件系统"><span class="nav-number">9.3.</span> <span class="nav-text">技巧43 使用netrw管理文件系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧44-把文件保存到不存在的目录中"><span class="nav-number">9.4.</span> <span class="nav-text">技巧44 把文件保存到不存在的目录中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧45-以超级用户权限保存文件"><span class="nav-number">9.5.</span> <span class="nav-text">技巧45 以超级用户权限保存文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#八、用动作命令在文档中移动"><span class="nav-number">10.</span> <span class="nav-text">八、用动作命令在文档中移动</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧46-让手指保持在本位行上"><span class="nav-number">10.1.</span> <span class="nav-text">技巧46 让手指保持在本位行上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧47-区分实际行与屏幕行"><span class="nav-number">10.2.</span> <span class="nav-text">技巧47 区分实际行与屏幕行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧48-基于单词移动"><span class="nav-number">10.3.</span> <span class="nav-text">技巧48 基于单词移动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧49-对字符进行查找"><span class="nav-number">10.4.</span> <span class="nav-text">技巧49 对字符进行查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧50-通过查找进行移动"><span class="nav-number">10.5.</span> <span class="nav-text">技巧50 通过查找进行移动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧51-用精确的文本对象选择选区"><span class="nav-number">10.6.</span> <span class="nav-text">技巧51 用精确的文本对象选择选区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧52-删除周边，修改内部"><span class="nav-number">10.7.</span> <span class="nav-text">技巧52 删除周边，修改内部</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧53-设置位置标记，以便快速跳回"><span class="nav-number">10.8.</span> <span class="nav-text">技巧53 设置位置标记，以便快速跳回</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧54-在匹配括号间跳转"><span class="nav-number">10.9.</span> <span class="nav-text">技巧54 在匹配括号间跳转</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#九-在文件间跳转"><span class="nav-number">11.</span> <span class="nav-text">九 在文件间跳转</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧55-遍历跳转列表"><span class="nav-number">11.1.</span> <span class="nav-text">技巧55 遍历跳转列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧56-遍历改变列表"><span class="nav-number">11.2.</span> <span class="nav-text">技巧56 遍历改变列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧57-跳转到光标下的文件"><span class="nav-number">11.3.</span> <span class="nav-text">技巧57 跳转到光标下的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧58-用全局位置标记在文件间快速跳转"><span class="nav-number">11.4.</span> <span class="nav-text">技巧58 用全局位置标记在文件间快速跳转</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十、复制与粘贴"><span class="nav-number">12.</span> <span class="nav-text">十、复制与粘贴</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧59-用无名寄存器实现删除、复制与粘贴操作"><span class="nav-number">12.1.</span> <span class="nav-text">技巧59 用无名寄存器实现删除、复制与粘贴操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧60-深入理解Vim寄存器"><span class="nav-number">12.2.</span> <span class="nav-text">技巧60 深入理解Vim寄存器</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vimtutor"><span class="nav-number">1.</span> <span class="nav-text">Vimtutor</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#《Vim实用技巧》"><span class="nav-number">2.</span> <span class="nav-text">《Vim实用技巧》</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一-Vim解决问题的方式"><span class="nav-number">3.</span> <span class="nav-text">一.Vim解决问题的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧1-结识-命令"><span class="nav-number">3.1.</span> <span class="nav-text">技巧1 结识.命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧2-不要自我重复"><span class="nav-number">3.2.</span> <span class="nav-text">技巧2 不要自我重复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧3-以退为进"><span class="nav-number">3.3.</span> <span class="nav-text">技巧3 以退为进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧4-执行、重复、回退"><span class="nav-number">3.4.</span> <span class="nav-text">技巧4 执行、重复、回退</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧5-查找并手动替换"><span class="nav-number">3.5.</span> <span class="nav-text">技巧5 查找并手动替换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧6-结识-范式"><span class="nav-number">3.6.</span> <span class="nav-text">技巧6 结识.范式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、普通模式"><span class="nav-number">4.</span> <span class="nav-text">二、普通模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧7-停顿时请移开画笔"><span class="nav-number">4.1.</span> <span class="nav-text">技巧7 停顿时请移开画笔</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧8-把撤销单元切成块"><span class="nav-number">4.2.</span> <span class="nav-text">技巧8 把撤销单元切成块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧9-构造可重复的修改"><span class="nav-number">4.3.</span> <span class="nav-text">技巧9 构造可重复的修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧10-用次数做简单的算数运算"><span class="nav-number">4.4.</span> <span class="nav-text">技巧10 用次数做简单的算数运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧11-能够重复，就别用次数"><span class="nav-number">4.5.</span> <span class="nav-text">技巧11 能够重复，就别用次数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧12-双剑合璧，天下无敌"><span class="nav-number">4.6.</span> <span class="nav-text">技巧12 双剑合璧，天下无敌</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、插入模式"><span class="nav-number">5.</span> <span class="nav-text">三、插入模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧13-在插入模式下可即时更正错误"><span class="nav-number">5.1.</span> <span class="nav-text">技巧13 在插入模式下可即时更正错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧14-返回普通模式"><span class="nav-number">5.2.</span> <span class="nav-text">技巧14 返回普通模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧15-不离开插入模式，粘贴寄存器中的文本"><span class="nav-number">5.3.</span> <span class="nav-text">技巧15 不离开插入模式，粘贴寄存器中的文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧16-随时随地做运算"><span class="nav-number">5.4.</span> <span class="nav-text">技巧16 随时随地做运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧17-用字符编码插入非常用字符"><span class="nav-number">5.5.</span> <span class="nav-text">技巧17 用字符编码插入非常用字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧18-用二合字母插入非常用字符"><span class="nav-number">5.6.</span> <span class="nav-text">技巧18 用二合字母插入非常用字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧19-用替换模式替换已有文本"><span class="nav-number">5.7.</span> <span class="nav-text">技巧19 用替换模式替换已有文本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、可视模式"><span class="nav-number">6.</span> <span class="nav-text">四、可视模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧20-深入理解可视模式"><span class="nav-number">6.1.</span> <span class="nav-text">技巧20 深入理解可视模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧21-选择高亮选区"><span class="nav-number">6.2.</span> <span class="nav-text">技巧21 选择高亮选区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧22-重复执行面向行的可视命令"><span class="nav-number">6.3.</span> <span class="nav-text">技巧22 重复执行面向行的可视命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧23-只要可能，最好用操作符命令而不是可视命令"><span class="nav-number">6.4.</span> <span class="nav-text">技巧23 只要可能，最好用操作符命令而不是可视命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧24-用面向列块的可视模式编辑表格数据"><span class="nav-number">6.5.</span> <span class="nav-text">技巧24 用面向列块的可视模式编辑表格数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧25-修改列文本"><span class="nav-number">6.6.</span> <span class="nav-text">技巧25 修改列文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧26-在长短不一的高亮块后添加文本"><span class="nav-number">6.7.</span> <span class="nav-text">技巧26 在长短不一的高亮块后添加文本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、命令行模式"><span class="nav-number">7.</span> <span class="nav-text">五、命令行模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧27-结识Vim的命令行模式"><span class="nav-number">7.1.</span> <span class="nav-text">技巧27 结识Vim的命令行模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧28-在一行或多个连续行上执行命令"><span class="nav-number">7.2.</span> <span class="nav-text">技巧28 在一行或多个连续行上执行命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧29-使用-t和-m命令复制和移动行"><span class="nav-number">7.3.</span> <span class="nav-text">技巧29 使用:t和:m命令复制和移动行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧30-在指定范围上执行普通模式命令"><span class="nav-number">7.4.</span> <span class="nav-text">技巧30 在指定范围上执行普通模式命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧31-重复上次的Ex命令"><span class="nav-number">7.5.</span> <span class="nav-text">技巧31 重复上次的Ex命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧32-自动补全Ex命令"><span class="nav-number">7.6.</span> <span class="nav-text">技巧32 自动补全Ex命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧33-把当前单词插入到命令行"><span class="nav-number">7.7.</span> <span class="nav-text">技巧33 把当前单词插入到命令行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧34-回溯历史命令"><span class="nav-number">7.8.</span> <span class="nav-text">技巧34 回溯历史命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧35-运行Shell命令"><span class="nav-number">7.9.</span> <span class="nav-text">技巧35 运行Shell命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、管理多个文件"><span class="nav-number">8.</span> <span class="nav-text">六、管理多个文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧36-用缓冲区列表管理打开的文件"><span class="nav-number">8.1.</span> <span class="nav-text">技巧36 用缓冲区列表管理打开的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧37-用参数列表将缓冲区分组"><span class="nav-number">8.2.</span> <span class="nav-text">技巧37 用参数列表将缓冲区分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧38-管理隐藏缓冲区"><span class="nav-number">8.3.</span> <span class="nav-text">技巧38 管理隐藏缓冲区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧39-将工作区切分成窗口"><span class="nav-number">8.4.</span> <span class="nav-text">技巧39 将工作区切分成窗口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧40-用标签页将窗口分组"><span class="nav-number">8.5.</span> <span class="nav-text">技巧40 用标签页将窗口分组</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七、打开及保存文件"><span class="nav-number">9.</span> <span class="nav-text">七、打开及保存文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧41-用-edit命令打开文件"><span class="nav-number">9.1.</span> <span class="nav-text">技巧41 用:edit命令打开文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧42-使用-find打开文件"><span class="nav-number">9.2.</span> <span class="nav-text">技巧42 使用:find打开文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧43-使用netrw管理文件系统"><span class="nav-number">9.3.</span> <span class="nav-text">技巧43 使用netrw管理文件系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧44-把文件保存到不存在的目录中"><span class="nav-number">9.4.</span> <span class="nav-text">技巧44 把文件保存到不存在的目录中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧45-以超级用户权限保存文件"><span class="nav-number">9.5.</span> <span class="nav-text">技巧45 以超级用户权限保存文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#八、用动作命令在文档中移动"><span class="nav-number">10.</span> <span class="nav-text">八、用动作命令在文档中移动</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧46-让手指保持在本位行上"><span class="nav-number">10.1.</span> <span class="nav-text">技巧46 让手指保持在本位行上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧47-区分实际行与屏幕行"><span class="nav-number">10.2.</span> <span class="nav-text">技巧47 区分实际行与屏幕行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧48-基于单词移动"><span class="nav-number">10.3.</span> <span class="nav-text">技巧48 基于单词移动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧49-对字符进行查找"><span class="nav-number">10.4.</span> <span class="nav-text">技巧49 对字符进行查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧50-通过查找进行移动"><span class="nav-number">10.5.</span> <span class="nav-text">技巧50 通过查找进行移动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧51-用精确的文本对象选择选区"><span class="nav-number">10.6.</span> <span class="nav-text">技巧51 用精确的文本对象选择选区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧52-删除周边，修改内部"><span class="nav-number">10.7.</span> <span class="nav-text">技巧52 删除周边，修改内部</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧53-设置位置标记，以便快速跳回"><span class="nav-number">10.8.</span> <span class="nav-text">技巧53 设置位置标记，以便快速跳回</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧54-在匹配括号间跳转"><span class="nav-number">10.9.</span> <span class="nav-text">技巧54 在匹配括号间跳转</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#九-在文件间跳转"><span class="nav-number">11.</span> <span class="nav-text">九 在文件间跳转</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧55-遍历跳转列表"><span class="nav-number">11.1.</span> <span class="nav-text">技巧55 遍历跳转列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧56-遍历改变列表"><span class="nav-number">11.2.</span> <span class="nav-text">技巧56 遍历改变列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧57-跳转到光标下的文件"><span class="nav-number">11.3.</span> <span class="nav-text">技巧57 跳转到光标下的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧58-用全局位置标记在文件间快速跳转"><span class="nav-number">11.4.</span> <span class="nav-text">技巧58 用全局位置标记在文件间快速跳转</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十、复制与粘贴"><span class="nav-number">12.</span> <span class="nav-text">十、复制与粘贴</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧59-用无名寄存器实现删除、复制与粘贴操作"><span class="nav-number">12.1.</span> <span class="nav-text">技巧59 用无名寄存器实现删除、复制与粘贴操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧60-深入理解Vim寄存器"><span class="nav-number">12.2.</span> <span class="nav-text">技巧60 深入理解Vim寄存器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧61-用寄存器的内容替换高亮选区的文本"><span class="nav-number">12.3.</span> <span class="nav-text">技巧61 用寄存器的内容替换高亮选区的文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧62-把寄存器的内容粘贴出来"><span class="nav-number">12.4.</span> <span class="nav-text">技巧62 把寄存器的内容粘贴出来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧63-与系统剪贴板进行交互"><span class="nav-number">12.5.</span> <span class="nav-text">技巧63 与系统剪贴板进行交互</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十一、宏"><span class="nav-number">13.</span> <span class="nav-text">十一、宏</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧64-宏的读取与执行"><span class="nav-number">13.1.</span> <span class="nav-text">技巧64 宏的读取与执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧65-规范光标位置、直达目标以及中止宏"><span class="nav-number">13.2.</span> <span class="nav-text">技巧65 规范光标位置、直达目标以及中止宏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧66-加次数回放宏"><span class="nav-number">13.3.</span> <span class="nav-text">技巧66 加次数回放宏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧67-在连续的文本上重复修改"><span class="nav-number">13.4.</span> <span class="nav-text">技巧67 在连续的文本上重复修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧68-给宏追加命令"><span class="nav-number">13.5.</span> <span class="nav-text">技巧68  给宏追加命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧69-在一组文件中执行宏"><span class="nav-number">13.6.</span> <span class="nav-text">技巧69 在一组文件中执行宏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧70-用迭代求值的方式给列表编号"><span class="nav-number">13.7.</span> <span class="nav-text">技巧70 用迭代求值的方式给列表编号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧71-编辑宏的内容"><span class="nav-number">13.8.</span> <span class="nav-text">技巧71 编辑宏的内容</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十一、按模式匹配及按原义匹配"><span class="nav-number">14.</span> <span class="nav-text">十一、按模式匹配及按原义匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧72-调整查找模式的大小写敏感性"><span class="nav-number">14.1.</span> <span class="nav-text">技巧72 调整查找模式的大小写敏感性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧73-按正则表达式查找时，使用-v模式开关"><span class="nav-number">14.2.</span> <span class="nav-text">技巧73 按正则表达式查找时，使用\v模式开关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧74-按照原义查找文本时，使用-V原义开关"><span class="nav-number">14.3.</span> <span class="nav-text">技巧74 按照原义查找文本时，使用\V原义开关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧75-使用圆括号捕获子匹配"><span class="nav-number">14.4.</span> <span class="nav-text">技巧75 使用圆括号捕获子匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧76-界定单词的边界"><span class="nav-number">14.5.</span> <span class="nav-text">技巧76 界定单词的边界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧77-界定匹配的边界"><span class="nav-number">14.6.</span> <span class="nav-text">技巧77 界定匹配的边界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧78-转义问题字符"><span class="nav-number">14.7.</span> <span class="nav-text">技巧78 转义问题字符</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十三、查找"><span class="nav-number">15.</span> <span class="nav-text">十三、查找</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧79-结识查找命令"><span class="nav-number">15.1.</span> <span class="nav-text">技巧79 结识查找命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧80-高亮查找匹配"><span class="nav-number">15.2.</span> <span class="nav-text">技巧80 高亮查找匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧81-在执行查找前预览第一处匹配"><span class="nav-number">15.3.</span> <span class="nav-text">技巧81 在执行查找前预览第一处匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧82-统计当前模式的匹配个数"><span class="nav-number">15.4.</span> <span class="nav-text">技巧82 统计当前模式的匹配个数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧83-将光标偏移到查找匹配的结尾"><span class="nav-number">15.5.</span> <span class="nav-text">技巧83 将光标偏移到查找匹配的结尾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧84-对完整的查找匹配进行操作"><span class="nav-number">15.6.</span> <span class="nav-text">技巧84 对完整的查找匹配进行操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧85-利用查找历史，迭代完成复杂的模式"><span class="nav-number">15.7.</span> <span class="nav-text">技巧85 利用查找历史，迭代完成复杂的模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧86-查找当前高亮选区中的文本"><span class="nav-number">15.8.</span> <span class="nav-text">技巧86 查找当前高亮选区中的文本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十四、替换"><span class="nav-number">16.</span> <span class="nav-text">十四、替换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧87-结识substitute命令"><span class="nav-number">16.1.</span> <span class="nav-text">技巧87 结识substitute命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧88-在文件范围内查找并替换每一处匹配"><span class="nav-number">16.2.</span> <span class="nav-text">技巧88 在文件范围内查找并替换每一处匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧89-手动控制每一次替换操作"><span class="nav-number">16.3.</span> <span class="nav-text">技巧89 手动控制每一次替换操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧90-重用上次的查找模式"><span class="nav-number">16.4.</span> <span class="nav-text">技巧90 重用上次的查找模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧91-用寄存器的内容替换"><span class="nav-number">16.5.</span> <span class="nav-text">技巧91 用寄存器的内容替换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧92-重复上一次的substitute命令"><span class="nav-number">16.6.</span> <span class="nav-text">技巧92 重复上一次的substitute命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧93-使用子匹配重排CSV文件的字段"><span class="nav-number">16.7.</span> <span class="nav-text">技巧93 使用子匹配重排CSV文件的字段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧94-在替换过程中执行算术运算"><span class="nav-number">16.8.</span> <span class="nav-text">技巧94 在替换过程中执行算术运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧95-交换两个或更多的单词"><span class="nav-number">16.9.</span> <span class="nav-text">技巧95 交换两个或更多的单词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧96-在多个文件中执行查找与替换"><span class="nav-number">16.10.</span> <span class="nav-text">技巧96 在多个文件中执行查找与替换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十五、global命令"><span class="nav-number">17.</span> <span class="nav-text">十五、global命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧97-结识global命令"><span class="nav-number">17.1.</span> <span class="nav-text">技巧97 结识global命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧98-删除所有包含模式的文本行"><span class="nav-number">17.2.</span> <span class="nav-text">技巧98 删除所有包含模式的文本行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧99-将TODO项收集至寄存器"><span class="nav-number">17.3.</span> <span class="nav-text">技巧99 将TODO项收集至寄存器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧100-将CSS文件中所有规则的属性按照字母排序"><span class="nav-number">17.4.</span> <span class="nav-text">技巧100 将CSS文件中所有规则的属性按照字母排序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十六、通过ctags建立索引，并引用其浏览源代码"><span class="nav-number">18.</span> <span class="nav-text">十六、通过ctags建立索引，并引用其浏览源代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧101-结识ctags"><span class="nav-number">18.1.</span> <span class="nav-text">技巧101 结识ctags</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧102-配置Vim使用ctags"><span class="nav-number">18.2.</span> <span class="nav-text">技巧102 配置Vim使用ctags</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧103-使用Vim的标签跳转命令，浏览关键字的定义"><span class="nav-number">18.3.</span> <span class="nav-text">技巧103 使用Vim的标签跳转命令，浏览关键字的定义</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十七、编译代码，并通过Quickfix列表浏览错误信息"><span class="nav-number">19.</span> <span class="nav-text">十七、编译代码，并通过Quickfix列表浏览错误信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧104-不用离开Vim也能编译代码"><span class="nav-number">19.1.</span> <span class="nav-text">技巧104 不用离开Vim也能编译代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧105-浏览Quickfix列表"><span class="nav-number">19.2.</span> <span class="nav-text">技巧105 浏览Quickfix列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧106-回溯以前的Quickfix列表"><span class="nav-number">19.3.</span> <span class="nav-text">技巧106 回溯以前的Quickfix列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧107-定制外部编译器"><span class="nav-number">19.4.</span> <span class="nav-text">技巧107 定制外部编译器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十八-通过grep、vimgrep以及其他工具对整个工程进行查找"><span class="nav-number">20.</span> <span class="nav-text">十八 通过grep、vimgrep以及其他工具对整个工程进行查找</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧108-不必离开Vim也能调用grep"><span class="nav-number">20.1.</span> <span class="nav-text">技巧108 不必离开Vim也能调用grep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧109-定制grep"><span class="nav-number">20.2.</span> <span class="nav-text">技巧109 定制grep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧110-使用Vim内部的grep"><span class="nav-number">20.3.</span> <span class="nav-text">技巧110 使用Vim内部的grep</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十九-自动补全"><span class="nav-number">21.</span> <span class="nav-text">十九 自动补全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧111-结识Vim的关键字自动补全"><span class="nav-number">21.1.</span> <span class="nav-text">技巧111 结识Vim的关键字自动补全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧112-与自动补全的弹出式菜单进行交互"><span class="nav-number">21.2.</span> <span class="nav-text">技巧112 与自动补全的弹出式菜单进行交互</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧113-掌握关键字的来龙去脉"><span class="nav-number">21.3.</span> <span class="nav-text">技巧113 掌握关键字的来龙去脉</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧114-使用字典中的单词进行自动补全"><span class="nav-number">21.4.</span> <span class="nav-text">技巧114 使用字典中的单词进行自动补全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧115-自动补全整行文本"><span class="nav-number">21.5.</span> <span class="nav-text">技巧115 自动补全整行文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧116-自动补全文件名"><span class="nav-number">21.6.</span> <span class="nav-text">技巧116 自动补全文件名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧117-根据上下文自动补全"><span class="nav-number">21.7.</span> <span class="nav-text">技巧117 根据上下文自动补全</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二十-利用Vim的拼写检查器，查找并更正拼写错误"><span class="nav-number">22.</span> <span class="nav-text">二十 利用Vim的拼写检查器，查找并更正拼写错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧118-对你的工作进行拼写检查"><span class="nav-number">22.1.</span> <span class="nav-text">技巧118 对你的工作进行拼写检查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧119-使用其他拼写字典"><span class="nav-number">22.2.</span> <span class="nav-text">技巧119 使用其他拼写字典</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧120-将单词添加到拼写文件中"><span class="nav-number">22.3.</span> <span class="nav-text">技巧120 将单词添加到拼写文件中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧121-在插入模式下更正拼写错误"><span class="nav-number">22.4.</span> <span class="nav-text">技巧121 在插入模式下更正拼写错误</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最后"><span class="nav-number">23.</span> <span class="nav-text">最后</span></a></li></ol></div>
             
 
           </div>
