@@ -67,7 +67,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="面试,刷题,">
 
 
 
@@ -81,13 +81,14 @@
 
 
 <meta name="description" content="90道1、引用和指针的区别。a、定义指针时分配内存，引用不分配内存，而和原变量内存地址相同，这是最本质的区别。b、引用必须初始化c、没有指向空值的引用，但是存在指向空值的指针。">
+<meta name="keywords" content="面试,刷题">
 <meta property="og:type" content="article">
 <meta property="og:title" content="春招面试准备">
 <meta property="og:url" content="http://yoursite.com/2018/05/31/春招面试准备/index.html">
 <meta property="og:site_name" content="ZRainy">
 <meta property="og:description" content="90道1、引用和指针的区别。a、定义指针时分配内存，引用不分配内存，而和原变量内存地址相同，这是最本质的区别。b、引用必须初始化c、没有指向空值的引用，但是存在指向空值的指针。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-09T15:59:52.000Z">
+<meta property="og:updated_time" content="2019-07-28T15:14:12.722Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="春招面试准备">
 <meta name="twitter:description" content="90道1、引用和指针的区别。a、定义指针时分配内存，引用不分配内存，而和原变量内存地址相同，这是最本质的区别。b、引用必须初始化c、没有指向空值的引用，但是存在指向空值的指针。">
@@ -294,8 +295,8 @@
           
             <span class="post-updated">
               &nbsp; | &nbsp; 更新于
-              <time itemprop="dateUpdated" datetime="2018-10-09T23:59:52+08:00" content="2018-10-09">
-              2018-10-09
+              <time itemprop="dateUpdated" datetime="2019-07-28T23:14:12+08:00" content="2019-07-28">
+              2019-07-28
               </time>
             </span>
           
@@ -406,7 +407,7 @@
 <h2 id="60、析构函数有何特点。"><a href="#60、析构函数有何特点。" class="headerlink" title="60、析构函数有何特点。"></a>60、析构函数有何特点。</h2><p>a、析构函数也是特殊的类成员函数，和构造函数一样没有返回类型<br>b、没有参数<br>c、不能重载<br>d、public、private、protected对析构函数无效<br>e、析构函数不能手动调用，只有在类对象生命周期结束的时候，由系统自动调用释放在构造函数中分配的资源，回收内存。<br>f、构造函数不可以是virtual，但析构函数可以。</p>
 <h2 id="61、虚函数有什么用？"><a href="#61、虚函数有什么用？" class="headerlink" title="61、虚函数有什么用？"></a>61、虚函数有什么用？</h2><p>a、虚函数的功能是使子类可以用同名的函数对父类函数进行覆盖，并且在通过父类指针调用时，如果有覆盖则自动调用子类覆盖函数，如果没覆盖调用父类中的函数，从而实现灵活扩展和多态性。<br>b、如果是纯虚函数，则纯粹是为了在子类覆盖时有个统一的命名而已，子类必须覆盖纯虚函数，否则子类也是抽象类<br>c、含有纯虚函数的类称为抽象类，不能实例化对象，主要用于做接口</p>
 <h2 id="62、虚析构函数的作用"><a href="#62、虚析构函数的作用" class="headerlink" title="62、虚析构函数的作用"></a>62、虚析构函数的作用</h2><p>虚构函数调用是先子后父。<br>当一个派生类对象通过使用一个基类指针删除，而这个基类有一个非虚的析构函数，就会导致运行时派生类不会被销毁，然而基类部分已经被销毁，这就导致了部分析构，造成内存泄露。<br>此时就需要给基类一个虚析构函数。</p>
-<h2 id="63、分别给出bool、in、float、指针变量与零值比较的if语句"><a href="#63、分别给出bool、in、float、指针变量与零值比较的if语句" class="headerlink" title="63、分别给出bool、in、float、指针变量与零值比较的if语句"></a>63、分别给出bool、in、float、指针变量与零值比较的if语句</h2><p>bool:if(!var)<br>int:if(var==0)<br>float: const float var=0.000001;<br>    if(x&gt;-var &amp;&amp; x&lt;var)<br>浮点数不能精确到0，所以需要在一个范围内近似看做0<br>指针：if(var==NULL)</p>
+<h2 id="63、分别给出bool、in、float、指针变量与零值比较的if语句"><a href="#63、分别给出bool、in、float、指针变量与零值比较的if语句" class="headerlink" title="63、分别给出bool、in、float、指针变量与零值比较的if语句"></a>63、分别给出bool、in、float、指针变量与零值比较的if语句</h2><p>bool:if(!var)<br>int:if(var==0)<br>float: const float var=0.000001;<br>​    if(x&gt;-var &amp;&amp; x&lt;var)<br>浮点数不能精确到0，所以需要在一个范围内近似看做0<br>指针：if(var==NULL)</p>
 <h2 id="64、32位下，计算sizeof"><a href="#64、32位下，计算sizeof" class="headerlink" title="64、32位下，计算sizeof"></a>64、32位下，计算sizeof</h2><p>a、<br>void fun(char str[100])<br>{<br>sizeof(str)=?//4<br>}<br>原因：数组做函数形参，会转化成指针<br>b、<br>void <em>p=malloc(100);<br>sizeof(p) //4<br>c、<br>int a[100]<br>sizeof(a)//4</em>100<br>d、<br>char *p=”aaa”<br>sizeof(p)=?//4</p>
 <h2 id="65、写函数返回1-2-3-。。-n的值"><a href="#65、写函数返回1-2-3-。。-n的值" class="headerlink" title="65、写函数返回1+2+3+。。+n的值"></a>65、写函数返回1+2+3+。。+n的值</h2><p>解法1：一重循环<br>解法2：利用高斯公式直接求 （1+n）*n/2</p>
 <h2 id="66、深度广度遍历二叉树。"><a href="#66、深度广度遍历二叉树。" class="headerlink" title="66、深度广度遍历二叉树。"></a>66、深度广度遍历二叉树。</h2><h2 id="67、内联函数和普通函数的区别。"><a href="#67、内联函数和普通函数的区别。" class="headerlink" title="67、内联函数和普通函数的区别。"></a>67、内联函数和普通函数的区别。</h2><p>a、内联函数是将简单函数内嵌道调用它的程序代码中，目的是节约原本函数调用时的时空开销，不能含有循环、条件、选择等复杂的结构。<br>b、内联函数和宏的区别，宏是由预处理器对宏进行替代，而内联函数是通过编译器来控制的。内联函数是真正的函数，取消了函数的参数压栈，减少调用开销，不用担心像宏函数的问题。<br>c、用inline定义内联函数，任何在类的说明部分定义的函数都会自动认为是内联函数。</p>
@@ -535,6 +536,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+            <a href="/tags/刷题/" rel="tag"># 刷题</a>
+          
+        </div>
+      
 
       
       
@@ -660,7 +669,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

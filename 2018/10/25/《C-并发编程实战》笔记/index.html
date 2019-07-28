@@ -67,7 +67,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="C++,多线程,">
 
 
 
@@ -81,13 +81,14 @@
 
 
 <meta name="description" content="书籍中文版翻译地址 书中源码地址 一、你好，C++的并发世界！1、最简单和最基本的并发，是指两个或更多个独立的活动同时发生。 2、为性能而使用并发就像其他所有优化策略一样：它拥有大幅度提高应用性能的潜力，但它也可能使代码复杂化，使其更难理解，并更容易出错。">
+<meta name="keywords" content="C++,多线程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="《C++并发编程实战》笔记">
 <meta property="og:url" content="http://yoursite.com/2018/10/25/《C-并发编程实战》笔记/index.html">
 <meta property="og:site_name" content="ZRainy">
 <meta property="og:description" content="书籍中文版翻译地址 书中源码地址 一、你好，C++的并发世界！1、最简单和最基本的并发，是指两个或更多个独立的活动同时发生。 2、为性能而使用并发就像其他所有优化策略一样：它拥有大幅度提高应用性能的潜力，但它也可能使代码复杂化，使其更难理解，并更容易出错。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-25T14:44:04.053Z">
+<meta property="og:updated_time" content="2019-07-28T15:11:43.833Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《C++并发编程实战》笔记">
 <meta name="twitter:description" content="书籍中文版翻译地址 书中源码地址 一、你好，C++的并发世界！1、最简单和最基本的并发，是指两个或更多个独立的活动同时发生。 2、为性能而使用并发就像其他所有优化策略一样：它拥有大幅度提高应用性能的潜力，但它也可能使代码复杂化，使其更难理解，并更容易出错。">
@@ -294,8 +295,8 @@
           
             <span class="post-updated">
               &nbsp; | &nbsp; 更新于
-              <time itemprop="dateUpdated" datetime="2018-10-25T22:44:04+08:00" content="2018-10-25">
-              2018-10-25
+              <time itemprop="dateUpdated" datetime="2019-07-28T23:11:43+08:00" content="2019-07-28">
+              2019-07-28
               </time>
             </span>
           
@@ -355,7 +356,7 @@
 <p>2、为性能而使用并发就像其他所有优化策略一样：它拥有大幅度提高应用性能的潜力，但它也可能使代码复杂化，使其更难理解，并更容易出错。<br><a id="more"></a><br>3、C++多线程历史：C++98标准不承认线程的存在，并且各种语言要素的操作效果都已顺序抽象机的形式编写。不仅如此，内存模型也没有正式定义，所以没办法在缺少编译器相关扩展的情况下编写多线程应用程序。但C++11新标准改变了这一切，主要模型是Boost中的线程库。</p>
 <p>4、管理线程的函数和类在头文件<thread>中，而保护共享数据的函数和类在其他头文件中声明。简单例子：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;thread&gt;//添加头文件</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span><span class="comment">//每个线程都必须有一个初始函数，新线程的执行将从这里开始，对于主线程来说是main()。</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"Hello World!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">thread <span class="title">t</span><span class="params">(hello)</span></span>;<span class="comment">//将hello函数作为新线程的初始函数，</span></span><br><span class="line">	t.join();<span class="comment">//使调用线程等待t相关联的线程运行结束，少了这一行会报错，因为main可能就会在新线程运行之前结束了。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></thread></p>
 <h1 id="二、线程管理"><a href="#二、线程管理" class="headerlink" title="二、线程管理"></a>二、线程管理</h1><p>1、使用C++线程库启动线程，可以归结为构造thread对象。</p>
-<p>2、构造对象时要避免“最令人头痛的语法解析”问题，如：<br>std::thread    my_thread(background_task());<br>这里相当与声明了一个名为my_thread的函数，这个函数带有一个参数(函数指针指向没有参 数并返回background_task对象的函数)，返回一个std::thread对象的函数，而非启动了一个线程。<br>可使用如下写法避免：<br>std::thread    my_thread((background_task()));        //    1<br>std::thread    my_thread{background_task()};        //    2<br>或用lambda表达式：<br>std::thread    my_thread([]{<br>        do_something();<br>        do_something_else(); })</p>
+<p>2、构造对象时要避免“最令人头痛的语法解析”问题，如：<br>std::thread    my_thread(background_task());<br>这里相当与声明了一个名为my_thread的函数，这个函数带有一个参数(函数指针指向没有参 数并返回background_task对象的函数)，返回一个std::thread对象的函数，而非启动了一个线程。<br>可使用如下写法避免：<br>std::thread    my_thread((background_task()));        //    1<br>std::thread    my_thread{background_task()};        //    2<br>或用lambda表达式：<br>std::thread    my_thread([]{<br>​        do_something();<br>​        do_something_else(); })</p>
 <p>3、启动了线程，你需要明确是要等待线程结束(加入式)，还是让其自主运行(分离式)。</p>
 <p>4、使用一个能访问局部变量的函数去创建线程是一个糟糕的主意(除非十分确定线程会在函数完成前结束)。</p>
 <p>5、通常称分离线程为守护线程(daemon    threads),UNIX中守护线程是指，没有任何用户接口，并且在后台运行的线程。</p>
@@ -380,6 +381,14 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+            <a href="/tags/多线程/" rel="tag"># 多线程</a>
+          
+        </div>
       
 
       
@@ -506,7 +515,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
