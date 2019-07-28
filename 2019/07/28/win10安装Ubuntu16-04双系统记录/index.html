@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ZRainy" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="本文包括以下内容：  双系统安装 Ubuntu访问Google Ubuntu下Tim和微信的安装使用 双系统互相访问文件 Ubuntu搜狗输入法安装">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="win10安装Ubuntu16.04双系统记录">
+<meta property="og:url" content="http://yoursite.com/2019/07/28/win10安装Ubuntu16-04双系统记录/index.html">
+<meta property="og:site_name" content="ZRainy">
+<meta property="og:description" content="本文包括以下内容：  双系统安装 Ubuntu访问Google Ubuntu下Tim和微信的安装使用 双系统互相访问文件 Ubuntu搜狗输入法安装">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/07/28/win10安装Ubuntu16-04双系统记录/iso.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/07/28/win10安装Ubuntu16-04双系统记录/dianyuan1.jpg">
+<meta property="og:updated_time" content="2019-07-28T15:03:36.111Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="win10安装Ubuntu16.04双系统记录">
+<meta name="twitter:description" content="本文包括以下内容：  双系统安装 Ubuntu访问Google Ubuntu下Tim和微信的安装使用 双系统互相访问文件 Ubuntu搜狗输入法安装">
+<meta name="twitter:image" content="http://yoursite.com/2019/07/28/win10安装Ubuntu16-04双系统记录/iso.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/28/win10安装Ubuntu16-04双系统记录/">
+
+
+
+
+
+  <title>win10安装Ubuntu16.04双系统记录 | ZRainy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRainy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/28/win10安装Ubuntu16-04双系统记录/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZRainy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRainy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">win10安装Ubuntu16.04双系统记录</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-28T21:07:41+08:00">
+                2019-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+          
+            <span class="post-updated">
+              &nbsp; | &nbsp; 更新于
+              <time itemprop="dateUpdated" datetime="2019-07-28T23:03:36+08:00" content="2019-07-28">
+              2019-07-28
+              </time>
+            </span>
+          
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/职业学习/" itemprop="url" rel="index">
+                    <span itemprop="name">职业学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文包括以下内容：</p>
+<ul>
+<li>双系统安装</li>
+<li>Ubuntu访问Google</li>
+<li>Ubuntu下Tim和微信的安装使用</li>
+<li>双系统互相访问文件</li>
+<li>Ubuntu搜狗输入法安装</li>
+</ul>
+<a id="more"></a>
+<p>由于目前工作主要用的语言是C++，且是在Linux上开发，所以便想在自己电脑上也搞个Linux系统用来平时学习，之前装过虚拟机也试过Win10下的Ubuntu子系统，但嫌弃虚拟机用起来太麻烦而且有时候会有点卡顿，子系统看网上又说IO性能不行，我又有点挑刺的毛病，所以便想要不要干脆整个双系统算了，但是我现在用的是128G的MagicBook，要整个双系统硬盘大小又有点尴尬。</p>
+<p>其实……我想的最好的办法是买台Mac，但是……穷的一笔，而且这个问题还没法解决，真是太悲伤了，于是这个想法作罢。</p>
+<p>最后在三个选择里纠结了一下，选择匀出20G装个Ubuntu双系统吧，版本16.04，自己还能学学装系统，万一以后要靠这个谋生呢……不过修电脑装系统也不是装Linux啊……awsl……</p>
+<p>网上教程很多，我这里更多的是记录，如果有些细节没有的话可以看我贴出来的链接，那里面图多，但是看图更简单，所以可以第一遍看图操作，第二遍看我的文字操作再次加深记忆，然后我觉得就差不多记住了。</p>
+<p>下面进入正题。</p>
+<h1 id="安装Ubuntu双系统"><a href="#安装Ubuntu双系统" class="headerlink" title="安装Ubuntu双系统"></a>安装Ubuntu双系统</h1><ul>
+<li>首先下载系统镜像文件，就是iso后缀文件，从<a href="https://ubuntu.com/download" target="_blank" rel="noopener">https://ubuntu.com/download</a>下载就行，我下的是桌面版，现在已经更新到19.04了，不过我很早以前就下过Ubuntu镜像，所以就用的以前的版本，即16.04,没有的话就可以下载新的，也可以找老版本下载，不过我一般下载东西的时候都不会下载最新版，我会下载次新或者第三新或者用的比较多的版本，因为最新版本必然网上资料不够多，遇到一些奇奇怪怪的问题不好解决（主要是我太菜）。下载好之后大概是这样：</li>
+</ul>
+<img src="/2019/07/28/win10安装Ubuntu16-04双系统记录/iso.jpg">
+<ul>
+<li>下载好镜像文件后便制作U盘启动盘，下载Ultraiso软碟通软件，试用就行，无需付费，下载地址<a href="https://cn.ultraiso.net/" target="_blank" rel="noopener">https://cn.ultraiso.net/</a>。下载好插入U盘，打开软件，选择文件打开，选中iso镜像，然后点击菜单里的启动，写入硬盘映像，接着在弹出的窗口中硬盘驱动器一栏里选择U盘，注意这里不要选错了，一定要选U盘呀，要是不知道U盘的名字就看大小，一般U盘大小总不会比你的硬盘还大吧……选好之后写入方式选择<code>USB-HDD+</code>，然后写入。这种写入操作都会清空U盘的，所以你要是选错了，清空硬盘的话……那就有意思了。最后等待写入完成。</li>
+<li>然后需要关闭Win10的快速启动（FastBoot）和安全启动（SecureBoot），快速启动可以按以下操作进行：<code>Win+x</code>，选择电源选项，出现下图。</li>
+</ul>
+<img src="/2019/07/28/win10安装Ubuntu16-04双系统记录/dianyuan1.jpg">
+<ul>
+<li>选择<code>其他电源设置</code>，然后点击左侧<code>选择电源按钮的功能</code>，记着点击<code>更改当前不可用的设置</code>，最后把下面<code>启用快速启动</code>的勾给去掉，最后保存修改。</li>
+<li>然后就需要在硬盘上分一部分空间留给后面要装的Ubuntu了，我的硬盘容量不多了，所以只分了20G，多的话随便你们分多少，不过我觉得不要低于20G比较好，因为我装完之后空间还剩7个多G的样子，我目前个人学习是够了，你们可以参考一下，建议有条件的情况下大一些，谁知道你会在Linux里装多少东西呢。</li>
+<li><code>Win+x</code>，选择磁盘管理，在弹出的窗口里可以看到目前的磁盘分布情况，然后选择一个可用空间满足你要求的磁盘，右击，压缩卷，输入压缩空间量，这个压缩空间量其实就是你要留给Ubuntu的空间，看你自己情况而定，我记得我当时写的21000吧，然后点压缩，就会看到一个黑色的空闲未分配的磁盘块了，OK。</li>
+<li>接下来要进入BIOS，我的MagicBook是按<code>F2</code>，另外说一句<code>F12</code>是进入Boot，一会儿也要用到，如果你的电脑型号和我不一样就得自己上网去查下这两个按键，不过大体就那几个键。</li>
+<li>重启，在屏幕出现电脑商标的时候按<code>F2</code>进入BIOS，调整SecureBoot为Disable，然后保存并退出。</li>
+<li>插入U盘，再次重启，这次在屏幕出现电脑商标的时候按<code>F12</code>进入Boot，选择USB启动，就可以进入Ubuntu安装步骤。当然，如果在上一步的时候就已经插了U盘，那就可以再保存完BIOS设置后出现商标时直接按<code>F12</code>进入Boot，省掉一次重启。</li>
+<li>进入Ubuntu安装步骤之后正常来说就点下一步就行了，包括一些简单设置，什么要不要连网啊，时区选择啊，用户密码啊，语言选择啊，建议这里语言选英文吧，因为我一开始选的中文，但是到了命令行里发现要cd到中文目录的时候好麻烦啊，还是改回了英文。当然也可以像我一样先选中文后面再改回英文，因为在安装过程中看中文还是要舒服一点。</li>
+<li>这里有几点要说明的，会出现一个选择安装方式的界面，第一个好像是什么多个系统共存，最后一个是其他选项，建议选择其他选项，这个其他选项就是要自己去分区（这才是Linux的精髓啊，可是这次弄得很简单），点击继续。</li>
+<li>接下来的窗口里就会看到硬盘分布，你可以找到之前你预留出来的空闲区，可以根据大小来判断。选中空闲区，然后点击左下角的<code>+</code>号，对空闲区进行分配。这里简单起见，只分两个区：交换区和根目录<code>/</code>，交换区一般要比你电脑的内存大一些，比如8G内存就分8G到10G，我的电脑就是8G内存，但是因为硬盘不够，所以我这交换区分的并不多，你们自己看就行。</li>
+<li>点击<code>+</code>号之后，勾选<code>逻辑分区</code>，<code>空间起始位置</code>，用于<code>交换空间</code>，确定。然后如法炮制，将剩下的空间都分配给<code>/</code>。</li>
+<li>分好后，记得看下挂载点<code>/</code>在哪个设备上，显示应该是/dev/sdaX，然后在下面的<code>安装启动引导器的设备</code>中选择对应的sdaX，这表示会把启动引导器装在<code>/</code>里。</li>
+<li>最后点击安装，确定，等待安装完毕。</li>
+<li>完毕后重启，会进入grub2的选择界面，会让你选择是进入Windows还是Ubuntu，自行选择即可。</li>
+<li>参考教程<a href="https://blog.csdn.net/jiajinrang93/article/details/63892208" target="_blank" rel="noopener">https://blog.csdn.net/jiajinrang93/article/details/63892208</a>，图比较多，第一遍可以照着来。</li>
+</ul>
+<h1 id="Ubuntu科学上网"><a href="#Ubuntu科学上网" class="headerlink" title="Ubuntu科学上网"></a>Ubuntu科学上网</h1><p>这块搞了我好长时间，昨天搞到三点也没好，明明都是按照别人的教程来的啊，为什么别人翻得我翻不得？</p>
+<p>顺便吐槽百度，不能Google的情况下，Bing好用。</p>
+<p>怀着深深怨念入睡，今天起床准备再战三百回合，结果就好了……好了……了……</p>
+<p>你对得起我的黑眼圈吗！</p>
+<p>不过能Google就行……咱大度，不计较。</p>
+<p>当然，我是用的ShadowSocks，能翻墙的前提是你有对应的账号。</p>
+<p>开始。</p>
+<ul>
+<li>首先下载ShadowSocks客户端，这有两种方法，一个是下载命令行客户端，另一个是下载图形化客户端，这里都简单介绍一下。</li>
+<li>命令行客户端下载使用以下命令：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install software-properties-common -y</span><br><span class="line">sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt install shadowsocks-libev</span><br></pre></td></tr></table></figure>
+<ul>
+<li>图形化客户端ss-qt5下载方式如下：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:hzwhuang/ss-qt5</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install shadowsocks-qt5</span><br></pre></td></tr></table></figure>
+<ul>
+<li>两者安装一个就好了，不过我因为被坑了，鼓捣的过程里把两个都装了。</li>
+<li>接下来就是编写json配置文件，就是把你的账号服务器填一下，格式如下：</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="attr">"server"</span>:<span class="string">"服务器 IP 或是域名"</span>,</span><br><span class="line"><span class="attr">"server_port"</span>:端口号,</span><br><span class="line"><span class="attr">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line"><span class="attr">"local_port"</span>:<span class="number">1080</span>,</span><br><span class="line"><span class="attr">"password"</span>:<span class="string">"密码"</span>,</span><br><span class="line"><span class="attr">"timeout"</span>:<span class="number">300</span>,</span><br><span class="line"><span class="attr">"method"</span>:<span class="string">"加密方式 (chacha20-ietf-poly1305 / aes-256-cfb)"</span>,</span><br><span class="line"><span class="attr">"fast_open"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一般就去你买的服务商那里复制粘贴json格式保存文件就行了。</li>
+<li>接下来启动客户端，命令行使用以下命令<code>ss-local -c ssconfig.json</code>，后面的<code>ssconfig.json</code>要填你自己编写的配置文件和路径。</li>
+<li>如果是qt5客户端，就在命令行里输入<code>ss-qt5</code>启动客户端，然后为了下次启动方便可以直接把图标固定在开始栏，下次就可以直接单击启动了，接着按照图形化界面添加配置就行了，添加好后点击<code>connect</code>按钮进行连接，连接好后可以按<code>test latency</code>按钮测测延迟，如果不是error就说明连上了。</li>
+<li>至此，shadowsocks都配好了，但Linux下比较麻烦的是还需要配置浏览器，我这用的是Chrome，也推荐用Chrome。</li>
+<li>当然，不能访问谷歌的时候好像也下不了Chrome，这个自行解决吧，我是回到我的windows里下好Linux版本的Chrome再回到Ubuntu里安装的，安装好之后命令行输入<code>google-chrome</code>便可以启动浏览器。</li>
+<li>然后安装<code>SwitchOmega</code>插件，当然，也没法从Chrome商店里安装，所以只能手动安装，去<a href="https://github.com/FelisCatus/SwitchyOmega/releases" target="_blank" rel="noopener">https://github.com/FelisCatus/SwitchyOmega/releases</a>下载.crx文件，接着将后缀crx改为zip，解压。然后打开Chrome浏览器，地址栏输入<code>chrome://extensions/</code>，打开右上角的开发者模式，接着点左上角的<code>加载已解压的扩展程序</code>，选择解压的文件夹，就OK了，虽然插件好像会有Error，但不影响。</li>
+<li>最后就是配置SwitchOmega了，还有点麻烦，可以看<a href="https://www.qcgzxw.cn/2988.html#toc-2" target="_blank" rel="noopener">https://www.qcgzxw.cn/2988.html#toc-2</a>，这是我找了好久才找到的没有被屏蔽的配置教程，希望你们看的时候也没被屏蔽。如果屏蔽了……就看下我现在写的简单过程吧，先启动插件，右键选择options进入配置，左侧选择proxy，右侧选择协议SOCKS5，代理服务器填127.0.0.1，端口1080（这和你的json里一致），然后点左侧应用选项保存配置。接着还没好，选择auto switch继续配置自动切换规则，规则列表格式选择AutoProxy，规则列表网址填<code>https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt</code>，然后点击下方的<code>立即更新情景模式</code>按钮，接着规则列表设置上面的部分，勾选<code>勾选列表规则</code>，上面的几条配置可以删了，只要在规则列表规则后面选择<code>proxy</code>就好了，简单说意思就是在规则列表里的网址就使用proxy，否则就直连，最后备别忘了保存。</li>
+<li>最后在浏览器里右上角的插件里设置成<code>auto switch</code>就行了。</li>
+<li>ok，正常可以访问Google了，但是我昨天搞到凌晨三点也不行，今天一觉起来就行了，很莫名其妙。最后可以看下这个连接<a href="https://zhuanlan.zhihu.com/p/47706985" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/47706985</a>，是使用命令行客户端的一个教程，比较清晰。</li>
+</ul>
+<h1 id="Ubuntu下Tim和微信的安装使用"><a href="#Ubuntu下Tim和微信的安装使用" class="headerlink" title="Ubuntu下Tim和微信的安装使用"></a>Ubuntu下Tim和微信的安装使用</h1><p>主要参考<a href="https://www.lulinux.com/archives/1319" target="_blank" rel="noopener">https://www.lulinux.com/archives/1319</a>。</p>
+<p>主要步骤：</p>
+<ol>
+<li>安装deepin-wine环境，上<a href="https://github.com/wszqkzqk/deepin-wine-ubuntu" target="_blank" rel="noopener">https://github.com/wszqkzqk/deepin-wine-ubuntu</a>，我是按照本地安装来安装的，正常装完即可。</li>
+<li>安装容器，即QQ、Tim或者微信。</li>
+</ol>
+<ul>
+<li>Tim：<a href="http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin.com.qq.office/" target="_blank" rel="noopener">http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin.com.qq.office/</a></li>
+<li>QQ：<a href="http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin.com.qq.im/" target="_blank" rel="noopener">http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin.com.qq.im/</a></li>
+<li>微信：<a href="http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin.com.wechat/" target="_blank" rel="noopener">http://mirrors.aliyun.com/deepin/pool/non-free/d/deepin.com.wechat/</a></li>
+</ul>
+<h1 id="双系统互相访问文件"><a href="#双系统互相访问文件" class="headerlink" title="双系统互相访问文件"></a>双系统互相访问文件</h1><p>Linux可以直接访问Windows，不需要做任何操作，厉害呀。</p>
+<p>Windows想要访问Liunx，下载一个叫做LinuxReader的软件即可，网上也有说别的软件的，但我下了不行，所以就用这个了。</p>
+<p>下载链接<a href="https://www.diskinternals.com/linux-reader/" target="_blank" rel="noopener">https://www.diskinternals.com/linux-reader/</a>，try it free即可。</p>
+<h1 id="Ubuntu搜狗输入法安装"><a href="#Ubuntu搜狗输入法安装" class="headerlink" title="Ubuntu搜狗输入法安装"></a>Ubuntu搜狗输入法安装</h1><p>参考<a href="https://jingyan.baidu.com/article/642c9d341b3ccb644a46f7ac.html" target="_blank" rel="noopener">https://jingyan.baidu.com/article/642c9d341b3ccb644a46f7ac.html</a>。</p>
+<ul>
+<li>下载搜狗输入法For Linux，一个.deb文件，用<code>dpkg -i file</code>来安装，但好像不需要这个命令了，可以直接看下一步（不过我没试过直接用下一步，毕竟我是装了之后不能用才去找教程的嘛）。</li>
+<li>但现在还不能用，继续操作，输入<code>sudo apt-get install gdebi</code>安装Gdebi，然后cd到.deb文件目录，执行<code>sudo gdebi sogoupinyin.deb</code>，等待安装好。</li>
+<li>重启电脑，就行了。</li>
+</ul>
+<p>最后可以愉快地用Ubuntu啦，当然还有听歌软件啊啥的没研究，回头再说，毕竟Vim还没配好。</p>
+<p>慢慢来。</p>
+<p>【END】</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/29/Vim学习记录/" rel="next" title="Vim学习记录">
+                <i class="fa fa-chevron-left"></i> Vim学习记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjgzMy8xMzM2OQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ZRainy</p>
+              <p class="site-description motion-element" itemprop="description">故事没结束，别急着去哭</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装Ubuntu双系统"><span class="nav-number">1.</span> <span class="nav-text">安装Ubuntu双系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ubuntu科学上网"><span class="nav-number">2.</span> <span class="nav-text">Ubuntu科学上网</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ubuntu下Tim和微信的安装使用"><span class="nav-number">3.</span> <span class="nav-text">Ubuntu下Tim和微信的安装使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#双系统互相访问文件"><span class="nav-number">4.</span> <span class="nav-text">双系统互相访问文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ubuntu搜狗输入法安装"><span class="nav-number">5.</span> <span class="nav-text">Ubuntu搜狗输入法安装</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZRainy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
