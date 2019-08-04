@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux,Vim,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ZRainy" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="上周装了Ubuntu16.04，接下来打算在上面学习点C++开发，所以得先配个环境，打算配置一下Vim以及装一些插件，接下来就搞一下。">
+<meta name="keywords" content="Linux,Vim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vim配置">
+<meta property="og:url" content="http://yoursite.com/2019/08/04/Vim配置/index.html">
+<meta property="og:site_name" content="ZRainy">
+<meta property="og:description" content="上周装了Ubuntu16.04，接下来打算在上面学习点C++开发，所以得先配个环境，打算配置一下Vim以及装一些插件，接下来就搞一下。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/08/04/Vim配置/addSetting.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/04/Vim配置/notInstall.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/04/Vim配置/installDone.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/04/Vim配置/delete.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/04/Vim配置/deletey.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/04/Vim配置/aleExample.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/04/Vim配置/ycm.png">
+<meta property="og:updated_time" content="2019-08-04T12:42:33.559Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vim配置">
+<meta name="twitter:description" content="上周装了Ubuntu16.04，接下来打算在上面学习点C++开发，所以得先配个环境，打算配置一下Vim以及装一些插件，接下来就搞一下。">
+<meta name="twitter:image" content="http://yoursite.com/2019/08/04/Vim配置/addSetting.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/04/Vim配置/">
+
+
+
+
+
+  <title>Vim配置 | ZRainy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRainy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/04/Vim配置/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZRainy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRainy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vim配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-04T20:33:07+08:00">
+                2019-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+          
+            <span class="post-updated">
+              &nbsp; | &nbsp; 更新于
+              <time itemprop="dateUpdated" datetime="2019-08-04T20:42:33+08:00" content="2019-08-04">
+              2019-08-04
+              </time>
+            </span>
+          
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/职业学习/" itemprop="url" rel="index">
+                    <span itemprop="name">职业学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上周装了Ubuntu16.04，接下来打算在上面学习点C++开发，所以得先配个环境，打算配置一下Vim以及装一些插件，接下来就搞一下。</p>
+<a id="more"></a>
+<h1 id="Vim升级"><a href="#Vim升级" class="headerlink" title="Vim升级"></a>Vim升级</h1><p>用的时候发现ubuntu默认的Vim、g++和gcc版本都偏低了，先更新一下，把Vim升级到8以上，g++更新升级到4.8.5以上以支持c++11。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 安装依赖</span><br><span class="line">sudo apt-get install libncurses5-dev</span><br><span class="line">sudo apt-get install build-essential cmake</span><br><span class="line">sudo apt-get install python-dev python3-dev</span><br><span class="line">sudo apt-get install libgmp-dev libmpfr-dev libmpc-dev libisl-dev libcloog-isl-dev zlib1g-dev</span><br><span class="line">sudo apt-get install autogen</span><br><span class="line">sudo apt-get install libclang-dev</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 升级GCC</span><br><span class="line">wget ftp://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.gz</span><br><span class="line">cd gcc-4.9.2</span><br><span class="line">./configure --prefix=/opt/gcc-4.9.2 --enable-languages=c,c++ --disable-multilib --disable-bootstrap --with-system-zlib</span><br><span class="line">make &amp;&amp; make check</span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 配置好，如果之前有这两个链接文件的话就删掉重新链接就行了</span><br><span class="line">sudo ln -s /opt/gcc-4.9.2/bin/gcc /usr/bin/gcc</span><br><span class="line">sudo ln -s /opt/gcc-4.9.2/bin/g++ /usr/bin/g++</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 升级Vim</span><br><span class="line">sudo add-apt-repository ppa:jonathonf/vim</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install vim-nox-py2</span><br><span class="line">sudo mv /usr/local/bin/vim /usr/local/bin/vim.old</span><br><span class="line">sudo ln -s /usr/bin/vim.nox-py2 /usr/local/bin/vim</span><br><span class="line"><span class="meta">#</span> 参考 https://blog.csdn.net/yanjiee/article/details/76066936</span><br></pre></td></tr></table></figure>
+<h1 id="Vim-Plug基本使用"><a href="#Vim-Plug基本使用" class="headerlink" title="Vim-Plug基本使用"></a>Vim-Plug基本使用</h1><p>Vim-plug 是一个自由、开源、速度非常快的、极简的 vim 插件管理器。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>安装很简单，执行以下命令即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fLo ~/.vim/autoload/plug.vim --create-dirs \</span><br><span class="line">    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim</span><br></pre></td></tr></table></figure>
+<h2 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h2><p>安装插件也很方便，主要有以下几步：</p>
+<ul>
+<li>在<code>~/.vimrc</code>中声明需要安装的插件，这里以<code>ligntline.vim</code>插件为例，如下图所示</li>
+</ul>
+<img src="/2019/08/04/Vim配置/addSetting.png">
+<p>配置如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">let g:lightline = &#123;</span><br><span class="line">       \ 'colorscheme': 'wombat',</span><br><span class="line">       \ 'active': &#123;</span><br><span class="line">       \   'left': [ [ 'mode', 'paste' ],</span><br><span class="line">       \             [ 'readonly', 'filename', 'modified', 'helloworld' ] ]</span><br><span class="line">       \ &#125;,</span><br><span class="line">       \ 'component': &#123;</span><br><span class="line">       \   'helloworld': 'I am writing shit...'</span><br><span class="line">       \ &#125;,</span><br><span class="line">       \ &#125;</span><br><span class="line"> </span><br><span class="line">set laststatus=2</span><br></pre></td></tr></table></figure>
+<ul>
+<li>重新打开vim，使用<code>:PlugStatus</code>命令查看插件状态，如图：</li>
+</ul>
+<img src="/2019/08/04/Vim配置/notInstall.png">
+<ul>
+<li>接着输入<code>:PlugInstall</code>完成插件安装</li>
+</ul>
+<img src="/2019/08/04/Vim配置/installDone.png">
+<h2 id="更新插件"><a href="#更新插件" class="headerlink" title="更新插件"></a>更新插件</h2><p>更新插件就运行<code>:PlugUpdate</code>即可，更新插件后，可以按<code>d</code>查看更改，或者也可以之后输入<code>:PlugDiff</code></p>
+<h2 id="审查插件"><a href="#审查插件" class="headerlink" title="审查插件"></a>审查插件</h2><p>有时候更新的插件会有问题或不能正常工作，要解决这个问题就可以回滚，输入<code>:PlugDiff</code>的命令按回车键查看上次的更改，然后在每个段落上按<code>X</code>将每个插件回滚到前一个状态。</p>
+<h2 id="删除插件"><a href="#删除插件" class="headerlink" title="删除插件"></a>删除插件</h2><ul>
+<li>首先将<code>~/.vimrc</code>文件中对应的插件配置plug命令删除或者注释，然后重启Vim编辑器，如图：</li>
+</ul>
+<img src="/2019/08/04/Vim配置/delete.png">
+<ul>
+<li>然后在Vim里输入<code>:PlugClean</code>命令，接着按<code>y</code>，就可以删除已经不存在配置文件中的插件了。</li>
+</ul>
+<img src="/2019/08/04/Vim配置/deletey.png">
+<h2 id="升级Vim-Plug本身"><a href="#升级Vim-Plug本身" class="headerlink" title="升级Vim-Plug本身"></a>升级Vim-Plug本身</h2><p>输入<code>:PlugUpgrade</code>就可以升级Vim-Plug本身了。</p>
+<h1 id="安装ctags"><a href="#安装ctags" class="headerlink" title="安装ctags"></a>安装ctags</h1><p>需要重新安装ctags，使用Universal CTags，默认的Exuberant CTags太旧了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install autoconf</span><br><span class="line">cd /tmp</span><br><span class="line">git clone https://github.com/universal-ctags/ctags</span><br><span class="line">cd ctags</span><br><span class="line">./autogen.sh</span><br><span class="line">./configure --prefix=PATH  # 安装路径,自己的情况调整。</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<p>在<code>.vimrc</code>里添加<code>set tags=./tags;,tags</code></p>
+<p>然后再用<code>sudo apt install global</code>安装gtags，这时已经可以通过在项目根目录运行<code>ctags -R *</code>来生成tags文件，就可以用了。</p>
+<h2 id="自动生成tags"><a href="#自动生成tags" class="headerlink" title="自动生成tags"></a>自动生成tags</h2><p>使用vim-gutentags插件。</p>
+<p><code>.vimrc</code>里加入<code>Plug &#39;ludovicchabant/vim-gutentags&#39;</code></p>
+<p>然后加入以下配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">" gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归</span><br><span class="line">let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']</span><br><span class="line"></span><br><span class="line">" 所生成的数据文件的名称</span><br><span class="line">let g:gutentags_ctags_tagfile = '.tags'</span><br><span class="line"></span><br><span class="line">" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录</span><br><span class="line">let s:vim_tags = expand('~/.cache/tags')</span><br><span class="line">let g:gutentags_cache_dir = s:vim_tags</span><br><span class="line"></span><br><span class="line">" 配置 ctags 的参数</span><br><span class="line">let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']</span><br><span class="line">let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']</span><br><span class="line">let g:gutentags_ctags_extra_args += ['--c-kinds=+px']</span><br><span class="line"></span><br><span class="line">" 检测 ~/.cache/tags 不存在就新建</span><br><span class="line">if !isdirectory(s:vim_tags)</span><br><span class="line">   silent! call mkdir(s:vim_tags, 'p')</span><br><span class="line">endif</span><br></pre></td></tr></table></figure>
+<p>现在只要项目根目录里有<code>&#39;.root&#39;, &#39;.svn&#39;, &#39;.git&#39;, &#39;.hg&#39;, &#39;.project&#39;</code>这些文件，当使用vim编辑文件的时候就会自动生成.tag文件了，该文件可以在<code>~/.cache/tags</code>里看到。</p>
+<p>现在就可以使用<code>ctrl+]</code>进行跳转了，但是建议使用<code>ctrl+w+]</code>用新窗口打开或者<code>ctrl+w+}</code>使用预览窗口，<code>:pclose</code>关闭预览窗口。</p>
+<h1 id="安装AsyncRun"><a href="#安装AsyncRun" class="headerlink" title="安装AsyncRun"></a>安装AsyncRun</h1><p>Vim8以后，利用异步模式，可以让编译更方便，用AsyncRun插件，配置如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Plug 'skywind3000/asyncrun.vim'</span><br><span class="line">let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml']</span><br><span class="line">" 自动打开 quickfix window ，高度为 6</span><br><span class="line">let g:asyncrun_open = 6</span><br><span class="line"></span><br><span class="line">" 任务结束时候响铃提醒</span><br><span class="line">let g:asyncrun_bell = 1</span><br><span class="line"></span><br><span class="line">" 设置 F10 打开/关闭 Quickfix 窗口</span><br><span class="line">nnoremap &lt;F10&gt; :call asyncrun#quickfix_toggle(6)&lt;cr&gt;</span><br><span class="line"></span><br><span class="line">" 设置F7编译整个项目，注意makefile的目录，可以自行修改</span><br><span class="line">nnoremap &lt;silent&gt; &lt;F7&gt; :AsyncRun -cwd=&lt;root&gt;/src make &lt;cr&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="安装代码检查ALE"><a href="#安装代码检查ALE" class="headerlink" title="安装代码检查ALE"></a>安装代码检查ALE</h1><p>配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Plug 'dense-analysis/ale'</span><br><span class="line">let g:ale_linters_explicit = 1</span><br><span class="line">let g:ale_linters = &#123;</span><br><span class="line">  \   'csh': ['shell'],</span><br><span class="line">  \   'zsh': ['shell'],</span><br><span class="line">  \   'go': ['gofmt', 'golint'],</span><br><span class="line">  \   'python': ['flake8', 'mypy', 'pylint'],</span><br><span class="line">  \   'c': ['gcc', 'cppcheck'],</span><br><span class="line">  \   'cpp': ['gcc', 'cppcheck'],</span><br><span class="line">  \   'text': [],</span><br><span class="line">  \&#125;</span><br><span class="line">let g:ale_completion_delay = 500</span><br><span class="line">let g:ale_echo_delay = 20</span><br><span class="line">let g:ale_lint_delay = 500</span><br><span class="line">let g:ale_echo_msg_format = '[%linter%] %code: %%s'</span><br><span class="line">let g:ale_lint_on_text_changed = 'normal'</span><br><span class="line">let g:ale_lint_on_insert_leave = 1</span><br><span class="line">let g:airline#extensions#ale#enabled = 1</span><br><span class="line"></span><br><span class="line">let g:ale_c_gcc_options = '-Wall -O2 -std=c99'</span><br><span class="line">let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'</span><br><span class="line">let g:ale_c_cppcheck_options = ''</span><br><span class="line">let g:ale_cpp_cppcheck_options = ''</span><br></pre></td></tr></table></figure>
+<p>这个插件比较大，装的比较久，成功后如图：</p>
+<img src="/2019/08/04/Vim配置/aleExample.png">
+<h1 id="安装YouCompleteMe"><a href="#安装YouCompleteMe" class="headerlink" title="安装YouCompleteMe"></a>安装YouCompleteMe</h1><p>这个也有点麻烦，走了不少坑，首先要对git做下设置，否则git clone的时候会不能获取到一些国外的repo，原因嘛……</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy 'socks5://127.0.0.1:1080'</span><br><span class="line"></span><br><span class="line">git config --global https.proxy 'socks5://127.0.0.1:1080'</span><br></pre></td></tr></table></figure>
+<p>运行上述两条命令，结合之前已经搞好的科学上网，就可以正常clone啦，而且速度好快哦～</p>
+<p>配置如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let g:ycm_global_ycm_extra_conf='~/.vim/plugged/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'</span><br><span class="line">let g:ycm_add_preview_to_completeopt = 0</span><br><span class="line">let g:ycm_show_diagnostics_ui = 0</span><br><span class="line">let g:ycm_server_log_level = 'info'</span><br><span class="line">let g:ycm_min_num_identifier_candidate_chars = 2</span><br><span class="line">let g:ycm_collect_identifiers_from_comments_and_strings = 1</span><br><span class="line">let g:ycm_complete_in_strings=1</span><br><span class="line">let g:ycm_key_invoke_completion = '&lt;c-z&gt;'                    " 使用 Ctrl+Z 主动触发语义补全</span><br><span class="line">noremap &lt;c-z&gt; &lt;NOP&gt;</span><br><span class="line">set completeopt=menu,menuone</span><br></pre></td></tr></table></figure>
+<p>应该没问题了，但如果出现<code>YouCompleteMe unavailable no module named builtins</code>错误，则cd到YouCompleteMe目录下运行<code>git submodule update --init --recursive</code>，这个问题应该是因为网速问题没下完整。</p>
+<p>如果出现<code>The ycmd server SHUT DOWN (restart with &#39;:YcmRestartServer&#39;). Unexpected exit code 1.</code>类似问题，则cd到YouCompleteMe目录下运行<code>/usr/bin/python install.py</code>。</p>
+<h1 id="NerdTree"><a href="#NerdTree" class="headerlink" title="NerdTree"></a>NerdTree</h1><p>目录树，配置如下，按F3就可以打开目录树：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Plug 'scrooloose/nerdtree'</span><br><span class="line"></span><br><span class="line">noremap &lt;F3&gt; :NERDTreeToggle&lt;cr&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="vim-cpp-enhanced-highlight"><a href="#vim-cpp-enhanced-highlight" class="headerlink" title="vim-cpp-enhanced-highlight"></a>vim-cpp-enhanced-highlight</h1><p>C++语法高亮插件，直接加入即可，不需多余配置。</p>
+<p><code>Plug &#39;octol/vim-cpp-enhanced-highlight&#39;</code></p>
+<h1 id="nerdcommerter"><a href="#nerdcommerter" class="headerlink" title="nerdcommerter"></a>nerdcommerter</h1><p>注释的插件，快捷键<code>&lt;leader&gt;cc</code>和<code>&lt;leader&gt;c&lt;space&gt;</code>。</p>
+<h1 id="LeaderF"><a href="#LeaderF" class="headerlink" title="LeaderF"></a>LeaderF</h1><p>函数列表插件，配置如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Plug 'Yggdroot/LeaderF', &#123; 'do': './install.sh' &#125;</span><br><span class="line">let g:Lf_ShortcutF = '&lt;c-p&gt;'</span><br><span class="line">let g:Lf_ShortcutB = '&lt;m-n&gt;'</span><br><span class="line">noremap &lt;c-n&gt; :LeaderfMru&lt;cr&gt;</span><br><span class="line">" 设置F2显示本文件的函数列表，这里Vim映射Alt键不成功，所以自己改成F2</span><br><span class="line">noremap &lt;F2&gt; :LeaderfFunction!&lt;cr&gt;</span><br><span class="line">noremap &lt;m-n&gt; :LeaderfBuffer&lt;cr&gt;</span><br><span class="line">noremap &lt;m-m&gt; :LeaderfTag&lt;cr&gt;</span><br><span class="line">let g:Lf_StlSeparator = &#123; 'left': '', 'right': '', 'font': '' &#125;</span><br><span class="line"></span><br><span class="line">let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']</span><br><span class="line">let g:Lf_WorkingDirectoryMode = 'Ac'</span><br><span class="line">let g:Lf_WindowHeight = 0.30</span><br><span class="line">let g:Lf_CacheDirectory = expand('~/.vim/cache')</span><br><span class="line">let g:Lf_ShowRelativePath = 0</span><br><span class="line">let g:Lf_HideHelp = 1</span><br><span class="line">let g:Lf_StlColorscheme = 'powerline'</span><br><span class="line">let g:Lf_PreviewResult = &#123;'Function':0, 'BufTag':0&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="echodoc-vim"><a href="#echodoc-vim" class="headerlink" title="echodoc.vim"></a>echodoc.vim</h1><p>显示参数列表，配置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Plug 'Shougo/echodoc.vim'</span><br><span class="line"></span><br><span class="line">set noshowmode</span><br></pre></td></tr></table></figure>
+<p>当用YCM的tab补全函数名后，输入左括号即可显示参数信息，和YCM配合结果如图：</p>
+<img src="/2019/08/04/Vim配置/ycm.png">
+<h1 id="Vim所有配置"><a href="#Vim所有配置" class="headerlink" title="Vim所有配置"></a>Vim所有配置</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br></pre></td><td class="code"><pre><span class="line">set number</span><br><span class="line">set hlsearch</span><br><span class="line">set incsearch</span><br><span class="line">set softtabstop =4         " Tab key indents by 4 spaces.</span><br><span class="line">set hidden                 " Switch between buffers without having to save first.</span><br><span class="line">set noshowmode</span><br><span class="line">" set cmdheight =2</span><br><span class="line">" 插件列表</span><br><span class="line"></span><br><span class="line">call plug#begin('~/.vim/plugged')</span><br><span class="line">Plug 'itchyny/lightline.vim'</span><br><span class="line">" Plug 'tenfyzhong/CompleteParameter.vim'</span><br><span class="line">Plug 'ludovicchabant/vim-gutentags'</span><br><span class="line">Plug 'skywind3000/asyncrun.vim'</span><br><span class="line">Plug 'octol/vim-cpp-enhanced-highlight'</span><br><span class="line">Plug 'dense-analysis/ale'</span><br><span class="line">Plug 'scrooloose/nerdtree'</span><br><span class="line">Plug 'scrooloose/nerdcommenter'     " 注释的插件 &lt;leader&gt;cc和&lt;leader&gt;c&lt;space&gt;</span><br><span class="line">Plug 'Yggdroot/LeaderF', &#123; 'do': './install.sh' &#125;</span><br><span class="line">Plug 'Valloric/YouCompleteMe', &#123; 'do': './install.py --clang-completer --go-completer' &#125;</span><br><span class="line">Plug 'Shougo/echodoc.vim'</span><br><span class="line">call plug#end()</span><br><span class="line"></span><br><span class="line">" ###################################################################</span><br><span class="line">" lightline</span><br><span class="line"></span><br><span class="line">let g:lightline = &#123;</span><br><span class="line">      \ 'colorscheme': 'wombat',</span><br><span class="line">      \ 'active': &#123;</span><br><span class="line">      \   'left': [ [ 'mode', 'paste' ],</span><br><span class="line">      \             [ 'readonly', 'filename', 'modified', 'helloworld' ] ]</span><br><span class="line">      \ &#125;,</span><br><span class="line">      \ 'component': &#123;</span><br><span class="line">      \   'helloworld': 'I am writing shit...'</span><br><span class="line">      \ &#125;,</span><br><span class="line">      \ &#125;</span><br><span class="line"></span><br><span class="line">set laststatus=2</span><br><span class="line">" ###################################################################</span><br><span class="line">" ctags</span><br><span class="line">set tags=./.tags;,.tags</span><br><span class="line">" gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归</span><br><span class="line">let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']</span><br><span class="line"></span><br><span class="line">" 所生成的数据文件的名称</span><br><span class="line">let g:gutentags_ctags_tagfile = '.tags'</span><br><span class="line"></span><br><span class="line">" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录</span><br><span class="line">let s:vim_tags = expand('~/.cache/tags')</span><br><span class="line">let g:gutentags_cache_dir = s:vim_tags</span><br><span class="line"></span><br><span class="line">" 配置 ctags 的参数</span><br><span class="line">let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']</span><br><span class="line">let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']</span><br><span class="line">let g:gutentags_ctags_extra_args += ['--c-kinds=+px']</span><br><span class="line"></span><br><span class="line">" 检测 ~/.cache/tags 不存在就新建</span><br><span class="line">if !isdirectory(s:vim_tags)</span><br><span class="line">   silent! call mkdir(s:vim_tags, 'p')</span><br><span class="line">   endif</span><br><span class="line">" ###########################################################</span><br><span class="line"></span><br><span class="line">" asyncrun</span><br><span class="line"></span><br><span class="line">let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml']</span><br><span class="line">" 自动打开 quickfix window ，高度为 6</span><br><span class="line">let g:asyncrun_open = 6</span><br><span class="line"></span><br><span class="line">" 任务结束时候响铃提醒</span><br><span class="line">let g:asyncrun_bell = 1</span><br><span class="line"></span><br><span class="line">" 设置 F10 打开/关闭 Quickfix 窗口</span><br><span class="line">nnoremap &lt;F10&gt; :call asyncrun#quickfix_toggle(6)&lt;cr&gt;</span><br><span class="line"></span><br><span class="line">" 设置F7编译整个项目，注意makefile的目录，可以自行修改</span><br><span class="line">nnoremap &lt;silent&gt; &lt;F7&gt; :AsyncRun -cwd=&lt;root&gt;/src make &lt;cr&gt;</span><br><span class="line">" ###########################################################</span><br><span class="line"></span><br><span class="line">" ALE</span><br><span class="line">let g:ale_linters_explicit = 1</span><br><span class="line">let g:ale_linters = &#123;</span><br><span class="line">  \   'csh': ['shell'],</span><br><span class="line">  \   'zsh': ['shell'],</span><br><span class="line">  \   'go': ['gofmt', 'golint'],</span><br><span class="line">  \   'python': ['flake8', 'mypy', 'pylint'],</span><br><span class="line">  \   'c': ['gcc', 'cppcheck'],</span><br><span class="line">  \   'cpp': ['gcc', 'cppcheck'],</span><br><span class="line">  \   'text': [],</span><br><span class="line">  \&#125;</span><br><span class="line">let g:ale_completion_delay = 500</span><br><span class="line">let g:ale_echo_delay = 20</span><br><span class="line">let g:ale_lint_delay = 500</span><br><span class="line">let g:ale_echo_msg_format = '[%linter%] %code: %%s'</span><br><span class="line">let g:ale_lint_on_text_changed = 'normal'</span><br><span class="line">let g:ale_lint_on_insert_leave = 1</span><br><span class="line">let g:airline#extensions#ale#enabled = 1</span><br><span class="line"></span><br><span class="line">let g:ale_c_gcc_options = '-Wall -O2 -std=c99'</span><br><span class="line">let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'</span><br><span class="line">let g:ale_c_cppcheck_options = ''</span><br><span class="line">let g:ale_cpp_cppcheck_options = ''</span><br><span class="line"></span><br><span class="line">" ###########################################################</span><br><span class="line">" YouCompleteMe</span><br><span class="line">let g:ycm_global_ycm_extra_conf='~/.vim/plugged/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'</span><br><span class="line">let g:ycm_add_preview_to_completeopt = 0</span><br><span class="line">let g:ycm_show_diagnostics_ui = 0</span><br><span class="line">let g:ycm_server_log_level = 'info'</span><br><span class="line">let g:ycm_min_num_identifier_candidate_chars = 2</span><br><span class="line">let g:ycm_collect_identifiers_from_comments_and_strings = 1</span><br><span class="line">let g:ycm_complete_in_strings=1</span><br><span class="line">let g:ycm_key_invoke_completion = '&lt;c-z&gt;'                    " 使用 Ctrl+Z 主动触发语义补全</span><br><span class="line">noremap &lt;c-z&gt; &lt;NOP&gt;</span><br><span class="line">set completeopt=menu,menuone</span><br><span class="line"></span><br><span class="line">" 修改补全列表配色</span><br><span class="line">highlight PMenu ctermfg=0 ctermbg=242 guifg=black guibg=darkgrey</span><br><span class="line">highlight PMenuSel ctermfg=242 ctermbg=8 guifg=darkgrey guibg=black</span><br><span class="line"></span><br><span class="line">" 对指定源文件，输入两个字母后即触发语义补全</span><br><span class="line">let g:ycm_semantic_triggers =  &#123;</span><br><span class="line">           \ 'c,cpp,python,java,go,erlang,perl': ['re!\w&#123;2&#125;'],</span><br><span class="line">           \ 'cs,lua,javascript': ['re!\w&#123;2&#125;'],</span><br><span class="line">           \ &#125;</span><br><span class="line"></span><br><span class="line">let g:ycm_filetype_whitelist = &#123; </span><br><span class="line">            \ "c":1,</span><br><span class="line">            \ "cpp":1, </span><br><span class="line">            \ "go":1,</span><br><span class="line">            \ "python":1,</span><br><span class="line">            \ "sh":1,</span><br><span class="line">            \ "zsh":1,</span><br><span class="line">            \ &#125;</span><br><span class="line"></span><br><span class="line">let g:ycm_filetype_blacklist = &#123;</span><br><span class="line">        \ 'markdown' : 1,</span><br><span class="line">        \ 'text' : 1,</span><br><span class="line">        \ 'pandoc' : 1,</span><br><span class="line">        \ 'infolog' : 1,</span><br><span class="line">        \&#125;</span><br><span class="line">" ###########################################################</span><br><span class="line"></span><br><span class="line">" LeaderF</span><br><span class="line">let g:Lf_ShortcutF = '&lt;c-p&gt;'</span><br><span class="line">let g:Lf_ShortcutB = '&lt;m-n&gt;'</span><br><span class="line">noremap &lt;c-n&gt; :LeaderfMru&lt;cr&gt;</span><br><span class="line">" 设置F2显示本文件的函数列表，这里Vim映射Alt键不成功，所以自己改成F2</span><br><span class="line">noremap &lt;F2&gt; :LeaderfFunction!&lt;cr&gt;</span><br><span class="line">noremap &lt;m-n&gt; :LeaderfBuffer&lt;cr&gt;</span><br><span class="line">noremap &lt;m-m&gt; :LeaderfTag&lt;cr&gt;</span><br><span class="line">let g:Lf_StlSeparator = &#123; 'left': '', 'right': '', 'font': '' &#125;</span><br><span class="line"></span><br><span class="line">let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']</span><br><span class="line">let g:Lf_WorkingDirectoryMode = 'Ac'</span><br><span class="line">let g:Lf_WindowHeight = 0.30</span><br><span class="line">let g:Lf_CacheDirectory = expand('~/.vim/cache')</span><br><span class="line">let g:Lf_ShowRelativePath = 0</span><br><span class="line">let g:Lf_HideHelp = 1</span><br><span class="line">let g:Lf_StlColorscheme = 'powerline'</span><br><span class="line">let g:Lf_PreviewResult = &#123;'Function':0, 'BufTag':0&#125;</span><br><span class="line"></span><br><span class="line">" ###########################################################</span><br><span class="line">" nerdtree</span><br><span class="line"></span><br><span class="line">noremap &lt;F3&gt; :NERDTreeToggle&lt;cr&gt;</span><br><span class="line">" ###########################################################</span><br><span class="line">" echodoc</span><br><span class="line">let g:echodoc_enable_at_startup = 1</span><br><span class="line"></span><br><span class="line">" ###########################################################</span><br><span class="line">" CompleteParameter</span><br><span class="line">" inoremap &lt;silent&gt;&lt;expr&gt; ( complete_parameter#pre_complete("()")</span><br><span class="line">" smap &lt;c-j&gt; &lt;Plug&gt;(complete_parameter#goto_next_parameter)</span><br><span class="line">" imap &lt;c-j&gt; &lt;Plug&gt;(complete_parameter#goto_next_parameter)</span><br><span class="line">" smap &lt;c-k&gt; &lt;Plug&gt;(complete_parameter#goto_previous_parameter)</span><br><span class="line">" imap &lt;c-k&gt; &lt;Plug&gt;(complete_parameter#goto_previous_parameter)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/Vim/" rel="tag"># Vim</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/28/win10安装Ubuntu16-04双系统记录/" rel="next" title="win10安装Ubuntu16.04双系统记录">
+                <i class="fa fa-chevron-left"></i> win10安装Ubuntu16.04双系统记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjgzMy8xMzM2OQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ZRainy</p>
+              <p class="site-description motion-element" itemprop="description">故事没结束，别急着去哭</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vim升级"><span class="nav-number">1.</span> <span class="nav-text">Vim升级</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Vim-Plug基本使用"><span class="nav-number">2.</span> <span class="nav-text">Vim-Plug基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插件安装"><span class="nav-number">2.2.</span> <span class="nav-text">插件安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新插件"><span class="nav-number">2.3.</span> <span class="nav-text">更新插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#审查插件"><span class="nav-number">2.4.</span> <span class="nav-text">审查插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除插件"><span class="nav-number">2.5.</span> <span class="nav-text">删除插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#升级Vim-Plug本身"><span class="nav-number">2.6.</span> <span class="nav-text">升级Vim-Plug本身</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装ctags"><span class="nav-number">3.</span> <span class="nav-text">安装ctags</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自动生成tags"><span class="nav-number">3.1.</span> <span class="nav-text">自动生成tags</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装AsyncRun"><span class="nav-number">4.</span> <span class="nav-text">安装AsyncRun</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装代码检查ALE"><span class="nav-number">5.</span> <span class="nav-text">安装代码检查ALE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装YouCompleteMe"><span class="nav-number">6.</span> <span class="nav-text">安装YouCompleteMe</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NerdTree"><span class="nav-number">7.</span> <span class="nav-text">NerdTree</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vim-cpp-enhanced-highlight"><span class="nav-number">8.</span> <span class="nav-text">vim-cpp-enhanced-highlight</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nerdcommerter"><span class="nav-number">9.</span> <span class="nav-text">nerdcommerter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LeaderF"><span class="nav-number">10.</span> <span class="nav-text">LeaderF</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#echodoc-vim"><span class="nav-number">11.</span> <span class="nav-text">echodoc.vim</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Vim所有配置"><span class="nav-number">12.</span> <span class="nav-text">Vim所有配置</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZRainy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
