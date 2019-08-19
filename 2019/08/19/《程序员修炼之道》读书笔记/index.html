@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="职业素养,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ZRainy" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="偶然在组里书柜里看到了这本书，听说是新人程序员的圣经，正巧自己最近也在找这种培养思维和习惯的书看，所以就打算趁闲暇看下，希望对自己有所帮助。 PS：看了几页，很多都是寓意的小故事，没法精确地摘抄某几个句子来表达思想，所以可以的话还是买本书看一看吧。">
+<meta name="keywords" content="职业素养">
+<meta property="og:type" content="article">
+<meta property="og:title" content=" 《程序员修炼之道》读书笔记 ">
+<meta property="og:url" content="http://yoursite.com/2019/08/19/《程序员修炼之道》读书笔记/index.html">
+<meta property="og:site_name" content="ZRainy">
+<meta property="og:description" content="偶然在组里书柜里看到了这本书，听说是新人程序员的圣经，正巧自己最近也在找这种培养思维和习惯的书看，所以就打算趁闲暇看下，希望对自己有所帮助。 PS：看了几页，很多都是寓意的小故事，没法精确地摘抄某几个句子来表达思想，所以可以的话还是买本书看一看吧。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-19T14:05:29.064Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content=" 《程序员修炼之道》读书笔记 ">
+<meta name="twitter:description" content="偶然在组里书柜里看到了这本书，听说是新人程序员的圣经，正巧自己最近也在找这种培养思维和习惯的书看，所以就打算趁闲暇看下，希望对自己有所帮助。 PS：看了几页，很多都是寓意的小故事，没法精确地摘抄某几个句子来表达思想，所以可以的话还是买本书看一看吧。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/19/《程序员修炼之道》读书笔记/">
+
+
+
+
+
+  <title> 《程序员修炼之道》读书笔记  | ZRainy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRainy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/19/《程序员修炼之道》读书笔记/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZRainy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRainy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"> 《程序员修炼之道》读书笔记 </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-19T22:03:41+08:00">
+                2019-08-19
+              </time>
+            
+
+            
+
+            
+          </span>
+          
+            <span class="post-updated">
+              &nbsp; | &nbsp; 更新于
+              <time itemprop="dateUpdated" datetime="2019-08-19T22:05:29+08:00" content="2019-08-19">
+              2019-08-19
+              </time>
+            </span>
+          
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/职业学习/" itemprop="url" rel="index">
+                    <span itemprop="name">职业学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>偶然在组里书柜里看到了这本书，听说是新人程序员的圣经，正巧自己最近也在找这种培养思维和习惯的书看，所以就打算趁闲暇看下，希望对自己有所帮助。</p>
+<p>PS：看了几页，很多都是寓意的小故事，没法精确地摘抄某几个句子来表达思想，所以可以的话还是买本书看一看吧。</p>
+<a id="more"></a>
+<h1 id="第一章-注重实效的哲学"><a href="#第一章-注重实效的哲学" class="headerlink" title="第一章 注重实效的哲学"></a>第一章 注重实效的哲学</h1><p>在前言里，书里提到了两个提示，就放在这里记录一下：</p>
+<ul>
+<li>提示1：关心你的技艺。除非你在乎能否漂亮地开发出软件，否则其他事情都是没有意义的。</li>
+<li>提示2：思考！你的工作。在你做某件事情的时候思考你在做什么。</li>
+</ul>
+<h2 id="我的源码让猫给吃了"><a href="#我的源码让猫给吃了" class="headerlink" title="我的源码让猫给吃了"></a>我的源码让猫给吃了</h2><ul>
+<li>提示3：提供各种选择，不要找蹩脚的借口。</li>
+<li>负责，责任是你主动担负的东西。如果你确实同意要为某个结果负责，你就应切实负起责任。</li>
+<li>在你问问题或者说做不到之前，先停下来，在头脑里预演一遍对话，想想其他人可能会说什么，把理由说给猫听，感觉理由是否合理，否则不要麻烦别人。</li>
+</ul>
+<h2 id="软件的熵"><a href="#软件的熵" class="headerlink" title="软件的熵"></a>软件的熵</h2><ul>
+<li>熵是指某个系统中无序的总量。软件中的无序增长时，程序员们称之为“软件腐烂”。</li>
+<li>提示4：不要容忍破窗户。即不要留着低劣的设计、错误决策、糟糕的代码而不去修理。发现一个就修一个。</li>
+<li>置之不理会更快加速腐烂的进程。</li>
+<li>简单来说，就是大家都不会愿意做第一个弄脏东西的人，但如果东西已经有地方脏了，那就无所谓了，所有人都不会再在乎。</li>
+</ul>
+<h2 id="石头汤与煮青蛙"><a href="#石头汤与煮青蛙" class="headerlink" title="石头汤与煮青蛙"></a>石头汤与煮青蛙</h2><ul>
+<li>提示5：做变化的催化剂。在有些情况下，你可能确切地知道要什么，但需要去处理整个事件的时候就会遇到拖延和冷漠，事情会变复杂，每个人都会护卫自己的资源。这时就是你拿出石头的时候，因为人们会觉得参与正在发生的成功更容易，让他们看见未来，你就能让他们狙击在你周围。</li>
+<li>提示6：记住大图景。不要像温水煮青蛙一样，要留心大图景，要持续不断地观察周围发生的事情，而不只是你自己在做的事情。</li>
+</ul>
+<h2 id="足够好的软件"><a href="#足够好的软件" class="headerlink" title="足够好的软件"></a>足够好的软件</h2><ul>
+<li>让你的用户参与权衡。</li>
+<li>提示7：我们所制作的系统的范围和质量应该作为系统需求的一部分规定下来。今天的了不起的软件常常比明天的完美软件更可取。</li>
+<li>不要因为过度修饰和过于求精而毁损完好的程序。</li>
+</ul>
+<h2 id="你的知识资产"><a href="#你的知识资产" class="headerlink" title="你的知识资产"></a>你的知识资产</h2><ul>
+<li>提示8：定期为你的知识资产投资。要点有定期投资、多元化、管理风险、低买高卖以及重新评估和平衡。</li>
+<li>可以设定一些目标，比如一年学一门新语言、一季度看一本技术书……</li>
+<li>提示9：批判地分析你读到的和听到的。要抓住学习机会，要批判地思考。</li>
+</ul>
+<h2 id="交流"><a href="#交流" class="headerlink" title="交流"></a>交流</h2><ul>
+<li>知道你想要说什么，规划想要说的东西。</li>
+<li>了解你的听众。</li>
+<li>选择时机。</li>
+<li>选择风格。</li>
+<li>让文档美观，并在制作过程中让听众参与。</li>
+<li>做倾听者。把会议变成对话。</li>
+<li>回复他人。</li>
+<li>提示10：你说什么和你怎么说同样重要。</li>
+</ul>
+<h1 id="第2章-注重实效的途径"><a href="#第2章-注重实效的途径" class="headerlink" title="第2章 注重实效的途径"></a>第2章 注重实效的途径</h1><h2 id="重复的危害"><a href="#重复的危害" class="headerlink" title="重复的危害"></a>重复的危害</h2><ul>
+<li>提示11：DRY-Don’t Repeat Yourself。系统中的每一项知识都必须具有单一、无歧义、权威的表示。</li>
+<li>无意的重复里提到，即使重复了也要把重复限制在局部，不要暴露给外界。</li>
+<li>提示12：让复用变得容易。</li>
+</ul>
+<h2 id="正交性"><a href="#正交性" class="headerlink" title="正交性"></a>正交性</h2><ul>
+<li>在计算机技术里，正交是指某种不依赖性或解耦性，如果两个或更多事物中的一个发生变化，不会影响其他事物，这些事物就是正交的。比如在设计良好的系统中，数据库代码和用户界面就是正交的。</li>
+<li>提示13：消除无关事物之间的影响。</li>
+<li>编写正交的系统，可以提高生产率并降低风险。</li>
+<li>团队划分方面的一点建议就是将基础设施与应用分离，每个主要的基础设施组件（比如数据库、通信接口、中间件等）有自己的子团队。</li>
+</ul>
+<h2 id="可撤销性"><a href="#可撤销性" class="headerlink" title="可撤销性"></a>可撤销性</h2><ul>
+<li>提示14：不存在最终决策。要考虑到决策的可撤销性。</li>
+</ul>
+<h2 id="曳光弹"><a href="#曳光弹" class="headerlink" title="曳光弹"></a>曳光弹</h2><ul>
+<li>提示15：用曳光弹找到目标。</li>
+<li>总有改动需要完成，总有功能需要增加。</li>
+<li>曳光代码有很多优点：用户能够及早看到能工作的东西；开发者构建了一个他们能在其中工作的结构；你有了一个集成平台；你有了可用于演示的东西；你将更能够感觉到工作进展。</li>
+<li>感觉就是先搭个架子，再步步逼近。</li>
+<li>曳光和原型编程还有区别，原型编程是生成用过就扔的代码，而曳光代码虽然简约，却是完整的（当然我并没有理解……）。可以把原型制作视为在第一发曳光弹发射之前进行的侦查和情报搜集工作。</li>
+</ul>
+<h2 id="原型与便笺"><a href="#原型与便笺" class="headerlink" title="原型与便笺"></a>原型与便笺</h2><ul>
+<li>建立原型的原因是为了分析和揭示风险，并以大大降低的带来来为修正提供机会，就像是汽车制造商造的某种模型，概念图，只是为了展示某一个方面，但却不是真正能用的（这么一想感觉原型和曳光弹确实有区别好像……）。</li>
+<li>提示16： 为了学习而制作原型。原型的设计目的地是会大一些问题，可以忽略不重要的细节，比如制作GUI原型的时候就不要在意取到的数据正确与否。原型的价值不在于所产生的代码，而在于学习的经验教训。</li>
+<li>构建原型时，可以忽略以下细节：正确性、完整性、健壮性、风格。</li>
+</ul>
+<h2 id="领域语言"><a href="#领域语言" class="headerlink" title="领域语言"></a>领域语言</h2><ul>
+<li>提示17：靠近问题领域编程。</li>
+<li>可以通过两种不同的方式使用你实现的语言：数据语言和命令语言。</li>
+<li>没看太明白，感觉好像说的是写一串公用的话，然后利用这段话解析成所需代码。</li>
+</ul>
+<h2 id="估算"><a href="#估算" class="headerlink" title="估算"></a>估算</h2><ul>
+<li>提示18：估算，以避免发生意外。</li>
+<li>建议这样估算时间，十五天内用天，八周内用周，30周内用月，超出30周的时候请努力思考一下再估算。要选择能反映你想要传达的精度的单位。</li>
+<li>理解提问内容，建立系统的模型，把模型分解成组件，给每个参数指定值，计算答案，追踪你的估算能力</li>
+<li>提示19：通过代码对进度表进行迭代。</li>
+</ul>
+<h1 id="第3章-基本工具"><a href="#第3章-基本工具" class="headerlink" title="第3章 基本工具"></a>第3章 基本工具</h1><h2 id="纯文本的威力"><a href="#纯文本的威力" class="headerlink" title="纯文本的威力"></a>纯文本的威力</h2><ul>
+<li>提示20：用纯文本保存知识。</li>
+<li>纯文本有两个主要缺点：1、与压缩的二进制格式相比，存储纯文本所需空间更多；2、要解释及处理纯文本文件，计算上的代价可能更昂贵。</li>
+<li>好处：保证不过时，杠杆作用，更易于测试。</li>
+</ul>
+<h2 id="shell游戏"><a href="#shell游戏" class="headerlink" title="shell游戏"></a>shell游戏</h2><ul>
+<li>提示21：利用命令shell的力量。</li>
+</ul>
+<h2 id="强力编辑"><a href="#强力编辑" class="headerlink" title="强力编辑"></a>强力编辑</h2><ul>
+<li>提示22：用好一种编辑器。</li>
+<li>编辑器特性：可配置、可扩展、可编程</li>
+<li>用好一款编辑器可以提高生产率。</li>
+</ul>
+<h2 id="源码控制"><a href="#源码控制" class="headerlink" title="源码控制"></a>源码控制</h2><ul>
+<li>提示23：总是使用源码控制。</li>
+</ul>
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><ul>
+<li>要接受事实：调试就是解决问题，要据此发起进攻。</li>
+<li>提示24：要修正问题，而不是发出指责。</li>
+<li>提示25：不要恐慌。这是调试的第一准则。</li>
+<li>如果你目睹bug或见到bug报告时的第一反应是“那不可能”，那你就错了，不要把脑细胞浪费在以“那不可能”起头的思路上，因为已经发生了。</li>
+<li>要总是设法找出问题的根源，而不只是问题的特定表现。</li>
+<li>从何处开始，在解决问题时，可能需要搜集所有的相关数据，比如可能需要观察报告bug用户的操作，以获取足够程度的细节。</li>
+<li>测试策略，一旦你认为你知道了在发生什么，就到了找出程序认为在发生什么的时候了。</li>
+<li>开始修正bug的最佳途径是让其可再现。使数据可视化。</li>
+<li>调试器通常会聚焦于程序现在的状态，但有时需要更多的东西——可能需要观察程序或数据结构随时间变化的状态。</li>
+<li>橡皮鸭</li>
+<li>bug有可能存在于第三方库——但不应该是你的第一想法。提示26：”select”没有问题。</li>
+<li>提示27：不要假定，要证明。</li>
+<li>当遇到令人吃惊的bug时，除了只是修正它之外，还需要确定先前为什么没有找出这个故障。考虑是否需要改进单元测试。</li>
+<li>如果bug是一些坏数据的结果，那是否能进行更好的参数检查来隔离它们。</li>
+<li>考虑造成这个bug的条件是否存在于系统中的其他地方。</li>
+</ul>
+<h2 id="文本操纵"><a href="#文本操纵" class="headerlink" title="文本操纵"></a>文本操纵</h2><ul>
+<li>提示28：学习一种文本操纵语言，比如Perl（这两天迁移代码的时候刚遇到过）。</li>
+</ul>
+<h2 id="代码生成器"><a href="#代码生成器" class="headerlink" title="代码生成器"></a>代码生成器</h2><ul>
+<li>提示29：编写能编写代码的代码。</li>
+<li>分为被动代码生成器以及主动代码生成器。</li>
+<li>被动代码生成器减少敲键次数，本质上是参数化模板，结果一旦生成，就变成项目中充分的源文件。</li>
+<li>通过主动代码生成器，可以取某项知识的一种表现形式，将其转化为你的应用需要的所有形式。</li>
+</ul>
+<h1 id="第4章-注重实效的偏执"><a href="#第4章-注重实效的偏执" class="headerlink" title="第4章 注重实效的偏执"></a>第4章 注重实效的偏执</h1><ul>
+<li>提示30：你不可能写出完美的软件。</li>
+</ul>
+<h2 id="按合约设计"><a href="#按合约设计" class="headerlink" title="按合约设计"></a>按合约设计</h2><ul>
+<li>什么是正确的程序？不多不少，做它声明要做的事情的程序。用文档记载这样的声明，并进行校验，是按合约设计（DBC）的核心。</li>
+<li>提示31：通过合约进行设计。</li>
+<li>在设计时简单地列举输入域的范围是什么、边界条件是什么、例程允诺交付什么——或者更重要的，它不允诺交付什么——是向着编写更好的软件的一次飞跃。</li>
+<li>如果要对参数进行任何显式的检查，就必须由调用者来完成。</li>
+</ul>
+<h2 id="死程序不说谎"><a href="#死程序不说谎" class="headerlink" title="死程序不说谎"></a>死程序不说谎</h2><ul>
+<li>防卫性编程。</li>
+<li>提示32：早崩溃。要崩溃，不要破坏。有很多时候，让你的程序崩溃是你的最佳选择。</li>
+<li>基本的原则：但给你的代码发现，某件被认为是不可能的事情已经发生时，你的程序就不再有存活能力。</li>
+</ul>
+<h2 id="断言式编程"><a href="#断言式编程" class="headerlink" title="断言式编程"></a>断言式编程</h2><ul>
+<li>提示33：如果它不可能发生，用断言确保它不会发生。不过绝不要把必须执行的代码放在assert中。不要用断言代替真正的错误处理，断言检查的是绝不应该发生的事情。</li>
+<li>海森堡虫子：调试改变了被调试系统的行为。</li>
+</ul>
+<h2 id="何时使用异常"><a href="#何时使用异常" class="headerlink" title="何时使用异常"></a>何时使用异常</h2><ul>
+<li>异常很少应该作为程序的正常流程的一部分使用，异常应该保留给意外事件。</li>
+<li>提示34：将异常用于异常的问题。</li>
+</ul>
+<h2 id="怎样配平资源"><a href="#怎样配平资源" class="headerlink" title="怎样配平资源"></a>怎样配平资源</h2><ul>
+<li>提示35：要有始有终。分配资源、使用它，然后解除分配。分配资源的例程也应该负责释放它。</li>
+<li>在嵌套的分配情况下：有两点建议，一是以与资源分配的次序相反的次序解除资源的分配。二是在代码的不同地方分配同一组资源时，总是以相同的顺序分配它们。这会降低死锁的可能性。</li>
+</ul>
+<h1 id="第5章-弯曲，或折断"><a href="#第5章-弯曲，或折断" class="headerlink" title="第5章 弯曲，或折断"></a>第5章 弯曲，或折断</h1><h2 id="解耦与德墨忒尔法则"><a href="#解耦与德墨忒尔法则" class="headerlink" title="解耦与德墨忒尔法则"></a>解耦与德墨忒尔法则</h2><ul>
+<li>提示36：使模块之间的耦合减至最少。</li>
+<li>响应集的定义：类的各个方法直接调用的函数的数目。</li>
+<li>得墨忒尔法则：某个对象的任何方法都应该只调用属于以下情形的方法：它自身、传入该方法的任何参数、该方法内new创建的任何对象以及任何直接持有的组件对象。</li>
+<li>事实上，如果对得墨忒尔法则进行反转，使模块紧密耦合，有时就可以获得重大的性能改进。这就需要看情况来权衡。 </li>
+</ul>
+<h2 id="元程序设计"><a href="#元程序设计" class="headerlink" title="元程序设计"></a>元程序设计</h2><ul>
+<li>动态配置，提示37：要配置，不要集成。</li>
+<li>为一般情况编写程序，把具体情况放在别处——在编译的代码库之外。提示38：把抽象放进代码，细节放进元数据。</li>
+<li>没有元数据，你的代码就不可能获得它应有的适应性与灵活性。</li>
+</ul>
+<h2 id="时间耦合"><a href="#时间耦合" class="headerlink" title="时间耦合"></a>时间耦合</h2><ul>
+<li>在设计时间要素时，有两个方面对我们很重要：并发和次序。</li>
+<li>我们需要容许并发，并考虑解除任何时间或次序上的依赖。</li>
+<li>提示39：分析工作流，以改善并发性。</li>
+<li>提示40：用服务进行设计。</li>
+<li>提示41：总是为并发进行设计。</li>
+</ul>
+<h2 id="它只是视图"><a href="#它只是视图" class="headerlink" title="它只是视图"></a>它只是视图</h2><ul>
+<li>模块或类的一个好定义就是，它具有单一的、定义良好的责任。</li>
+<li>发布/订阅模式，Model-View-Controller模式：既让模型与表示模型的GUI分离，也让模型与管理视图的控件分离。提示42：使视图与模型分离。</li>
+<li>模型：表示目标对象的抽象数据模型。模型对任何视图或控制器都没有直接的了解</li>
+<li>视图：解释模型的方式，它订阅模型中的变化和来自控制器的逻辑事件。</li>
+<li>控制器：控制视图、并向模型提供新数据的途径，它既向模型、也向视图发布时间。</li>
+</ul>
+<h2 id="黑板"><a href="#黑板" class="headerlink" title="黑板"></a>黑板</h2><ul>
+<li>黑板系统让我们能够完全解除对象之间的耦合，并提供一个论坛，知识消费者和生产者可以在那里匿名、异步地交换数据。</li>
+<li>提示43：用黑板协调工作流。</li>
+</ul>
+<h1 id="第6章：当你编码时"><a href="#第6章：当你编码时" class="headerlink" title="第6章：当你编码时"></a>第6章：当你编码时</h1><h2 id="靠巧合编程"><a href="#靠巧合编程" class="headerlink" title="靠巧合编程"></a>靠巧合编程</h2><ul>
+<li>避免靠巧合编程——依靠运气和偶然的成功——而要深思熟虑地编程。</li>
+<li>对于你的例程的调用，要只依靠记入了文档的行为。如果处于任何原因你无法做到这一点，那就充分地把你的各种假定记入文档。</li>
+<li>提示44：不要靠巧合编程。并非以明确的事实为基础的假定是所有项目的祸害。</li>
+<li>怎样深思熟虑地编程：1、总是意识到你在做什么。2、不要盲目地编程。3、按照计划行事。4、依靠可靠的事物。5、为你的假定建立文档。6、不要只是测试你的代码，还要测试你的假定。7、为你的工作划分优先级。8、不要做历史的奴隶，不要让已有的代码支配将来的代码。</li>
+</ul>
+<h2 id="算法速率"><a href="#算法速率" class="headerlink" title="算法速率"></a>算法速率</h2><ul>
+<li>提示45：估算你的算法的阶。</li>
+<li>不确定代码运行时间的时候可以试着运行它，并记录不同的输入和运行时间，把结果绘制成图标。</li>
+<li>提示46：测试你的估算。</li>
+</ul>
+<h2 id="重构"><a href="#重构" class="headerlink" title="重构"></a>重构</h2><ul>
+<li>代码需要演化：它不是静态的事物。</li>
+<li>无论代码具有下面的哪些特征，都应该考虑重构代码：重复、非正交的设计、过时的知识、性能。</li>
+<li>提示47：早重构，常重构。</li>
+<li>怎样进行利大于弊的重构：1、不要在重构的同时增加功能；2、在开始重构之前，确保拥有良好的测试，并尽可能经常地运行它们。3、采取短小、深思熟虑的步骤。</li>
+</ul>
+<h2 id="易于测试的代码"><a href="#易于测试的代码" class="headerlink" title="易于测试的代码"></a>易于测试的代码</h2><ul>
+<li>我们需要从一开始就把可测试性构建进软件中，并且在把各个部分连接在一起之前对每个部分进行彻底的测试。</li>
+<li>提示48：为测试而设计。</li>
+<li>提示49：测试你的软件，否则你的用户就得测试。</li>
+</ul>
+<h2 id="邪恶的向导"><a href="#邪恶的向导" class="headerlink" title="邪恶的向导"></a>邪恶的向导</h2><ul>
+<li>提示50：不要使用你不理解的向导代码。</li>
+<li>感觉说的就是不要使用你不理解的自动生成的代码。</li>
+</ul>
+<h1 id="第7章：在项目开始之前"><a href="#第7章：在项目开始之前" class="headerlink" title="第7章：在项目开始之前"></a>第7章：在项目开始之前</h1><h2 id="需求之坑"><a href="#需求之坑" class="headerlink" title="需求之坑"></a>需求之坑</h2><ul>
+<li>提示51：不要搜集需求——挖掘它们。</li>
+<li>找出用户为何要做特定事情的原因、而不只是他们目前做这件事情的方式。</li>
+<li>提示52：与用户一同工作，以像用户一样思考。</li>
+<li>需求不是架构，不是设计，不是用户界面，而是需要。</li>
+<li>提示53：抽象比细节活得更长久。</li>
+<li>管理需求增长的关键是向项目出资人指出每项新特性对项目进度的影响。</li>
+<li>要创建并维护项目词汇表。提示54：使用项目词汇表。</li>
+</ul>
+<h2 id="解开不可能解开的谜题"><a href="#解开不可能解开的谜题" class="headerlink" title="解开不可能解开的谜题"></a>解开不可能解开的谜题</h2><ul>
+<li>提示55：不要在盒子外面思考——要找到盒子。在面对棘手的问题的时候，列出所有在你面前的可能途径。不要排除任何东西，不管它听起来有多无用或愚蠢。</li>
+<li>所需要的只是真正的约束、令人误解的约束、还有区分它们的智慧。</li>
+</ul>
+<h2 id="等你准备好"><a href="#等你准备好" class="headerlink" title="等你准备好"></a>等你准备好</h2><ul>
+<li>提示56：倾听反复出现的疑虑——等你准备好再开始。</li>
+</ul>
+<h2 id="规范陷阱"><a href="#规范陷阱" class="headerlink" title="规范陷阱"></a>规范陷阱</h2><ul>
+<li>编写规范是一项重要职责。</li>
+<li>提示57：对有些事情“做”胜于“描述”。</li>
+<li>没有给编码者留下任何解释余地的设计剥夺了他们发挥技巧和艺术才能的权利。</li>
+<li>越是把规范当做安乐毯，进入编码截断就会越困难。</li>
+</ul>
+<h2 id="圆圈与箭头"><a href="#圆圈与箭头" class="headerlink" title="圆圈与箭头"></a>圆圈与箭头</h2><ul>
+<li>提示58：不要做形式方法的努力。</li>
+<li>应该使用形式方法，但要记住它只是工具箱里的又一种工具。</li>
+<li>提示59：昂贵的工具不一定能制作出更好的设计。</li>
+</ul>
+<h1 id="第8章：注重实效的项目"><a href="#第8章：注重实效的项目" class="headerlink" title="第8章：注重实效的项目"></a>第8章：注重实效的项目</h1><h2 id="注重实效的团队"><a href="#注重实效的团队" class="headerlink" title="注重实效的团队"></a>注重实效的团队</h2><ul>
+<li>认为项目的各种活动——分析、设计、编码——会孤立地发生，这是一个错误。它们不会孤立发生。它们是看待同一问题的不同方式，人为地分隔它们会带来许多麻烦。</li>
+<li>提示60：围绕功能、而不是工作职务进行组织。</li>
+</ul>
+<h2 id="无处不在的自动化"><a href="#无处不在的自动化" class="headerlink" title="无处不在的自动化"></a>无处不在的自动化</h2><ul>
+<li>提示61：不要使用手工流程。</li>
+</ul>
+<h2 id="无情的测试"><a href="#无情的测试" class="headerlink" title="无情的测试"></a>无情的测试</h2><ul>
+<li>提示62：早测试，常测试，自动测试。</li>
+<li>提示63：要到通过全部测试，编码才算完成。</li>
+<li>我们需要查看项目范围测试的三个主要方面：测试什么、怎样测试以及何时测试。</li>
+<li>单元测试是对某个模块进行演练的代码。是所有其他形式的测试的基础。</li>
+<li>集成测试说明组成项目的主要子系统能工作，并且能很好地协同。</li>
+<li>验证和校验。</li>
+<li>资源耗尽、错误及恢复。</li>
+<li>性能测试，压力测试。</li>
+<li>可用性测试。</li>
+<li>怎样测试包括：回归测试、测试数据、演练GUI系统、对测试进行测试、彻底测试。</li>
+<li>回归测试把当前测试的输出与先前值进行对比。 </li>
+<li>提示64：通过“蓄意破坏”测试你的测试。</li>
+<li>提示65：测试状态覆盖，而不是代码覆盖。</li>
+<li>提示66：一个bug只抓一次。一旦测试人员找到了某个bug，就应该是最后一次发现这个bug。增加新的测试，从此每次都检查这个特定的bug。</li>
+</ul>
+<h2 id="全都是写"><a href="#全都是写" class="headerlink" title="全都是写"></a>全都是写</h2><ul>
+<li>注重实效的程序员会把文档当做整个开发过程的完整组成部分加以接受。</li>
+<li>提示67：把英语当做又一种编程语言。</li>
+<li>提示68：把文档建在里面，不要拴在外面。</li>
+<li>一般而言，注释应该讨论为何要做模式、它的目的和目标。</li>
+<li>不应该出现在注释中的一些内容：文件中的代码导出的函数的列表、修行历史、该文件使用的其他文件的列表、文件名。</li>
+<li>在源文件里应该出现的最重要的信息之一是作者的姓名。</li>
+<li>文档和代码是同一底层模型的不同视图，但视图是唯一应该不同的东西。</li>
+</ul>
+<h2 id="极大的期望"><a href="#极大的期望" class="headerlink" title="极大的期望"></a>极大的期望</h2><ul>
+<li>在现实中，项目的成功是由它在多大程度上满足了用户的期望来衡量的。</li>
+<li>提示69：温和地超出用户的期望。</li>
+</ul>
+<h2 id="傲慢与偏见"><a href="#傲慢与偏见" class="headerlink" title="傲慢与偏见"></a>傲慢与偏见</h2><ul>
+<li>提示70：在你的作品上签名。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/职业素养/" rel="tag"># 职业素养</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/04/Vim配置/" rel="next" title="Vim配置">
+                <i class="fa fa-chevron-left"></i> Vim配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjgzMy8xMzM2OQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ZRainy</p>
+              <p class="site-description motion-element" itemprop="description">故事没结束，别急着去哭</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一章-注重实效的哲学"><span class="nav-number">1.</span> <span class="nav-text">第一章 注重实效的哲学</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#我的源码让猫给吃了"><span class="nav-number">1.1.</span> <span class="nav-text">我的源码让猫给吃了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件的熵"><span class="nav-number">1.2.</span> <span class="nav-text">软件的熵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#石头汤与煮青蛙"><span class="nav-number">1.3.</span> <span class="nav-text">石头汤与煮青蛙</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#足够好的软件"><span class="nav-number">1.4.</span> <span class="nav-text">足够好的软件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#你的知识资产"><span class="nav-number">1.5.</span> <span class="nav-text">你的知识资产</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#交流"><span class="nav-number">1.6.</span> <span class="nav-text">交流</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第2章-注重实效的途径"><span class="nav-number">2.</span> <span class="nav-text">第2章 注重实效的途径</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#重复的危害"><span class="nav-number">2.1.</span> <span class="nav-text">重复的危害</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正交性"><span class="nav-number">2.2.</span> <span class="nav-text">正交性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可撤销性"><span class="nav-number">2.3.</span> <span class="nav-text">可撤销性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#曳光弹"><span class="nav-number">2.4.</span> <span class="nav-text">曳光弹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原型与便笺"><span class="nav-number">2.5.</span> <span class="nav-text">原型与便笺</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#领域语言"><span class="nav-number">2.6.</span> <span class="nav-text">领域语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#估算"><span class="nav-number">2.7.</span> <span class="nav-text">估算</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第3章-基本工具"><span class="nav-number">3.</span> <span class="nav-text">第3章 基本工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#纯文本的威力"><span class="nav-number">3.1.</span> <span class="nav-text">纯文本的威力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shell游戏"><span class="nav-number">3.2.</span> <span class="nav-text">shell游戏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#强力编辑"><span class="nav-number">3.3.</span> <span class="nav-text">强力编辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码控制"><span class="nav-number">3.4.</span> <span class="nav-text">源码控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试"><span class="nav-number">3.5.</span> <span class="nav-text">调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本操纵"><span class="nav-number">3.6.</span> <span class="nav-text">文本操纵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码生成器"><span class="nav-number">3.7.</span> <span class="nav-text">代码生成器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第4章-注重实效的偏执"><span class="nav-number">4.</span> <span class="nav-text">第4章 注重实效的偏执</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#按合约设计"><span class="nav-number">4.1.</span> <span class="nav-text">按合约设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#死程序不说谎"><span class="nav-number">4.2.</span> <span class="nav-text">死程序不说谎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#断言式编程"><span class="nav-number">4.3.</span> <span class="nav-text">断言式编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#何时使用异常"><span class="nav-number">4.4.</span> <span class="nav-text">何时使用异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#怎样配平资源"><span class="nav-number">4.5.</span> <span class="nav-text">怎样配平资源</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第5章-弯曲，或折断"><span class="nav-number">5.</span> <span class="nav-text">第5章 弯曲，或折断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解耦与德墨忒尔法则"><span class="nav-number">5.1.</span> <span class="nav-text">解耦与德墨忒尔法则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#元程序设计"><span class="nav-number">5.2.</span> <span class="nav-text">元程序设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间耦合"><span class="nav-number">5.3.</span> <span class="nav-text">时间耦合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#它只是视图"><span class="nav-number">5.4.</span> <span class="nav-text">它只是视图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#黑板"><span class="nav-number">5.5.</span> <span class="nav-text">黑板</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第6章：当你编码时"><span class="nav-number">6.</span> <span class="nav-text">第6章：当你编码时</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#靠巧合编程"><span class="nav-number">6.1.</span> <span class="nav-text">靠巧合编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法速率"><span class="nav-number">6.2.</span> <span class="nav-text">算法速率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重构"><span class="nav-number">6.3.</span> <span class="nav-text">重构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#易于测试的代码"><span class="nav-number">6.4.</span> <span class="nav-text">易于测试的代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#邪恶的向导"><span class="nav-number">6.5.</span> <span class="nav-text">邪恶的向导</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第7章：在项目开始之前"><span class="nav-number">7.</span> <span class="nav-text">第7章：在项目开始之前</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求之坑"><span class="nav-number">7.1.</span> <span class="nav-text">需求之坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解开不可能解开的谜题"><span class="nav-number">7.2.</span> <span class="nav-text">解开不可能解开的谜题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#等你准备好"><span class="nav-number">7.3.</span> <span class="nav-text">等你准备好</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#规范陷阱"><span class="nav-number">7.4.</span> <span class="nav-text">规范陷阱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#圆圈与箭头"><span class="nav-number">7.5.</span> <span class="nav-text">圆圈与箭头</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第8章：注重实效的项目"><span class="nav-number">8.</span> <span class="nav-text">第8章：注重实效的项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#注重实效的团队"><span class="nav-number">8.1.</span> <span class="nav-text">注重实效的团队</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无处不在的自动化"><span class="nav-number">8.2.</span> <span class="nav-text">无处不在的自动化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无情的测试"><span class="nav-number">8.3.</span> <span class="nav-text">无情的测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全都是写"><span class="nav-number">8.4.</span> <span class="nav-text">全都是写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#极大的期望"><span class="nav-number">8.5.</span> <span class="nav-text">极大的期望</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#傲慢与偏见"><span class="nav-number">8.6.</span> <span class="nav-text">傲慢与偏见</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZRainy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
