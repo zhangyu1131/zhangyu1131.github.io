@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://yoursite.com/2019/10/29/leveldb%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A04-varint/</loc>
+    <lastmod>2019-10-29T13:52:04.974Z</lastmod>
+  </url>  <url>
     <loc>http://yoursite.com/2019/10/21/%E8%82%A1%E7%A5%A8%E8%AE%AD%E7%BB%83%E8%90%A5%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2019-10-28T16:41:12.555Z</lastmod>
+    <lastmod>2019-10-29T13:42:33.214Z</lastmod>
   </url>  <url>
     <loc>http://yoursite.com/2019/10/21/leveldb%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A03-env/</loc>
     <lastmod>2019-10-21T14:45:39.678Z</lastmod>
