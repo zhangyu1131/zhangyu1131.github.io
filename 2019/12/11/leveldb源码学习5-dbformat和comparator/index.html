@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="leveldb,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ZRainy" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="简述LevelDB第五篇笔记，主要解析dbformat.h/cc两个文件，这两个文件主要是定义了一些数据库在存储方面使用到的一些结构。 依旧采取先注释再分析重点的方式。">
+<meta name="keywords" content="leveldb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leveldb源码学习5-dbformat和comparator">
+<meta property="og:url" content="http://yoursite.com/2019/12/11/leveldb源码学习5-dbformat和comparator/index.html">
+<meta property="og:site_name" content="ZRainy">
+<meta property="og:description" content="简述LevelDB第五篇笔记，主要解析dbformat.h/cc两个文件，这两个文件主要是定义了一些数据库在存储方面使用到的一些结构。 依旧采取先注释再分析重点的方式。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-12-11T13:56:23.383Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="leveldb源码学习5-dbformat和comparator">
+<meta name="twitter:description" content="简述LevelDB第五篇笔记，主要解析dbformat.h/cc两个文件，这两个文件主要是定义了一些数据库在存储方面使用到的一些结构。 依旧采取先注释再分析重点的方式。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/12/11/leveldb源码学习5-dbformat和comparator/">
+
+
+
+
+
+  <title>leveldb源码学习5-dbformat和comparator | ZRainy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRainy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/11/leveldb源码学习5-dbformat和comparator/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZRainy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRainy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">leveldb源码学习5-dbformat和comparator</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-11T21:55:37+08:00">
+                2019-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+          
+            <span class="post-updated">
+              &nbsp; | &nbsp; 更新于
+              <time itemprop="dateUpdated" datetime="2019-12-11T21:56:23+08:00" content="2019-12-11">
+              2019-12-11
+              </time>
+            </span>
+          
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/职业学习/" itemprop="url" rel="index">
+                    <span itemprop="name">职业学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h1><p>LevelDB第五篇笔记，主要解析dbformat.h/cc两个文件，这两个文件主要是定义了一些数据库在存储方面使用到的一些结构。</p>
+<p>依旧采取先注释再分析重点的方式。</p>
+<a id="more"></a>
+<h1 id="dbformat"><a href="#dbformat" class="headerlink" title="dbformat"></a>dbformat</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> STORAGE_LEVELDB_DB_DBFORMAT_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> STORAGE_LEVELDB_DB_DBFORMAT_H_</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"leveldb/comparator.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"leveldb/db.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"leveldb/filter_policy.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"leveldb/slice.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"leveldb/table_builder.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"util/coding.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"util/logging.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> leveldb &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// config域名里定义了一组常量，用户可能希望通过选项设置这些参数。</span></span><br><span class="line"><span class="keyword">namespace</span> config &#123;</span><br><span class="line"><span class="comment">// LevelDB的级数</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> kNumLevels = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当命中这么多文件时，Level-0开始压缩</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> kL0_CompactionTrigger = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Level-0文件个数的软限制，到达这个限制时LevelDB会降低写速度。</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> kL0_SlowdownWritesTrigger = <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Level-0文件个数的最大限制，到达这个限制时会停止写。</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> kL0_StopWritesTrigger = <span class="number">12</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果一个新压缩的memtable没有产生重叠，就将其推到的最大级别。</span></span><br><span class="line"><span class="comment">// 我们尝试将级别提升到2来避免相对昂贵的level 0 =&gt; level 1压缩，并避免一些昂贵的manifile操作。</span></span><br><span class="line"><span class="comment">// 我们并不会一直推到最大级别，因为如果相同的key空间被覆盖的话，就会产生大量的磁盘空间浪费。</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> kMaxMemCompactLevel = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在迭代期间读取的数据样本之间的字节数的近似差距，1MB</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> kReadBytesPeriod = <span class="number">1048576</span>;</span><br><span class="line"></span><br><span class="line">&#125;  <span class="comment">// namespace config</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InternalKey</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 该枚举类被编码成InternalKey的最后组成部分。</span></span><br><span class="line"><span class="comment">// 不要改变该枚举类的值，它们被嵌入到磁盘上的数据结构中。</span></span><br><span class="line"><span class="keyword">enum</span> ValueType &#123; kTypeDeletion = <span class="number">0x0</span>, kTypeValue = <span class="number">0x1</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// kValueTypeForSeek定义了当构建一个ParsedInternalKey对象时应该被传入用来寻找一个特定sequence number的ValueType值。</span></span><br><span class="line"><span class="comment">// 因为我们会递增排列sequence number，并且ValueType会被嵌入到intervalkey中的sequence number的低8位中，所以我们需要最高编号的ValueType，而不是最低的。</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> ValueType kValueTypeForSeek = kTypeValue;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint64_t</span> SequenceNumber;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 我们留出了低位8bit为空，以便sequence和valuetype能够包装在一起成为一个64bits。</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> SequenceNumber kMaxSequenceNumber = ((<span class="number">0x1</span>ull &lt;&lt; <span class="number">56</span>) - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//解析过的InternalKey，即包含user_key、SequenceNumber和ValueType三个字段</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ParsedInternalKey</span> &#123;</span></span><br><span class="line">  Slice user_key;</span><br><span class="line">  SequenceNumber sequence;</span><br><span class="line">  ValueType type;</span><br><span class="line"></span><br><span class="line">  ParsedInternalKey() &#123;&#125;  <span class="comment">// 出于速率考虑，故意没有初始化</span></span><br><span class="line">  ParsedInternalKey(<span class="keyword">const</span> Slice&amp; u, <span class="keyword">const</span> SequenceNumber&amp; seq, ValueType t)</span><br><span class="line">      : user_key(u), sequence(seq), type(t) &#123;&#125;</span><br><span class="line">  <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">DebugString</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回key编码后的长度，就是user_key的长度加上8个bytes（sequence和ValuType一共64bits）</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> size_t <span class="title">InternalKeyEncodingLength</span><span class="params">(<span class="keyword">const</span> ParsedInternalKey&amp; key)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> key.user_key.size() + <span class="number">8</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将“key”的序列化结果附加到*result。</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AppendInternalKey</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span>* result, <span class="keyword">const</span> ParsedInternalKey&amp; key)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 尝试将internal_key转成ParsedInternalKey，成功返回true，并将结果存在result中。</span></span><br><span class="line"><span class="comment">// 若失败，返回false，result处于未定义状态。</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ParseInternalKey</span><span class="params">(<span class="keyword">const</span> Slice&amp; internal_key, ParsedInternalKey* result)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回InternalKey中的user_key部分</span></span><br><span class="line"><span class="comment">// 一个InternalKey其实就是user_key+sequence+valtype，后两者一共占8个byte</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> Slice <span class="title">ExtractUserKey</span><span class="params">(<span class="keyword">const</span> Slice&amp; internal_key)</span> </span>&#123;</span><br><span class="line">  assert(internal_key.size() &gt;= <span class="number">8</span>);</span><br><span class="line">  <span class="keyword">return</span> Slice(internal_key.data(), internal_key.size() - <span class="number">8</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一个供InternalKey使用的比较器，该比较器使用一个特定的比较器来比较userkey部分并通过减少序sequenceNumber来断开连接。</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InternalKeyComparator</span> :</span> <span class="keyword">public</span> Comparator &#123;</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">const</span> Comparator* user_comparator_;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  explicit InternalKeyComparator(const Comparator* c) : user_comparator_(c) &#123;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">Name</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">Compare</span><span class="params">(<span class="keyword">const</span> Slice&amp; a, <span class="keyword">const</span> Slice&amp; b)</span> <span class="keyword">const</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">FindShortestSeparator</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span>* start,</span></span></span><br><span class="line"><span class="function"><span class="params">                                     <span class="keyword">const</span> Slice&amp; limit)</span> <span class="keyword">const</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">FindShortSuccessor</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span>* key)</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">const</span> Comparator* <span class="title">user_comparator</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> user_comparator_; &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">Compare</span><span class="params">(<span class="keyword">const</span> InternalKey&amp; a, <span class="keyword">const</span> InternalKey&amp; b)</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将InternalKey转换成Userkeys的过滤策略包装器</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InternalFilterPolicy</span> :</span> <span class="keyword">public</span> FilterPolicy &#123;</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">const</span> FilterPolicy* <span class="keyword">const</span> user_policy_;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  explicit InternalFilterPolicy(const FilterPolicy* p) : user_policy_(p) &#123;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">Name</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">CreateFilter</span><span class="params">(<span class="keyword">const</span> Slice* keys, <span class="keyword">int</span> n, <span class="built_in">std</span>::<span class="built_in">string</span>* dst)</span> <span class="keyword">const</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">KeyMayMatch</span><span class="params">(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">const</span> Slice&amp; filter)</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// LevelDB应该将internal-key封装在InternalKey中而不是原生的string中，这样我们才不至于错误地使用字符串比较而不是InternalKeyComparator。</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InternalKey</span> &#123;</span></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">string</span> rep_;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  InternalKey() &#123;&#125;  <span class="comment">// rep_留空来表示无效</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 构造InternalKey，最终rep_的结构为 user_key + ( s&lt;&lt;8 | t)</span></span><br><span class="line">  InternalKey(<span class="keyword">const</span> Slice&amp; user_key, SequenceNumber s, ValueType t) &#123;</span><br><span class="line">    AppendInternalKey(&amp;rep_, ParsedInternalKey(user_key, s, t));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 把s赋值给rep_</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">DecodeFrom</span><span class="params">(<span class="keyword">const</span> Slice&amp; s)</span> </span>&#123; rep_.assign(s.data(), s.size()); &#125;</span><br><span class="line">  <span class="comment">//就是返回rep_</span></span><br><span class="line">  <span class="function">Slice <span class="title">Encode</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    assert(!rep_.empty());</span><br><span class="line">    <span class="keyword">return</span> rep_;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 调用ExtractUserKey方法提取rep_中的userkey部分，其实就是抛弃后面8个bye</span></span><br><span class="line">  <span class="function">Slice <span class="title">user_key</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> ExtractUserKey(rep_); &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 其实就是reset方法吧</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">SetFrom</span><span class="params">(<span class="keyword">const</span> ParsedInternalKey&amp; p)</span> </span>&#123;</span><br><span class="line">    rep_.clear();</span><br><span class="line">    AppendInternalKey(&amp;rep_, p);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">Clear</span><span class="params">()</span> </span>&#123; rep_.clear(); &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">DebugString</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 其实就是比较两个string</span></span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">int</span> InternalKeyComparator::Compare(<span class="keyword">const</span> InternalKey&amp; a,</span><br><span class="line">                                          <span class="keyword">const</span> InternalKey&amp; b) <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> Compare(a.Encode(), b.Encode());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 尝试把InternalKey转换成ParsedInternalKey，感觉就是InternalKey类构造函数的逆操作</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">bool</span> <span class="title">ParseInternalKey</span><span class="params">(<span class="keyword">const</span> Slice&amp; internal_key,</span></span></span><br><span class="line"><span class="function"><span class="params">                             ParsedInternalKey* result)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">size_t</span> n = internal_key.size();</span><br><span class="line">  <span class="keyword">if</span> (n &lt; <span class="number">8</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">uint64_t</span> num = DecodeFixed64(internal_key.data() + n - <span class="number">8</span>);</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span> c = num &amp; <span class="number">0xff</span>;</span><br><span class="line">  result-&gt;sequence = num &gt;&gt; <span class="number">8</span>;</span><br><span class="line">  result-&gt;type = <span class="keyword">static_cast</span>&lt;ValueType&gt;(c);</span><br><span class="line">  result-&gt;user_key = Slice(internal_key.data(), n - <span class="number">8</span>);</span><br><span class="line">  <span class="keyword">return</span> (c &lt;= <span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt;(kTypeValue));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// A helper class useful for DBImpl::Get()</span></span><br><span class="line"><span class="comment">// db内部在为查找memtable/sstable方便，包装使用的key结构，保存有userkey与SequnceNumber/ValueType dump在内存的数据。</span></span><br><span class="line"><span class="comment">// 对memtable 进行lookup时使用 [start,end], 对sstable lookup时使用[kstart, end]。</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LookupKey</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="comment">// 初始化this指针用来查找和某个特定sequence相关的快照中的user_key。</span></span><br><span class="line">  LookupKey(<span class="keyword">const</span> Slice&amp; user_key, SequenceNumber sequence);</span><br><span class="line"></span><br><span class="line">  LookupKey(<span class="keyword">const</span> LookupKey&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">  LookupKey&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> LookupKey&amp;) = <span class="keyword">delete</span>;</span><br><span class="line"></span><br><span class="line">  ~LookupKey();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 返回一个MemTable中适合用来lookup的key</span></span><br><span class="line">  <span class="function">Slice <span class="title">memtable_key</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> Slice(start_, end_ - start_); &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Return an internal key (suitable for passing to an internal iterator)</span></span><br><span class="line">  <span class="function">Slice <span class="title">internal_key</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> Slice(kstart_, end_ - kstart_); &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Return the user key</span></span><br><span class="line">  <span class="function">Slice <span class="title">user_key</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> Slice(kstart_, end_ - kstart_ - <span class="number">8</span>); &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="comment">// 以以下格式构建数组：</span></span><br><span class="line">  <span class="comment">//    klength  varint32               &lt;-- start_</span></span><br><span class="line">  <span class="comment">//    userkey  char[klength]          &lt;-- kstart_</span></span><br><span class="line">  <span class="comment">//    tag      uint64</span></span><br><span class="line">  <span class="comment">//                                    &lt;-- end_</span></span><br><span class="line">  <span class="comment">// 该数组是一个MemTable key.</span></span><br><span class="line">  <span class="comment">// 以“userkey”开头的后缀可以用作InternalKey.</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span>* start_;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span>* kstart_;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span>* end_;</span><br><span class="line">  <span class="keyword">char</span> space_[<span class="number">200</span>];  <span class="comment">// 避免为短key分配</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">inline</span> LookupKey::~LookupKey() &#123;</span><br><span class="line">  <span class="keyword">if</span> (start_ != space_) <span class="keyword">delete</span>[] start_;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;  <span class="comment">// namespace leveldb</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>  <span class="comment">// STORAGE_LEVELDB_DB_DBFORMAT_H_</span></span></span><br></pre></td></tr></table></figure>
+<p>头文件中一些方法的实现都在对应的源文件中，如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// dbformat.cc</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"db/dbformat.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"port/port.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"util/coding.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> leveldb &#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将sequence和ValueType整合到一个无符号64位整型中</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> uint64_t <span class="title">PackSequenceAndType</span><span class="params">(<span class="keyword">uint64_t</span> seq, ValueType t)</span> </span>&#123;</span><br><span class="line">  assert(seq &lt;= kMaxSequenceNumber);</span><br><span class="line">  assert(t &lt;= kValueTypeForSeek);</span><br><span class="line">  <span class="keyword">return</span> (seq &lt;&lt; <span class="number">8</span>) | t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将key追加到result中</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AppendInternalKey</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span>* result, <span class="keyword">const</span> ParsedInternalKey&amp; key)</span> </span>&#123;</span><br><span class="line">  result-&gt;append(key.user_key.data(), key.user_key.size());</span><br><span class="line">  PutFixed64(result, PackSequenceAndType(key.sequence, key.type));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 该方法就是把ParsedInternalKey打印一下，用来debug</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> ParsedInternalKey::DebugString() <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="keyword">char</span> buf[<span class="number">50</span>];</span><br><span class="line">  <span class="built_in">snprintf</span>(buf, <span class="keyword">sizeof</span>(buf), <span class="string">"' @ %llu : %d"</span>, (<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span>)sequence,</span><br><span class="line">           <span class="keyword">int</span>(type));</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">string</span> result = <span class="string">"'"</span>;</span><br><span class="line">  <span class="comment">// EscapeString方法将返回一个便于人阅读的格式的string</span></span><br><span class="line">  result += EscapeString(user_key.ToString());</span><br><span class="line">  result += buf;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 尝试把InternalKey转成ParsedInternalKey再调输出debug信息</span></span><br><span class="line"><span class="comment">// 转换失败的时候，则会在result里添加bad信息，并直接调用EscapeString方法</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> InternalKey::DebugString() <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">string</span> result;</span><br><span class="line">  ParsedInternalKey parsed;</span><br><span class="line">  <span class="keyword">if</span> (ParseInternalKey(rep_, &amp;parsed)) &#123;</span><br><span class="line">    result = parsed.DebugString();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    result = <span class="string">"(bad)"</span>;</span><br><span class="line">    result.append(EscapeString(rep_));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* InternalKeyComparator::Name() <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">"leveldb.InternalKeyComparator"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> InternalKeyComparator::Compare(<span class="keyword">const</span> Slice&amp; akey, <span class="keyword">const</span> Slice&amp; bkey) <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="comment">// 按照user_key升序，sequence_number和value_type降序，其中user_key升序使用用户提供的比较器</span></span><br><span class="line">  <span class="keyword">int</span> r = user_comparator_-&gt;Compare(ExtractUserKey(akey), ExtractUserKey(bkey));</span><br><span class="line">  <span class="keyword">if</span> (r == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">uint64_t</span> anum = DecodeFixed64(akey.data() + akey.size() - <span class="number">8</span>);</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">uint64_t</span> bnum = DecodeFixed64(bkey.data() + bkey.size() - <span class="number">8</span>);</span><br><span class="line">    <span class="keyword">if</span> (anum &gt; bnum) &#123;</span><br><span class="line">      r = <span class="number">-1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (anum &lt; bnum) &#123;</span><br><span class="line">      r = +<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 接下来两个方法到用到的地方再看下</span></span><br><span class="line"><span class="keyword">void</span> InternalKeyComparator::FindShortestSeparator(<span class="built_in">std</span>::<span class="built_in">string</span>* start,</span><br><span class="line">                                                  <span class="keyword">const</span> Slice&amp; limit) <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="comment">// 尝试缩短key的用户部分</span></span><br><span class="line">  Slice user_start = ExtractUserKey(*start);</span><br><span class="line">  Slice user_limit = ExtractUserKey(limit);</span><br><span class="line">  <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">tmp</span><span class="params">(user_start.data(), user_start.size())</span></span>;</span><br><span class="line">  user_comparator_-&gt;FindShortestSeparator(&amp;tmp, user_limit);</span><br><span class="line">  <span class="keyword">if</span> (tmp.size() &lt; user_start.size() &amp;&amp;</span><br><span class="line">      user_comparator_-&gt;Compare(user_start, tmp) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// User key has become shorter physically, but larger logically.</span></span><br><span class="line">    <span class="comment">// Tack on the earliest possible number to the shortened user key.</span></span><br><span class="line">    PutFixed64(&amp;tmp,</span><br><span class="line">               PackSequenceAndType(kMaxSequenceNumber, kValueTypeForSeek));</span><br><span class="line">    assert(<span class="keyword">this</span>-&gt;Compare(*start, tmp) &lt; <span class="number">0</span>);</span><br><span class="line">    assert(<span class="keyword">this</span>-&gt;Compare(tmp, limit) &lt; <span class="number">0</span>);</span><br><span class="line">    start-&gt;swap(tmp);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> InternalKeyComparator::FindShortSuccessor(<span class="built_in">std</span>::<span class="built_in">string</span>* key) <span class="keyword">const</span> &#123;</span><br><span class="line">  Slice user_key = ExtractUserKey(*key);</span><br><span class="line">  <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">tmp</span><span class="params">(user_key.data(), user_key.size())</span></span>;</span><br><span class="line">  user_comparator_-&gt;FindShortSuccessor(&amp;tmp);</span><br><span class="line">  <span class="keyword">if</span> (tmp.size() &lt; user_key.size() &amp;&amp;</span><br><span class="line">      user_comparator_-&gt;Compare(user_key, tmp) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// user_key逻辑上变大而实际上变小了。</span></span><br><span class="line">    <span class="comment">// 将尽可能早的数字添加到缩短的user_key上。【TODO】</span></span><br><span class="line">    PutFixed64(&amp;tmp,</span><br><span class="line">               PackSequenceAndType(kMaxSequenceNumber, kValueTypeForSeek));</span><br><span class="line">    assert(<span class="keyword">this</span>-&gt;Compare(*key, tmp) &lt; <span class="number">0</span>);</span><br><span class="line">    key-&gt;swap(tmp);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* InternalFilterPolicy::Name() <span class="keyword">const</span> &#123; <span class="keyword">return</span> user_policy_-&gt;Name(); &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> InternalFilterPolicy::CreateFilter(<span class="keyword">const</span> Slice* keys, <span class="keyword">int</span> n,</span><br><span class="line">                                        <span class="built_in">std</span>::<span class="built_in">string</span>* dst) <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="comment">// 我们依赖table.cc中的代码不会在意我们修改keys[]这样的一个实时。【TODO】</span></span><br><span class="line">  Slice* mkey = <span class="keyword">const_cast</span>&lt;Slice*&gt;(keys);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">    mkey[i] = ExtractUserKey(keys[i]);</span><br><span class="line">    <span class="comment">// TODO(sanjay): Suppress dups?</span></span><br><span class="line">  &#125;</span><br><span class="line">  user_policy_-&gt;CreateFilter(keys, n, dst);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> InternalFilterPolicy::KeyMayMatch(<span class="keyword">const</span> Slice&amp; key, <span class="keyword">const</span> Slice&amp; f) <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> user_policy_-&gt;KeyMayMatch(ExtractUserKey(key), f);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据user_key和sequence_number构造出LookupKey</span></span><br><span class="line">LookupKey::LookupKey(<span class="keyword">const</span> Slice&amp; user_key, SequenceNumber s) &#123;</span><br><span class="line">  <span class="keyword">size_t</span> usize = user_key.size();</span><br><span class="line">  <span class="keyword">size_t</span> needed = usize + <span class="number">13</span>;  <span class="comment">// 一个保守估计</span></span><br><span class="line">  <span class="keyword">char</span>* dst;</span><br><span class="line">  <span class="keyword">if</span> (needed &lt;= <span class="keyword">sizeof</span>(space_)) &#123;</span><br><span class="line">    dst = space_;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    dst = <span class="keyword">new</span> <span class="keyword">char</span>[needed];</span><br><span class="line">  &#125;</span><br><span class="line">  start_ = dst;</span><br><span class="line">  dst = EncodeVarint32(dst, usize + <span class="number">8</span>);</span><br><span class="line">  kstart_ = dst;</span><br><span class="line">  <span class="built_in">memcpy</span>(dst, user_key.data(), usize);</span><br><span class="line">  dst += usize;</span><br><span class="line">  EncodeFixed64(dst, PackSequenceAndType(s, kValueTypeForSeek));</span><br><span class="line">  dst += <span class="number">8</span>;</span><br><span class="line">  end_ = dst;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;  <span class="comment">// namespace leveldb</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Comparator"><a href="#Comparator" class="headerlink" title="Comparator"></a>Comparator</h1><p>简单看一下比较器的头文件和实现文件。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//comparator.h</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> STORAGE_LEVELDB_INCLUDE_COMPARATOR_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> STORAGE_LEVELDB_INCLUDE_COMPARATOR_H_</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"leveldb/export.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> leveldb &#123;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Slice</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 比较器提供sstable或者database中key的排序方法。</span></span><br><span class="line"><span class="comment">// 一个比较器的实现必须是线程安全的，因为leveldb可能会同时从多个线程调用比较器的方法。</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LEVELDB_EXPORT</span> <span class="title">Comparator</span> &#123;</span></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">virtual</span> ~Comparator();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 三种比较结果:</span></span><br><span class="line">  <span class="comment">//   &lt; 0 iff "a" &lt; "b",</span></span><br><span class="line">  <span class="comment">//   == 0 iff "a" == "b",</span></span><br><span class="line">  <span class="comment">//   &gt; 0 iff "a" &gt; "b"</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">Compare</span><span class="params">(<span class="keyword">const</span> Slice&amp; a, <span class="keyword">const</span> Slice&amp; b)</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 比较器的名字，用来检查比较器能不能match上（比如数据库创建时使用的名字和后来使用的不一致）</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// 如果比较器实的实现改变了并且会造成任何多个key的相关顺序改变，那客户端就应该换一个新名字。</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// 以'level.'开头的名字被保留，客户端不要使用</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">Name</span><span class="params">()</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 高级方法：它们用于减少索引块等内部数据结构的空间需求。</span></span><br><span class="line">  <span class="comment">// 如果*start &lt; limit，改变*start变成一个短字符串[start,limit)</span></span><br><span class="line">  <span class="comment">// 简单的比较器实现可能不会改变*start并直接返回</span></span><br><span class="line">  <span class="comment">// 比如，一个什么也不做的实现也是可以的</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">FindShortestSeparator</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span>* start,</span></span></span><br><span class="line"><span class="function"><span class="params">                                     <span class="keyword">const</span> Slice&amp; limit)</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 改变*key变成一个更短但&gt;=*key的短字符串</span></span><br><span class="line">  <span class="comment">// 简单的比较器实现可能不会改变*key并直接返回</span></span><br><span class="line">  <span class="comment">// 比如，一个什么也不做的实现也是可以的</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">FindShortSuccessor</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span>* key)</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回一个内置的使用字典序的比较器</span></span><br><span class="line"><span class="comment">// 返回结果仍然是这个模块的属性，不能删除。</span></span><br><span class="line"><span class="function">LEVELDB_EXPORT <span class="keyword">const</span> Comparator* <span class="title">BytewiseComparator</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;  <span class="comment">// namespace leveldb</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>  <span class="comment">// STORAGE_LEVELDB_INCLUDE_COMPARATOR_H_</span></span></span><br></pre></td></tr></table></figure></p>
+<p>其中几个方法的实现如下，其实实现文件是Comparator类的一个内置子类，就是上面头文件最后出现的BytewiseComparator：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdint&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"leveldb/comparator.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"leveldb/slice.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"util/logging.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"util/no_destructor.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> leveldb &#123;</span><br><span class="line"></span><br><span class="line">Comparator::~Comparator() &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> &#123;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BytewiseComparatorImpl</span> :</span> <span class="keyword">public</span> Comparator &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  BytewiseComparatorImpl() &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//比较器名字，可见果然用了level.做前缀</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">Name</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> <span class="string">"leveldb.BytewiseComparator"</span>; &#125;</span><br><span class="line">  <span class="comment">//比较</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">Compare</span><span class="params">(<span class="keyword">const</span> Slice&amp; a, <span class="keyword">const</span> Slice&amp; b)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.compare(b);</span><br><span class="line">  &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="comment">//获得大于start但小于limit的最小值</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">FindShortestSeparator</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span>* start,</span></span></span><br><span class="line"><span class="function"><span class="params">                                     <span class="keyword">const</span> Slice&amp; limit)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 找到公共前缀的长度</span></span><br><span class="line">    <span class="keyword">size_t</span> min_length = <span class="built_in">std</span>::min(start-&gt;size(), limit.size());</span><br><span class="line">    <span class="keyword">size_t</span> diff_index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> ((diff_index &lt; min_length) &amp;&amp;</span><br><span class="line">           ((*start)[diff_index] == limit[diff_index])) &#123;</span><br><span class="line">      diff_index++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (diff_index &gt;= min_length) &#123;</span><br><span class="line">      <span class="comment">// 如果一个字符串是另一个字符串的前缀，则不做改变</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">//很奇特的一段逻辑，将较小的字符串的最后一位+1，并去掉后面的字符</span></span><br><span class="line">      <span class="comment">//这时才回头看上面dbformat.cc文件中的那句注释“user_key逻辑上变大而实际上变小了。”，就理解意思了。</span></span><br><span class="line">      <span class="comment">//逻辑上变大：因为字符串最后的字母+1了，比如'b'变成了'a'，那么在字典序中就靠前了一些，变大了一些</span></span><br><span class="line">      <span class="comment">//实际上变小：字符串长度变短了</span></span><br><span class="line">      <span class="comment">//比如传入的参数是"abcg"和"abe"，那运行后"abe"还是"abe"，但"abcd"已经变成了"abd"</span></span><br><span class="line">      <span class="keyword">uint8_t</span> diff_byte = <span class="keyword">static_cast</span>&lt;<span class="keyword">uint8_t</span>&gt;((*start)[diff_index]);</span><br><span class="line">      <span class="keyword">if</span> (diff_byte &lt; <span class="keyword">static_cast</span>&lt;<span class="keyword">uint8_t</span>&gt;(<span class="number">0xff</span>) &amp;&amp;</span><br><span class="line">          diff_byte + <span class="number">1</span> &lt; <span class="keyword">static_cast</span>&lt;<span class="keyword">uint8_t</span>&gt;(limit[diff_index])) &#123;</span><br><span class="line">        (*start)[diff_index]++;</span><br><span class="line">        start-&gt;resize(diff_index + <span class="number">1</span>);</span><br><span class="line">        assert(Compare(*start, limit) &lt; <span class="number">0</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 找到第一个可以递增的字符，递增它，然后去掉后面的字符</span></span><br><span class="line">  <span class="comment">// 获得比start大的最小值</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">FindShortSuccessor</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span>* key)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 找到第一个可以递增的字符</span></span><br><span class="line">    <span class="keyword">size_t</span> n = key-&gt;size();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="keyword">const</span> <span class="keyword">uint8_t</span> byte = (*key)[i];</span><br><span class="line">      <span class="keyword">if</span> (byte != <span class="keyword">static_cast</span>&lt;<span class="keyword">uint8_t</span>&gt;(<span class="number">0xff</span>)) &#123;</span><br><span class="line">        (*key)[i] = byte + <span class="number">1</span>;</span><br><span class="line">        key-&gt;resize(i + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// *key 是0xff，保留。</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&#125;  <span class="comment">// namespace</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//static单例</span></span><br><span class="line"><span class="function"><span class="keyword">const</span> Comparator* <span class="title">BytewiseComparator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> NoDestructor&lt;BytewiseComparatorImpl&gt; singleton;</span><br><span class="line">  <span class="keyword">return</span> singleton.get();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;  <span class="comment">// namespace leveldb</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/leveldb/" rel="tag"># leveldb</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/09/基金进阶笔记/" rel="next" title="基金进阶笔记">
+                <i class="fa fa-chevron-left"></i> 基金进阶笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjgzMy8xMzM2OQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ZRainy</p>
+              <p class="site-description motion-element" itemprop="description">故事没结束，别急着去哭</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简述"><span class="nav-number">1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dbformat"><span class="nav-number">2.</span> <span class="nav-text">dbformat</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Comparator"><span class="nav-number">3.</span> <span class="nav-text">Comparator</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZRainy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
