@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2019/12/09/%E5%9F%BA%E9%87%91%E8%BF%9B%E9%98%B6%E7%AC%94%E8%AE%B0/</loc>
+    
+    <lastmod>2020-01-20T14:34:12.742Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2019/10/29/leveldb%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A04-varint/</loc>
     
     <lastmod>2019-12-11T13:56:24.439Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>http://yoursite.com/2019/12/11/leveldb%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A05-dbformat%E5%92%8Ccomparator/</loc>
     
     <lastmod>2019-12-11T13:56:23.383Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2019/12/09/%E5%9F%BA%E9%87%91%E8%BF%9B%E9%98%B6%E7%AC%94%E8%AE%B0/</loc>
-    
-    <lastmod>2019-12-11T13:51:06.748Z</lastmod>
     
   </url>
   
