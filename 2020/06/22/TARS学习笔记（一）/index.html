@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Tars,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ZRainy" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="背景工作中一直使用TAF，但对底层原理缺少了解，感觉以后工作中不理解原理不太好，但又一直懒着不想看。最近有了契机，就看看吧，希望能坚持下去，之前的levelDB暂时放一边。 官方简介文档：https://tarscloud.gitbook.io/tarsdocs/rumen/tars-intro 文档里有的就不再赘述了，本系列学习主要是为了看源码，框架概念方面的知识官方文档才是最好的。">
+<meta name="keywords" content="Tars">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TARS学习笔记（一）">
+<meta property="og:url" content="http://yoursite.com/2020/06/22/TARS学习笔记（一）/index.html">
+<meta property="og:site_name" content="ZRainy">
+<meta property="og:description" content="背景工作中一直使用TAF，但对底层原理缺少了解，感觉以后工作中不理解原理不太好，但又一直懒着不想看。最近有了契机，就看看吧，希望能坚持下去，之前的levelDB暂时放一边。 官方简介文档：https://tarscloud.gitbook.io/tarsdocs/rumen/tars-intro 文档里有的就不再赘述了，本系列学习主要是为了看源码，框架概念方面的知识官方文档才是最好的。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-06-22T15:57:27.710Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TARS学习笔记（一）">
+<meta name="twitter:description" content="背景工作中一直使用TAF，但对底层原理缺少了解，感觉以后工作中不理解原理不太好，但又一直懒着不想看。最近有了契机，就看看吧，希望能坚持下去，之前的levelDB暂时放一边。 官方简介文档：https://tarscloud.gitbook.io/tarsdocs/rumen/tars-intro 文档里有的就不再赘述了，本系列学习主要是为了看源码，框架概念方面的知识官方文档才是最好的。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/06/22/TARS学习笔记（一）/">
+
+
+
+
+
+  <title>TARS学习笔记（一） | ZRainy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRainy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/22/TARS学习笔记（一）/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZRainy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRainy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">TARS学习笔记（一）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-22T23:56:20+08:00">
+                2020-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+          
+            <span class="post-updated">
+              &nbsp; | &nbsp; 更新于
+              <time itemprop="dateUpdated" datetime="2020-06-22T23:57:27+08:00" content="2020-06-22">
+              2020-06-22
+              </time>
+            </span>
+          
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/职业学习/" itemprop="url" rel="index">
+                    <span itemprop="name">职业学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>工作中一直使用TAF，但对底层原理缺少了解，感觉以后工作中不理解原理不太好，但又一直懒着不想看。最近有了契机，就看看吧，希望能坚持下去，之前的levelDB暂时放一边。</p>
+<p>官方简介文档：<a href="https://tarscloud.gitbook.io/tarsdocs/rumen/tars-intro" target="_blank" rel="noopener">https://tarscloud.gitbook.io/tarsdocs/rumen/tars-intro</a></p>
+<p>文档里有的就不再赘述了，本系列学习主要是为了看源码，框架概念方面的知识官方文档才是最好的。</p>
+<a id="more"></a>
+<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><h2 id="APP"><a href="#APP" class="headerlink" title="APP"></a>APP</h2><p>APP是应用名，是一组服务的集合，通常可以表示实现某个业务的系统名称。</p>
+<p>在Tars系统中APP名必须唯一。</p>
+<h2 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h2><p>Server是服务名，是提供服务的进程名称。</p>
+<p>一个Server必须属于某个APP，一个APP下的所有Server名都应具备唯一性。</p>
+<p>一个Server代表一个独立的程序，绑定至少一个ip，实现一组相关的接口。</p>
+<h2 id="Servant"><a href="#Servant" class="headerlink" title="Servant"></a>Servant</h2><p>Servant是服务提供者，提供了一个或多个具体接口给客户端调用。</p>
+<p>Servant对应代码中的一个类，继承于tars文件中的interface。</p>
+<p>一个Servant必须属于某个Server，一个Server下的所有Servant名都应具备唯一性。</p>
+<p>也就是说，一个tars协议文件对应的其实是一个Servant，而不是我之前理解的一个Server！</p>
+<p>一个Server下可以有多个Servant，可以在Server的initialize方法下使用addServant添加！具体可以看手上的YUDS代码！</p>
+<p>终于分清Server和Servant的区别了……</p>
+<h2 id="获取配置"><a href="#获取配置" class="headerlink" title="获取配置"></a>获取配置</h2><p>发布之后登陆机器，运行<code>ps -efww | grep ${your server name}</code>命令可以看到服务运行的命令行，可以看到配置文件。</p>
+<h2 id="client创建通信器"><a href="#client创建通信器" class="headerlink" title="client创建通信器"></a>client创建通信器</h2><p>之前就在代码里见过两种方式，但没有深究，现在看来原来一种是自己直接指定ip和端口，也是我比较常用的，另一种就是将通信器指定到框架主控中，由主控来帮忙寻址，就不用自己指定ip和port了，但是这种方式没有上报信息，如果需要上报信息的话也需要向指定主控一样指定其他相关属性。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 第一种</span></span><br><span class="line">Communicator *communicator = <span class="keyword">new</span> Communicator();</span><br><span class="line">HelloPrx helloPrx = communicator-&gt;stringToProxy&lt;HelloPrx&gt;(<span class="string">"Test.HelloServer.HelloObj@tcp -h xxx -p yyy:tcp -h www -p zzz"</span>);</span><br><span class="line">helloPrx-&gt;call();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二种</span></span><br><span class="line">Communicator *communicator = <span class="keyword">new</span> Communicator();</span><br><span class="line">communicator-&gt;setProperty(<span class="string">"locator"</span>, <span class="string">"tars.tarsregistry.QueryObj@tcp -h xxxx -p 17890"</span>);</span><br><span class="line">communicator-&gt;setProperty(<span class="string">"stat"</span>, <span class="string">"tars.tarsstat.StatObj"</span>);<span class="comment">//指定stat状态信息</span></span><br><span class="line">communicator-&gt;setProperty(<span class="string">"property"</span>, <span class="string">"tars.tarspropery.PropertyObj"</span>);<span class="comment">//指定自定义属性信息</span></span><br><span class="line">HelloPrx helloPrx = communicator-&gt;stringToProxy&lt;HelloPrx&gt;(<span class="string">"Test.HelloServer.HelloObj"</span>);</span><br><span class="line">helloPrx-&gt;call();</span><br></pre></td></tr></table></figure></p>
+<h2 id="模板配置"><a href="#模板配置" class="headerlink" title="模板配置"></a>模板配置</h2><p>tarsnode会从平台拉取服务对应的模板（服务部署时配好的），然后根据模板生成服务对应的配置，并用这个配置启动服务。</p>
+<p>模板配置里，就会有比如这个服务的端口、启动的线程数之类的东西。</p>
+<h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><p>每个Servant（Obj）对象对应一个业务处理线程，所以如果是Imp的成员变量，且只被当前的Imp对象处理，就不需要加锁。</p>
+<p>枚举类是有stoe和etos两个方法的。</p>
+<p>tars文件中还有key这个关键字，可以用来定义小于比较符号。</p>
+<p>数据编码是由头信息和实际数据组成的。</p>
+<p>TUP是Tars统一协议，最早就用来方便各语言客户端调用Tars服务，只提供编解码，并不提供网络通讯。当然如果Tars已经提供了某种语言的客户端，那么就不再需要使用TUP来调用Tars服务了。</p>
+<h2 id="使用指南（c-）"><a href="#使用指南（c-）" class="headerlink" title="使用指南（c++）"></a>使用指南（c++）</h2><p>所有接口函数中的最后一个参数都是TarsCurrentPtr，通过这个结构体可以获取请求包的所有原始内容。</p>
+<p>对于同一个Obj名称，多次调用stringToProxy返回的是proxy其实是同一个，多线程调用是安全的，且不会影响性能。</p>
+<p>原来还可以针对接口设置超时时间。</p>
+<h2 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h2><p>寻址方式按照是否在主控注册可以分为两类，不在主控注册就是直接按照ip寻址，在主控注册的服务的寻址方式是基于服务名进行的，由主控去帮忙寻址，但是需要在生成通信器的时候指定register的地址。</p>
+<p>还可以指定set调用。</p>
+<p>还有hash调用，会使同一个请求落在同一个机器上。</p>
+<h2 id="染色"><a href="#染色" class="headerlink" title="染色"></a>染色</h2><p>染色的功能主要是可以在某服务某接口中对特定用户号码的消息进行染色，方便实时察看该用户引起后续所有相关调用信息流的日志。</p>
+<p>染色日志有主动打开和被动打开两种方法。</p>
+<p>主动打开是指在请求的客户端打开框架中的染色日志开关，被动打开是指在请求的服务端预先设定染色条件，判断收到的key值，由服务端打开染色开关。</p>
+<p>被动打开中就会在jce文件中用到routekey关键字定义key。</p>
+<h2 id="tars协议数据包大小"><a href="#tars协议数据包大小" class="headerlink" title="tars协议数据包大小"></a>tars协议数据包大小</h2><p>客户端对发出去的包大小没有限制，但是收到的回包默认不能超过10000000字节，差不多10M。</p>
+<p>服务端也一样，对发出去的包没有限制，收到的包默认不能超过100000000字节，差不多100M。</p>
+<h2 id="服务管理"><a href="#服务管理" class="headerlink" title="服务管理"></a>服务管理</h2><p>Tars还可以支持动态接收命令，来处理相关的业务逻辑。</p>
+<p>有两个宏：<code>TARS_ADD_ADMIN_CMD_PREFIX</code>和<code>TARS_ADD_ADMIN_CMD_NORMAL</code>。</p>
+<p>通常注册的接口处理有两种：全局的接口处理和基于对象的接口处理。</p>
+<p>感觉全局的接口处理就是taf平台上用的发送自定义命令呀！</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>Tars还支持一些其他操作，比如统计上报、异常上报、属性统计和查看tars调用链。</p>
+<h2 id="服务线程"><a href="#服务线程" class="headerlink" title="服务线程"></a>服务线程</h2><p>Tars C++框架服务是单进程多线程RPC系统。</p>
+<p>有7个固定线程，然后加上服务端网络线程数、业务处理线程数、客户端网络线程数以及每个客户端的异步回调线程数。</p>
+<p>7个固定线程：主线程、端口业务逻辑线程、时间辅助线程、滚动日志线程、本地日志线程、远程日志线程、统计属性上报线程。</p>
+<h2 id="protobuf协议"><a href="#protobuf协议" class="headerlink" title="protobuf协议"></a>protobuf协议</h2><p>现在tars已经支持proto文件了，能够从proto生成rpc相关代码。</p>
+<p>注意，要在proto文件中加上<code>option cc_generic_services=false;</code></p>
+<p>tars会生成tars.h文件</p>
+<h2 id="协议解析器"><a href="#协议解析器" class="headerlink" title="协议解析器"></a>协议解析器</h2><p>协议解析器使得TarsCpp实现的Server几乎能支持任何协议，包括我们自定义的网络协议。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Tars/" rel="tag"># Tars</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/06/保险学习/" rel="next" title="保险学习">
+                <i class="fa fa-chevron-left"></i> 保险学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjgzMy8xMzM2OQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ZRainy</p>
+              <p class="site-description motion-element" itemprop="description">故事没结束，别急着去哭</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基础概念"><span class="nav-number">2.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#APP"><span class="nav-number">2.1.</span> <span class="nav-text">APP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server"><span class="nav-number">2.2.</span> <span class="nav-text">Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Servant"><span class="nav-number">2.3.</span> <span class="nav-text">Servant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取配置"><span class="nav-number">2.4.</span> <span class="nav-text">获取配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#client创建通信器"><span class="nav-number">2.5.</span> <span class="nav-text">client创建通信器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板配置"><span class="nav-number">2.6.</span> <span class="nav-text">模板配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#入门"><span class="nav-number">2.7.</span> <span class="nav-text">入门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用指南（c-）"><span class="nav-number">2.8.</span> <span class="nav-text">使用指南（c++）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用"><span class="nav-number">2.9.</span> <span class="nav-text">调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#染色"><span class="nav-number">2.10.</span> <span class="nav-text">染色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tars协议数据包大小"><span class="nav-number">2.11.</span> <span class="nav-text">tars协议数据包大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务管理"><span class="nav-number">2.12.</span> <span class="nav-text">服务管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">2.13.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务线程"><span class="nav-number">2.14.</span> <span class="nav-text">服务线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#protobuf协议"><span class="nav-number">2.15.</span> <span class="nav-text">protobuf协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协议解析器"><span class="nav-number">2.16.</span> <span class="nav-text">协议解析器</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZRainy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
