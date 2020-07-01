@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Tars,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ZRainy" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="背景一直说Tars是使用epoll模型的，而且之前校招面试的时候也老会被问到epoll，所以这次打算先把epoll看一下，看看tars是怎么做epoll的，但由于对网络编程没有什么了解，所以会先看一些基础的其他类。 在网上找了一个系列博客，感觉还挺多的，可以看看。 https://blog.csdn.net/stpeace/category_7554860.html 大概会照着他这个目录看一看。">
+<meta name="keywords" content="Tars">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TARS学习笔记（二）">
+<meta property="og:url" content="http://yoursite.com/2020/07/02/TARS学习笔记（二）/index.html">
+<meta property="og:site_name" content="ZRainy">
+<meta property="og:description" content="背景一直说Tars是使用epoll模型的，而且之前校招面试的时候也老会被问到epoll，所以这次打算先把epoll看一下，看看tars是怎么做epoll的，但由于对网络编程没有什么了解，所以会先看一些基础的其他类。 在网上找了一个系列博客，感觉还挺多的，可以看看。 https://blog.csdn.net/stpeace/category_7554860.html 大概会照着他这个目录看一看。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-07-01T16:15:51.895Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TARS学习笔记（二）">
+<meta name="twitter:description" content="背景一直说Tars是使用epoll模型的，而且之前校招面试的时候也老会被问到epoll，所以这次打算先把epoll看一下，看看tars是怎么做epoll的，但由于对网络编程没有什么了解，所以会先看一些基础的其他类。 在网上找了一个系列博客，感觉还挺多的，可以看看。 https://blog.csdn.net/stpeace/category_7554860.html 大概会照着他这个目录看一看。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/07/02/TARS学习笔记（二）/">
+
+
+
+
+
+  <title>TARS学习笔记（二） | ZRainy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRainy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/02/TARS学习笔记（二）/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZRainy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRainy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">TARS学习笔记（二）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-02T00:15:20+08:00">
+                2020-07-02
+              </time>
+            
+
+            
+
+            
+          </span>
+          
+            <span class="post-updated">
+              &nbsp; | &nbsp; 更新于
+              <time itemprop="dateUpdated" datetime="2020-07-02T00:15:51+08:00" content="2020-07-02">
+              2020-07-02
+              </time>
+            </span>
+          
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/职业学习/" itemprop="url" rel="index">
+                    <span itemprop="name">职业学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>一直说Tars是使用epoll模型的，而且之前校招面试的时候也老会被问到epoll，所以这次打算先把epoll看一下，看看tars是怎么做epoll的，但由于对网络编程没有什么了解，所以会先看一些基础的其他类。</p>
+<p>在网上找了一个系列博客，感觉还挺多的，可以看看。</p>
+<p><a href="https://blog.csdn.net/stpeace/category_7554860.html" target="_blank" rel="noopener">https://blog.csdn.net/stpeace/category_7554860.html</a></p>
+<p>大概会照着他这个目录看一看。</p>
+<p>他的目录中第二篇看的是一个<code>tc_loki.h</code>，但我看了下和epoll暂时没有什么关系，所以先跳过这个文件，从<code>tc_commom.h</code>开始看。</p>
+<a id="more"></a>
+<h2 id="tc-commom"><a href="#tc-commom" class="headerlink" title="tc_commom"></a>tc_commom</h2><p>这个文件是基础工具类，主要是tars提供的一些common函数，能够在开发中直接使用的，能节省很多时间，都是一些有用的小函数，而且都是static的，可以直接用，工作中使用过很多。</p>
+<p>大致扫了一眼头文件，发现原来提供了这么多基础函数啊，以后类似在C++中遇到分割字符串等基础工作再也不用手动造轮子了，用这里面的基础函数既省事也放心，函数类型大致可以分为以下几类：</p>
+<ul>
+<li>sleep函数</li>
+<li>浮点数比较</li>
+<li>字符串相关操作</li>
+<li>时间相关</li>
+<li>数值和字符串或者时间转换</li>
+<li>其他</li>
+</ul>
+<p>针对其中一些函数，还使用了模板特化</p>
+<h2 id="tc-exception"><a href="#tc-exception" class="headerlink" title="tc_exception"></a>tc_exception</h2><p>tars中的异常类，主要包装了一个buffer和一个错误码code，并且针对不同平台做了一些兼容处理。</p>
+<h2 id="tc-socket"><a href="#tc-socket" class="headerlink" title="tc_socket"></a>tc_socket</h2><p>封装了socket编程，看源码里注释都很清晰了，这里挑几个函数看一看。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 这里面用到了几个没见过的值，简单说明一下</span></span><br><span class="line"><span class="comment"> * SOCK_STREAM表示基于TCP，SOCK_DGRAM则是基于UDP，表示tars是支持这两种协议的，而且默认是SOCK_STREAM</span></span><br><span class="line"><span class="comment"> * iDomain的默认值是AF_INET，查了下就理解成基于ipv4的地址就行，就是我们常用的那种host:port</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">void</span> TC_Socket::createSocket(<span class="keyword">int</span> iSocketType, <span class="keyword">int</span> iDomain)</span><br><span class="line">&#123;</span><br><span class="line">    assert(iSocketType == SOCK_STREAM || iSocketType == SOCK_DGRAM);</span><br><span class="line">    close();</span><br><span class="line"></span><br><span class="line">    _iDomain    = iDomain;</span><br><span class="line">    _sock       = socket(iDomain, iSocketType, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(_sock &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        _sock = INVALID_SOCKET;</span><br><span class="line">        THROW_EXCEPTION_SYSCODE(TC_Socket_Exception, <span class="string">"[TC_Socket::createSocket] create socket error"</span>);</span><br><span class="line">        <span class="comment">// throw TC_Socket_Exception("[TC_Socket::createSocket] create socket error! :" + string(strerror(errno)));</span></span><br><span class="line">    &#125; </span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">	&#123;</span><br><span class="line">        ignoreSigPipe();<span class="comment">//这个是用来忽视什么信号的，系列2里有</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>对socket编程完全不了解呀，看下来云里雾里，但感觉就是把socket抽象封装了一层，以后再看。</p>
+<h2 id="tc-epoll"><a href="#tc-epoll" class="headerlink" title="tc_epoll"></a>tc_epoll</h2><p>epoll操作封装类。</p>
+<p>首先有一个平平无奇的TC_Epoller_Exception类。</p>
+<p>TC_Epoller默认采用了ET方式触发，epoll初始化不是线程安全的，需要在一开始全局设置一下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建epoll，可以看到这个size其实最终并没有赋值给_max_connections，</span></span><br><span class="line"><span class="comment">//这里和博文里的代码不一样，想必是tars源码做过改动，size要大于零</span></span><br><span class="line"><span class="keyword">void</span> TC_Epoller::create(<span class="keyword">int</span> size)</span><br><span class="line">&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> TARGET_PLATFORM_IOS</span></span><br><span class="line">    _iEpollfd = kqueue();</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">	_iEpollfd = epoll_create(size);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="keyword">if</span> (<span class="literal">nullptr</span> != _pevs)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">delete</span>[] _pevs;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    _max_connections = <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line">    _pevs = <span class="keyword">new</span> epoll_event[_max_connections];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//这个方法再往底层都加了锁，不管是add、mod还是del</span></span><br><span class="line"><span class="keyword">void</span> TC_Epoller::ctrl(SOCKET_TYPE fd, <span class="keyword">uint64_t</span> data, <span class="keyword">uint32_t</span> events, <span class="keyword">int</span> op)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> <span class="title">ev</span>;</span></span><br><span class="line">	ev.data.u64 = data;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> TARGET_PLATFORM_WINDOWS</span></span><br><span class="line">	ev.events = events;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    ev.events   = events | EPOLLET;<span class="comment">//可以看到linux下默认都会加上ET的，所以默认是ET模式</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	epoll_ctl(_iEpollfd, op, fd, &amp;ev);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="tc-autoptr-h"><a href="#tc-autoptr-h" class="headerlink" title="tc_autoptr.h"></a>tc_autoptr.h</h2><p>这是tars里自己实现的自动指针类，底层利用atomic实现了引用计数，所有需要智能指针的类都需要从TC_HandleBase类继承。</p>
+<p>除了atomic引用计数外，该类还有一个表示是否删除的标志位，看起来是为了防止del多次。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UTIL_DLL_API</span> <span class="title">TC_HandleBase</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * @brief 复制.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @return TC_HandleBase&amp;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    TC_HandleBase&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> TC_HandleBase&amp;)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * @brief 增加计数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">incRef</span><span class="params">()</span> </span>&#123; ++_atomic; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * @brief 减少计数, 当计数==0时, 且需要删除数据时, 释放对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">decRef</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>((--_atomic) == <span class="number">0</span> &amp;&amp; !_bNoDelete)</span><br><span class="line">        &#123;</span><br><span class="line">            _bNoDelete = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">delete</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * @brief 获取计数.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @return int 计数值</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getRef</span><span class="params">()</span> <span class="keyword">const</span>        </span>&#123; <span class="keyword">return</span> _atomic; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * @brief 设置不自动释放. </span></span><br><span class="line"><span class="comment">	 *  </span></span><br><span class="line"><span class="comment">     * @param b 是否自动删除,true or false</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setNoDelete</span><span class="params">(<span class="keyword">bool</span> b)</span>  </span>&#123; _bNoDelete = b; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * @brief 构造函数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    TC_HandleBase() : _atomic(<span class="number">0</span>), _bNoDelete(<span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * @brief 拷贝构造</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    TC_HandleBase(<span class="keyword">const</span> TC_HandleBase&amp;) : _atomic(<span class="number">0</span>), _bNoDelete(<span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * @brief 析够</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">virtual</span> ~TC_HandleBase()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 计数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="built_in">std</span>::atomic&lt;<span class="keyword">int</span>&gt;	  _atomic;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否自动删除</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">bool</span>        _bNoDelete;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>接下来是一个智能指针模板类<code>TC_AutoPtr</code>，方法没什么好说的，只是要注意模板参数T必须继承于<code>TC_HandleBase</code>。</p>
+<p>还有个要注意点的点是这些智能指针类之间的等于、不等于、小于比较全都是直接比较指针本身，而不是比较指针指向的值。</p>
+<h2 id="tc-config"><a href="#tc-config" class="headerlink" title="tc_config"></a>tc_config</h2><p>配置文件读取类。</p>
+<p>配置文件能实现配置参数和代码逻辑的分离，如果需要修改配置参数，仅仅修改配置即可。</p>
+<p>配置文件说白了，就是把数据从外存导到内存来使用（我觉得这个理解挺好的）。</p>
+<p>tars的配置文件在我使用过程中就是类似于读取<code>/a/b/c&lt;d&gt;</code>这种格式，就能从第一层a开始取到最后一层d所指的数据，对应下面这种格式的配置文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;a&gt;</span><br><span class="line">    &lt;b&gt;</span><br><span class="line">        &lt;c&gt;</span><br><span class="line">            d=hello</span><br><span class="line">        &lt;/c&gt;</span><br><span class="line">    &lt;/b&gt;</span><br><span class="line">&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p>tars的配置文件就长这样，所以这个tc_config类主要就是用来解析这种格式的文件，知道了作用，接下来开始看源码。</p>
+<p>Tars读取配置文件是线程安全的，将整个配置文件分为了域和参数两部分，其中kv键值对的k是参数，而&lt;&gt;表示的是域，用以下宏定义的字符来分割。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 域分隔符</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> TC_CONFIG_DOMAIN_SEP = <span class="string">'/'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 参数开始符</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> TC_CONFIG_PARAM_BEGIN = <span class="string">'&lt;'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 参数结束符</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> TC_CONFIG_PARAM_END = <span class="string">'&gt;'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>有几个类：</p>
+<ol>
+<li>定义了两个异常类</li>
+<li>TC_ConfigDomain类，定义配置文件中域的类。上层的TC_Config类就包含一个 TC_ConfigDomain类的成员变量，域类里会有子域，感觉实现上面像个广度优先的树，TC_Config类就是root节点。这种用树的结构来实现的例子也要记住。</li>
+</ol>
+<p>看几个函数吧：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">//tc_config.h</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * @brief 解析一个domain </span></span><br><span class="line"><span class="comment">     * 对形如"/Main/Domain&lt;Name&gt;"的path进行解析，解析的结果为一个 </span></span><br><span class="line"><span class="comment">     * DomainPath 类型，包括路径_domains和路径中对应的配置项_param.</span></span><br><span class="line"><span class="comment">     *  </span></span><br><span class="line"><span class="comment">     * @param path       一个经过处理的字符串，必须符合一定的要求</span></span><br><span class="line"><span class="comment">     * @param bWithParam "/Main/Domain&lt;Name&gt;"时bWithParam为ture </span></span><br><span class="line"><span class="comment">     *                   "/Main/Domain"时bWithParam为false</span></span><br><span class="line"><span class="comment">     * @return DomainPath 一个DomainPath对象，解析出域中的域名和参数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> DomainPath <span class="title">parseDomainName</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; path, <span class="keyword">bool</span> bWithParam)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//定义</span></span><br><span class="line">    <span class="comment">//tc_config.cpp</span></span><br><span class="line">    TC_ConfigDomain::DomainPath TC_ConfigDomain::parseDomainName(<span class="keyword">const</span> <span class="built_in">string</span>&amp; path, <span class="keyword">bool</span> bWithParam)</span><br><span class="line">&#123;</span><br><span class="line">    TC_ConfigDomain::DomainPath dp;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(bWithParam)</span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="built_in">string</span>::size_type pos1 = path.find_first_of(TC_CONFIG_PARAM_BEGIN);</span><br><span class="line">    	<span class="keyword">if</span>(pos1 == <span class="built_in">string</span>::npos)</span><br><span class="line">    	&#123;</span><br><span class="line">    		<span class="keyword">throw</span> TC_Config_Exception(<span class="string">"[TC_Config::parseDomainName] : param path '"</span> + path + <span class="string">"' is invalid!"</span> );</span><br><span class="line">    	&#125;</span><br><span class="line"></span><br><span class="line">    	<span class="keyword">if</span>(path[<span class="number">0</span>] != TC_CONFIG_DOMAIN_SEP)</span><br><span class="line">    	&#123;</span><br><span class="line">    		<span class="keyword">throw</span> TC_Config_Exception(<span class="string">"[TC_Config::parseDomainName] : param path '"</span> + path + <span class="string">"' must start with '/'!"</span> );</span><br><span class="line">    	&#125;</span><br><span class="line"></span><br><span class="line">    	<span class="built_in">string</span>::size_type pos2 = path.find_first_of(TC_CONFIG_PARAM_END);</span><br><span class="line">    	<span class="keyword">if</span>(pos2 == <span class="built_in">string</span>::npos)</span><br><span class="line">    	&#123;</span><br><span class="line">    		<span class="keyword">throw</span> TC_Config_Exception(<span class="string">"[TC_Config::parseDomainName] : param path '"</span> + path + <span class="string">"' is invalid!"</span> );</span><br><span class="line">    	&#125;</span><br><span class="line"></span><br><span class="line">        dp._domains = TC_Common::sepstr&lt;<span class="built_in">string</span>&gt;(path.substr(<span class="number">1</span>, pos1<span class="number">-1</span>), TC_Common::tostr(TC_CONFIG_DOMAIN_SEP));</span><br><span class="line">		dp._param = path.substr(pos1 + <span class="number">1</span>, pos2 - pos1 - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line"><span class="comment">//    	if(path.length() &lt;= 1 || path[0] != TC_CONFIG_DOMAIN_SEP)</span></span><br><span class="line">        <span class="keyword">if</span>(path[<span class="number">0</span>] != TC_CONFIG_DOMAIN_SEP)</span><br><span class="line">    	&#123;</span><br><span class="line">    		<span class="keyword">throw</span> TC_Config_Exception(<span class="string">"[TC_Config::parseDomainName] : param path '"</span> + path + <span class="string">"' must start with '/'!"</span> );</span><br><span class="line">    	&#125;</span><br><span class="line"></span><br><span class="line">        dp._domains = TC_Common::sepstr&lt;<span class="built_in">string</span>&gt;(path.substr(<span class="number">1</span>), TC_Common::tostr(TC_CONFIG_DOMAIN_SEP));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> dp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//之所以要看这个方法，是因为我想了一下，</span></span><br><span class="line"><span class="comment">//这个简答的字符串处理如果换成是我来写，那我肯定是for循环来处理了，</span></span><br><span class="line"><span class="comment">//所以看到这个实现的时候有种恍然大悟的感觉，啥叫优雅的写法，这就是呀……</span></span><br><span class="line"><span class="comment">//但是在setParamValue方法里不知道为啥就用了for循环，感觉代码不是一个人写的呀。</span></span><br></pre></td></tr></table></figure></p>
+<p>递归搜索子域的方法<code>getSubTcConfigDomain</code>怎么感觉没明白呢？它搜了个寂寞？既然是搜索，但参数里没有个要搜索的目标啊，就给了两个迭代器？好奇怪。后需要再看下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//20200701联合tc_config::operator[]再看，感觉理解了一些，</span></span><br><span class="line"><span class="comment">//TC_ConfigDomain::getSubTcConfigDomain这个方法搜的其实并不是别的，就是`itEnd`对应的*TC_ConfigDomain</span></span><br><span class="line"><span class="keyword">const</span> TC_ConfigDomain *TC_ConfigDomain::getSubTcConfigDomain(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;::const_iterator itBegin, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;::const_iterator itEnd) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//递归结束条件，我是理解了上面注释里说的这个方法所要搜索的就是iEnd对应的域之后才看明白了这个递归条件</span></span><br><span class="line">    <span class="comment">//但其实我感觉看到递归条件就应该明白要搜索的是啥了，还是太菜了，没看懂一开始。</span></span><br><span class="line">    <span class="keyword">if</span>(itBegin == itEnd)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">map</span>&lt;<span class="built_in">string</span>, TC_ConfigDomain*&gt;::const_iterator it = _subdomain.find(*itBegin);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//根据匹配规则找不到匹配的子域</span></span><br><span class="line">	<span class="keyword">if</span>(it == _subdomain.end())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//继续在子域下搜索</span></span><br><span class="line">	<span class="keyword">return</span> it-&gt;second-&gt;getSubTcConfigDomain(itBegin + <span class="number">1</span>, itEnd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>tars的配置里配置项如果没写<code>=</code>，看起来是会把整行当做一个key，然后对应值是空。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">    /**</span><br><span class="line">    * @brief 转换成配置文件的字符串格式. </span><br><span class="line">    *  </span><br><span class="line">    * @param i  tab的层数</span><br><span class="line">    * @return   string类型配置字符串</span><br><span class="line">    */</span><br><span class="line">    string tostr(int i) const;</span><br><span class="line">    </span><br><span class="line">    //该方法将整个类转换成配置文件格式的字符串输出，同样适用了递归方法，好好看，好好学</span><br><span class="line">    string TC_ConfigDomain::tostr(int i) const</span><br><span class="line">&#123;</span><br><span class="line">    string sTab;</span><br><span class="line">    for(int k = 0; k &lt; i; ++k)</span><br><span class="line">    &#123;</span><br><span class="line">        sTab += &quot;  &quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ostringstream buf;</span><br><span class="line"></span><br><span class="line">    buf &lt;&lt; sTab &lt;&lt; &quot;&lt;&quot; &lt;&lt; reverse_parse(_name) &lt;&lt; &quot;&gt;&quot; &lt;&lt; endl;;</span><br><span class="line"></span><br><span class="line">    for(size_t n = 0; n &lt; _key.size(); n++)</span><br><span class="line">    &#123;</span><br><span class="line">        map&lt;string, string&gt;::const_iterator it = _param.find(_key[n]);</span><br><span class="line"></span><br><span class="line">        assert(it != _param.end());</span><br><span class="line"></span><br><span class="line">        //值为空, 则不打印出=</span><br><span class="line">        if(it-&gt;second.empty())</span><br><span class="line">        &#123;</span><br><span class="line">            buf &lt;&lt; &quot;  &quot; &lt;&lt; sTab &lt;&lt; reverse_parse(_key[n]) &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            buf &lt;&lt; &quot;  &quot; &lt;&lt; sTab &lt;&lt; reverse_parse(_key[n]) &lt;&lt; &quot;=&quot; &lt;&lt; reverse_parse(it-&gt;second) &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ++i;</span><br><span class="line"></span><br><span class="line">    for(size_t n = 0; n &lt; _domain.size(); n++)</span><br><span class="line">    &#123;</span><br><span class="line">        map&lt;string, TC_ConfigDomain*&gt;::const_iterator itm = _subdomain.find(_domain[n]);</span><br><span class="line"></span><br><span class="line">        assert(itm != _subdomain.end());</span><br><span class="line"></span><br><span class="line">        buf &lt;&lt; itm-&gt;second-&gt;tostr(i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	buf &lt;&lt; sTab &lt;&lt; &quot;&lt;/&quot; &lt;&lt; reverse_parse(_name) &lt;&lt; &quot;&gt;&quot; &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	return buf.str();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>tc_config的operator[]方法：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> TC_Config::<span class="keyword">operator</span>[](<span class="keyword">const</span> <span class="built_in">string</span> &amp;path) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    TC_ConfigDomain::DomainPath dp = TC_ConfigDomain::parseDomainName(path, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里所搜索的域其实就是dp._domains的最后一个元素对应的域</span></span><br><span class="line">    <span class="comment">//和上面的getSubTcConfigDomain结合起来看更好理解</span></span><br><span class="line">	<span class="keyword">const</span> TC_ConfigDomain *pTcConfigDomain = searchTcConfigDomain(dp._domains);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(pTcConfigDomain == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">throw</span> TC_ConfigNoParam_Exception(<span class="string">"[TC_Config::operator[]] path '"</span> + path + <span class="string">"' not exits!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> pTcConfigDomain-&gt;getParamValue(dp._param);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * @brief 合并配置文件到当前配置文件. </span></span><br><span class="line"><span class="comment">     *  </span></span><br><span class="line"><span class="comment">     * @param cf</span></span><br><span class="line"><span class="comment">     * @param bUpdate true-冲突项更新本配置, false-冲突项不更新</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">joinConfig</span><span class="params">(<span class="keyword">const</span> TC_Config &amp;cf, <span class="keyword">bool</span> bUpdate)</span></span>;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//上述方法内部实现调用了parse方法，parse方法里会把字符串解析成配置</span></span><br><span class="line">    <span class="comment">//parse核心代码，主要靠一个栈实现，这种字符串解析代码看上去还是很优雅呀：</span></span><br><span class="line">    <span class="keyword">void</span> TC_Config::parse(istream &amp;is)</span><br><span class="line">&#123;</span><br><span class="line">    _root.destroy();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">stack</span>&lt;TC_ConfigDomain*&gt; stkTcCnfDomain;</span><br><span class="line">    stkTcCnfDomain.push(&amp;_root);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">string</span> line;</span><br><span class="line">    <span class="keyword">while</span>(getline(is, line))</span><br><span class="line">	&#123;</span><br><span class="line">		line = TC_Common::trim(line, <span class="string">" \r\n\t"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(line.length() == <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(line[<span class="number">0</span>] == <span class="string">'#'</span>)<span class="comment">//以#开头的是注释，忽略</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(line[<span class="number">0</span>] == <span class="string">'&lt;'</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">string</span>::size_type posl = line.find_first_of(<span class="string">'&gt;'</span>);</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span>(posl == <span class="built_in">string</span>::npos)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">throw</span> TC_Config_Exception(<span class="string">"[TC_Config::parse]:parse error! line : "</span> + line);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span>(line[<span class="number">1</span>] == <span class="string">'/'</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="function"><span class="built_in">string</span> <span class="title">sName</span><span class="params">(line.substr(<span class="number">2</span>, (posl - <span class="number">2</span>)))</span></span>;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span>(stkTcCnfDomain.size() &lt;= <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">throw</span> TC_Config_Exception(<span class="string">"[TC_Config::parse]:parse error! &lt;"</span> + sName + <span class="string">"&gt; hasn't matched domain."</span>);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span>(stkTcCnfDomain.top()-&gt;getName() != sName)</span><br><span class="line">				&#123;</span><br><span class="line">					<span class="keyword">throw</span> TC_Config_Exception(<span class="string">"[TC_Config::parse]:parse error! &lt;"</span> + stkTcCnfDomain.top()-&gt;getName() + <span class="string">"&gt; hasn't match &lt;"</span> + sName +<span class="string">"&gt;."</span>);</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//弹出</span></span><br><span class="line">				stkTcCnfDomain.pop();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">string</span> name(line.substr(<span class="number">1</span>, posl - <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">                stkTcCnfDomain.push(stkTcCnfDomain.top()-&gt;addSubDomain(name));</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">            stkTcCnfDomain.top()-&gt;setParamValue(line);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(stkTcCnfDomain.size() != <span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">throw</span> TC_Config_Exception(<span class="string">"[TC_Config::parse]:parse error : hasn't match"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Tars/" rel="tag"># Tars</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/22/TARS学习笔记（一）/" rel="next" title="TARS学习笔记（一）">
+                <i class="fa fa-chevron-left"></i> TARS学习笔记（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjgzMy8xMzM2OQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ZRainy</p>
+              <p class="site-description motion-element" itemprop="description">故事没结束，别急着去哭</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#tc-commom"><span class="nav-number">1.1.</span> <span class="nav-text">tc_commom</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tc-exception"><span class="nav-number">1.2.</span> <span class="nav-text">tc_exception</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tc-socket"><span class="nav-number">1.3.</span> <span class="nav-text">tc_socket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tc-epoll"><span class="nav-number">1.4.</span> <span class="nav-text">tc_epoll</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tc-autoptr-h"><span class="nav-number">1.5.</span> <span class="nav-text">tc_autoptr.h</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tc-config"><span class="nav-number">1.6.</span> <span class="nav-text">tc_config</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZRainy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
